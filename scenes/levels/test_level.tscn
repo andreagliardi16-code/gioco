@@ -125,3 +125,14 @@ metadata/_edit_lock_ = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticPlatform9" unique_id=1819184428]
 shape = SubResource("RectangleShape2D_48ne7")
 metadata/_edit_lock_ = true
+
+[node name="StaticPlatform10" type="StaticBody2D" parent="." unique_id=621201671]
+position = Vector2(1800, 480)
+collision_layer = 3
+script = ExtResource("1_fr1um")
+platform_material = ExtResource("2_48ne7")
+metadata/_custom_type_script = "uid://cjnqdmve4stwy"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticPlatform10" unique_id=1994902009]
+shape = ExtResource("2_v45ci")
+metadata/_edit_lock_ = true

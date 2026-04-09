@@ -12,5 +12,5 @@ acceleration = 2000.0
 deceleration = 4000.7
 max_distance = 100
 dash_time = 0.16
-dash_cooldown = 1.0
+dash_cooldown = 0.8
 metadata/_custom_type_script = "uid://dyh0jbom1lx5h"
