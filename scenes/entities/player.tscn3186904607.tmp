@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://bucj32nxuwlvw"]
+
+[ext_resource type="Script" uid="uid://bbqrmjhhh3vf1" path="res://script/player_script.gd" id="1_ct4mp"]
+[ext_resource type="Resource" uid="uid://cmompcntnt3ch" path="res://stats/PlayerStats.tres" id="2_d4qa6"]
+[ext_resource type="PackedScene" uid="uid://jds4dqoea26a" path="res://scenes/components/base_area.tscn" id="2_fvtld"]
+[ext_resource type="PackedScene" uid="uid://bqi4ny286gmut" path="res://scenes/components/gravity_component.tscn" id="4_s4jxa"]
+[ext_resource type="PackedScene" uid="uid://cpb7xf4mmxlvg" path="res://scenes/components/movement_component.tscn" id="5_oh5ij"]
+[ext_resource type="PackedScene" uid="uid://c52y6s5dguquu" path="res://scenes/components/input_component.tscn" id="5_s4jxa"]
+[ext_resource type="PackedScene" uid="uid://cywf5llr0wjom" path="res://scenes/components/queue_component.tscn" id="7_ss7kx"]
+[ext_resource type="PackedScene" uid="uid://caaq4qr5swtvy" path="res://scenes/components/camera_component.tscn" id="8_dnykm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ss7kx"]
+size = Vector2(50, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g2vtq"]
+size = Vector2(50, 8.5)
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1177918152]
+slide_on_ceiling = false
+script = ExtResource("1_ct4mp")
+stats = ExtResource("2_d4qa6")
+metadata/_edit_lock_ = true
+
+[node name="hitbox" type="CollisionShape2D" parent="." unique_id=485364704]
+shape = SubResource("RectangleShape2D_ss7kx")
+metadata/_edit_lock_ = true
+
+[node name="GravityComponent" parent="." unique_id=636153743 instance=ExtResource("4_s4jxa")]
+metadata/_edit_lock_ = true
+
+[node name="BaseArea" parent="." unique_id=1306194713 instance=ExtResource("2_fvtld")]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BaseArea" unique_id=2039928362]
+position = Vector2(0, 36)
+shape = SubResource("RectangleShape2D_g2vtq")
+
+[node name="InputComponent" parent="." unique_id=51350239 instance=ExtResource("5_s4jxa")]
+
+[node name="MovementComponent" parent="." unique_id=989275334 instance=ExtResource("5_oh5ij")]
+metadata/_edit_lock_ = true
+
+[node name="QueueComponent" parent="." unique_id=1971145583 instance=ExtResource("7_ss7kx")]
+
+[node name="CameraComponent" parent="." unique_id=1473717657 instance=ExtResource("8_dnykm")]
+
+[connection signal="body_entered" from="BaseArea" to="BaseArea" method="_on_body_entered"]
+[connection signal="body_exited" from="BaseArea" to="BaseArea" method="_on_body_exited"]
+[connection signal="jump_input_changed" from="InputComponent" to="MovementComponent" method="_on_input_component_jump_input_changed"]

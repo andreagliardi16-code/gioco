@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://caaq4qr5swtvy"]
+
+[ext_resource type="Script" uid="uid://dqalnbhrqs0qx" path="res://script/camera_component.gd" id="1_3dcnx"]
+[ext_resource type="Texture2D" uid="uid://cnsq0uq8y0fsf" path="res://assets/sprites/cam_target.png" id="2_gp3eo"]
+
+[node name="CameraComponent" type="Camera2D" unique_id=1473717657]
+script = ExtResource("1_3dcnx")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1413078482]
+visible = false
+texture = ExtResource("2_gp3eo")

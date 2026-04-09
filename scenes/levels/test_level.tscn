@@ -1,0 +1,127 @@
+[gd_scene format=3 uid="uid://c5vene0lkc71j"]
+
+[ext_resource type="Script" uid="uid://cjnqdmve4stwy" path="res://script/platform.gd" id="1_fr1um"]
+[ext_resource type="Resource" uid="uid://dhbylf6lt2h47" path="res://resources/materials/default_material.tres" id="2_48ne7"]
+[ext_resource type="Shape2D" uid="uid://c6alr4e42frkj" path="res://resources/shapes/default_rectangle_platform.tres" id="2_v45ci"]
+[ext_resource type="PackedScene" uid="uid://bucj32nxuwlvw" path="res://scenes/entities/player.tscn" id="3_48ne7"]
+[ext_resource type="Script" uid="uid://3vu781xj0xkc" path="res://script/material.gd" id="4_48ne7"]
+
+[sub_resource type="Resource" id="Resource_6xh4u"]
+script = ExtResource("4_48ne7")
+metadata/_custom_type_script = "uid://3vu781xj0xkc"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_48ne7"]
+size = Vector2(3127, 30)
+
+[node name="Level_Test" type="Node2D" unique_id=1339058086]
+metadata/_edit_lock_ = true
+
+[node name="StaticPlatform" type="StaticBody2D" parent="." unique_id=981123477]
+position = Vector2(100, 720)
+collision_layer = 3
+script = ExtResource("1_fr1um")
+platform_material = ExtResource("2_48ne7")
+metadata/_custom_type_script = "uid://cjnqdmve4stwy"
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticPlatform" unique_id=962204430]
+shape = ExtResource("2_v45ci")
+metadata/_edit_lock_ = true
+
+[node name="StaticPlatform2" type="StaticBody2D" parent="." unique_id=26422477]
+position = Vector2(400, 600)
+collision_layer = 3
+script = ExtResource("1_fr1um")
+platform_material = ExtResource("2_48ne7")
+metadata/_custom_type_script = "uid://cjnqdmve4stwy"
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticPlatform2" unique_id=1402851843]
+shape = ExtResource("2_v45ci")
+metadata/_edit_lock_ = true
+
+[node name="StaticPlatform3" type="StaticBody2D" parent="." unique_id=346858606]
+position = Vector2(700, 600)
+collision_layer = 3
+script = ExtResource("1_fr1um")
+platform_material = SubResource("Resource_6xh4u")
+metadata/_custom_type_script = "uid://cjnqdmve4stwy"
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticPlatform3" unique_id=1810265776]
+shape = ExtResource("2_v45ci")
+metadata/_edit_lock_ = true
+
+[node name="StaticPlatform4" type="StaticBody2D" parent="." unique_id=1649383228]
+position = Vector2(1000, 480)
+collision_layer = 3
+script = ExtResource("1_fr1um")
+platform_material = ExtResource("2_48ne7")
+metadata/_custom_type_script = "uid://cjnqdmve4stwy"
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticPlatform4" unique_id=1797161650]
+shape = ExtResource("2_v45ci")
+metadata/_edit_lock_ = true
+
+[node name="StaticPlatform5" type="StaticBody2D" parent="." unique_id=680324730]
+position = Vector2(1000, 720)
+collision_layer = 3
+script = ExtResource("1_fr1um")
+platform_material = ExtResource("2_48ne7")
+metadata/_custom_type_script = "uid://cjnqdmve4stwy"
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticPlatform5" unique_id=1324593070]
+shape = ExtResource("2_v45ci")
+metadata/_edit_lock_ = true
+
+[node name="StaticPlatform6" type="StaticBody2D" parent="." unique_id=1705303715]
+position = Vector2(700, 360)
+collision_layer = 3
+script = ExtResource("1_fr1um")
+platform_material = ExtResource("2_48ne7")
+metadata/_custom_type_script = "uid://cjnqdmve4stwy"
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticPlatform6" unique_id=1580110892]
+shape = ExtResource("2_v45ci")
+metadata/_edit_lock_ = true
+
+[node name="StaticPlatform7" type="StaticBody2D" parent="." unique_id=1170670574]
+position = Vector2(400, 240)
+collision_layer = 3
+script = ExtResource("1_fr1um")
+platform_material = ExtResource("2_48ne7")
+metadata/_custom_type_script = "uid://cjnqdmve4stwy"
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticPlatform7" unique_id=297568423]
+shape = ExtResource("2_v45ci")
+metadata/_edit_lock_ = true
+
+[node name="StaticPlatform8" type="StaticBody2D" parent="." unique_id=1030281795]
+position = Vector2(100, 480.4)
+collision_layer = 3
+script = ExtResource("1_fr1um")
+platform_material = ExtResource("2_48ne7")
+metadata/_custom_type_script = "uid://cjnqdmve4stwy"
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticPlatform8" unique_id=129155149]
+shape = ExtResource("2_v45ci")
+metadata/_edit_lock_ = true
+
+[node name="CharacterBody2D" parent="." unique_id=1177918152 instance=ExtResource("3_48ne7")]
+
+[node name="StaticPlatform9" type="StaticBody2D" parent="." unique_id=1648012569]
+position = Vector2(1074, 925)
+collision_layer = 3
+script = ExtResource("1_fr1um")
+platform_material = ExtResource("2_48ne7")
+metadata/_custom_type_script = "uid://cjnqdmve4stwy"
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticPlatform9" unique_id=1819184428]
+shape = SubResource("RectangleShape2D_48ne7")
+metadata/_edit_lock_ = true

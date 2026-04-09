@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://jds4dqoea26a"]
+
+[ext_resource type="Script" uid="uid://bwor1eoh68675" path="res://script/base_area.gd" id="1_xuxvp"]
+
+[node name="BaseArea" type="Area2D" unique_id=1306194713]
+script = ExtResource("1_xuxvp")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]

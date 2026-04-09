@@ -1,0 +1,174 @@
+LINEE GUIDA
+
+1. COMPONENTI
+Ogni script contenente un comportamento che non caratterizza una sola
+entità andrebbe reso riutilizzabile per ogni entità che potrebbe averne 
+bisogno. Per questo, si usano le componenti, nodi2D, nodi o semplici script
+salvati .tscn o .tres (guarda punto 6) e assegnati a ogni entità ne abbia bisogno. 
+Ogni componente dovrebbe avere una prefazione in cui si spiega chiaramente 
+il funzionamento e eventuali necessità particolari.
+Inoltre, le componenti vanno salvate come [...]_component nella cartella 
+"Components" e se hanno uno script a questo deve corrispondere una classe
+con adeguato nome.
+
+2. CLASSI
+È solitamente utile per gli script essere salvati come classi, in modo da
+sfruttare le proprietà della OOP. Il nome della classe deve seguire lo
+standard CamelCase e specificare se si tratta o meno di una componente.
+
+3. SCRIPT
+Ogni script è salvato separatamente dalla sua scena, perciò, è necessario
+salvarlo nella cartella "script" e utilizzare lo standard snake_case,
+chiamandolo come il nodo a cui è attaccato in caso ne abbia uno, 
+aggiungendo poi il suffisso "..._script" alla fine.
+Ogni script deve inoltre essere adeguatamente commentato e spiegato, in 
+modo da favorire il lavoro in team.
+In generale poi, questa dovrebbe essere la struttura di uno script:
+
+-class_name
+-extends
+-signals
+-constants
+-enums
+-@export variables
+-dictionaries variables
+-normal variables
+-@onready variables
+-_ready()
+-_process()
+-timer_methods()
+-other_methods()
+
+Nei metodi poi sarebbe preferibile attenersi a un ordine semantico, in
+modo da creare regioni di codice e rendere il tutto più leggibile e 
+accessibile.
+
+
+
+4. FUNZIONI E METODI
+Seguendo lo stesso principio delle componenti, ogni comportamento che può 
+essere ripetuto molte volte e in diversi contesti, andrebbe reso autonomo
+e riutilizzabile all'interno di una funzione.
+I metodi dovrebbero essere nominati con lo standard snake_case e con un "_"
+a precederle in caso fossero esplicitamente private (GDScript non fa una
+vara distinzione come Java, ma è comodo per interpretare il codice), ossia 
+utilizzate solo all'interno dell'oggetto di appartenenza.
+Per comodità di lavoro e per sfruttare meglio le funzionalità dell'engine 
+poi, a meno che non possibile per il caso specifico, ogni metodo dovrebbe 
+seguire questo schema:
+	func nome_funzione (var: tipo_var) -> TipoReturn:
+
+Per chiarezza questo è un esempio di funzioni medesime in 
+GDScript e C++:
+
+	func nome_funzione (n: int) -> int:  # GDScript
+		return 0
+
+	int nome_funzione (int n) {     # C++ o C
+		return 0;
+	}
+
+GDScript però ha una tipizzazzione delle variabili dinamica (come Python),
+cioè una variabile (se non viene specificato tramite :tipo_variabile)
+assuma valori di tipi diversi:
+	
+	var a = 1
+
+e poi:
+	
+	var a = "ciao"
+
+Questa cosa può avvenire anche all'interno di una funzione, sia
+nell'argomento che nel tipo di ritorno. In tal caso dichiarare il tipo
+della variabile non solo è inutile, ma è anche sbagliato.
+Sarebbe anche preferibile commentare il compito e funzionamento di funzioni 
+dove non banale. 
+
+5. VARIABILI
+Come già spiegato, le variabili in GDScript godono di tipizzazione
+dinamica. Per motivi di leggibilità e efficenza però è preferibile
+dichiarare il tipo della variabile alla sua dichiarazione a meno che
+essa non abbia strettamente bisogno della tipizzazione dinamica. Questo 
+perché rende più facile interpretare il codice e, sulle migliaia di 
+variabili che saranno presenti, garantisce un leggero miglioramento 
+delle performance.
+Le variabili inoltre dovrebbero seguire una nominazione che ne spieghi
+(in breve) il compito e segua lo standard snake_case.
+Per migliorare la fase di testing e rendere il fine_tuning più facile
+anche a chi non tocca il codice poi è da incoraggiare l'uso del prefisso
+"@export" prima della dichiarazione della variabile, in modo da renderla
+modificabile da editor. Ciò però andrebbe fatto solo per variabili 
+sensibili e necessarie alla calibrazione del feeling del gameplay, perchè
+un uso estensivo dell' "@export" potrebbe appesantire l'editor.
+
+6. NODI E RISORSE
+Nel corso dello sviluppo, si incontrerà la necessità di creare
+componenti anche molto diverse. Alcune di queste necessiteranno di 
+interagire direttamente con l'ambiente, mentre altre saranno più
+contenitori di metodi o dati. 
+Per questo motivo, i primi verranno creati come nodi (con metodi _ready(), 
+_process() e segnali) mentre gli altri come risorse. In generale, ciò 
+che contiene comportamenti che si riflettono sulla scena di gioco va 
+reso un nodo, mentre ciò che contiene dati condivisi, statistiche o
+alcuni tipi di metodi, va reso risorsa. Le risorse tendenzialmente sono
+più leggere, ma non hanno un vero comportamento in scena. 
+I Nodi vengono salvati come .tscn, mentre le risorse come .tres.
+
+7. SEGNALI
+I segnali sono delle funzioni che vengono trasmesse attraverso l'albero
+di una scena e vengono usati per evitare accoppiamenti forti tra gli
+script. In alcuni casi, possono essere molto utili, ci sono casi in cui 
+usare un segnale è fortemente consigliato, poiché permette di far 
+comunicare due oggetti senza che questi abbiano un riferimento l'uno
+all'altro (con segnali globali).
+
+8. AUTOLOAD
+Sono degli script attaccati a nodi che vengono automaticamente
+istanziati nella scena dal motore di gioco, ai cui metodi hanno accesso
+tutti gli altri nodi nella scena. Sono molto utili per creare metodi,
+dizionari, costanti, variabili e segnali accessibili a tutta la scena, ma
+occorre prestare attenzione al fatto che rimangono sempre nella scena. 
+Bisogna quindi evitare di creare effetti a catena in cui molti autoload
+si richiamano a vicenda, affollando la scena di componenti, e di rendere
+autoload script che necessitano effettivamente di tutte queste proprietà. 
+Altrimenti si aggiungerebbe solo peso inutile al gioco, tenendo in scena 
+componenti completamente inutili.
+
+9. STRUTTURA FILESYSTEM
+A livello generale, dovrebbe seguire questa struttura:
+
+res://
+	scripts
+		components
+		entities
+		datas
+		systems
+	scenes
+		entities
+		levels
+		UIs
+	assets
+		sprites
+		sounds
+	resources
+		datas
+		configs
+	misc
+		guidelines.txt
+		other
+
+10. SCENE
+Sono ciò di cui il gioco si compone. Tutto ciò che avviene a runtime è
+una scena. Le scene però, salvate come .tres (dei file di testo contenenti
+tutti i dati di una scena e i riferimenti a script e scene al suo interno)
+sono anche molto utili per poter istanziare molte volte componenti
+riutilizzabili. Ogni entità importante dovrebbe essere salvata come scena.
+Come:
+	
+	Player.tres
+	Platform.tres
+	SpikeTrap.tres
+
+In questo modo possono essere inserite da editor in qualsiasi altra scena.
+Le scene devono essere composte da nodi chiari e con chiare 
+responsabilità.

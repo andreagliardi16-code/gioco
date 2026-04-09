@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cywf5llr0wjom"]
+
+[ext_resource type="Script" uid="uid://bvr8fj3rv7368" path="res://script/queue_component.gd" id="1_0w50i"]
+
+[node name="QueueComponent" type="Node" unique_id=1971145583]
+script = ExtResource("1_0w50i")
