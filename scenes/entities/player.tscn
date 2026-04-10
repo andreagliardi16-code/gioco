@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://bucj32nxuwlvw"]
 
 [ext_resource type="Script" uid="uid://bbqrmjhhh3vf1" path="res://script/player_script.gd" id="1_ct4mp"]
-[ext_resource type="Resource" uid="uid://cmompcntnt3ch" path="res://stats/PlayerStats.tres" id="2_d4qa6"]
+[ext_resource type="Resource" uid="uid://cmompcntnt3ch" path="res://data/PlayerStats.tres" id="2_d4qa6"]
 [ext_resource type="PackedScene" uid="uid://jds4dqoea26a" path="res://scenes/components/base_area.tscn" id="2_fvtld"]
+[ext_resource type="Resource" uid="uid://c48pij7paxevy" path="res://data/PowerUpData.tres" id="3_c5rqy"]
 [ext_resource type="PackedScene" uid="uid://bqi4ny286gmut" path="res://scenes/components/gravity_component.tscn" id="4_s4jxa"]
 [ext_resource type="PackedScene" uid="uid://cpb7xf4mmxlvg" path="res://scenes/components/movement_component.tscn" id="5_oh5ij"]
 [ext_resource type="PackedScene" uid="uid://c52y6s5dguquu" path="res://scenes/components/input_component.tscn" id="5_s4jxa"]
@@ -19,6 +20,7 @@ size = Vector2(50, 8.5)
 slide_on_ceiling = false
 script = ExtResource("1_ct4mp")
 stats = ExtResource("2_d4qa6")
+powers = ExtResource("3_c5rqy")
 metadata/_edit_lock_ = true
 
 [node name="hitbox" type="CollisionShape2D" parent="." unique_id=485364704]

@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="PowerUpData" format=3 uid="uid://c48pij7paxevy"]
+
+[ext_resource type="Script" uid="uid://br70t1keus2n1" path="res://script/powerup_data.gd" id="1_re3mx"]
+
+[resource]
+script = ExtResource("1_re3mx")
+power_ups = {
+"arpoon": {
+"active": false,
+"cost": 15.0
+},
+"dash": {
+"active": true,
+"cost": 3.0
+},
+"freeze": {
+"active": false,
+"cost": 20.0
+},
+"inv_gravity": {
+"active": false,
+"cost": 45.0
+},
+"jump": {
+"active": true,
+"cost": 0.0
+},
+"shrink_swell": {
+"active": false,
+"cost": 10.0
+},
+"wall_jump": {
+"active": false,
+"cost": 0.5
+}
+}
+metadata/_custom_type_script = "uid://br70t1keus2n1"
