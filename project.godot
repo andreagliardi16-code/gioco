@@ -32,10 +32,10 @@ version_control/autoload_on_startup=true
 
 folder_colors={
 "res://assets/": "pink",
+"res://data/": "green",
 "res://resources/": "red",
 "res://scenes/": "orange",
-"res://script/": "yellow",
-"res://stats/": "green"
+"res://script/": "yellow"
 }
 
 [input]

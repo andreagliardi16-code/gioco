@@ -26,8 +26,12 @@ func setup(mov_node: MovementComponent, owner_node: Node) -> void:
 func check_inputs() -> void:
 	#if not parent.can_move(): return
 	if Input.is_action_just_pressed("dash"):
+		if not parent.input_active("dash"):
+			return
 		movement.call_dash()
 	if Input.is_action_just_pressed("jump"):
+		if not parent.input_active("jump"):
+			return
 		movement.call_jump()
 		emit_signal("jump_input_changed", true)
 	if Input.is_action_just_released("jump"):

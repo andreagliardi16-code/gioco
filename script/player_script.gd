@@ -9,6 +9,7 @@ var curr_player_state: PlayerStates = PlayerStates.IDLE
 enum PlayerActions {JUMP, DASH} #tutte le azioni che si possono bufferare
 
 @export var stats: PlayerStats
+@export var powers: PowerUpData
 @onready var hitbox = $hitbox
 @onready var base: BaseArea = $BaseArea
 @onready var gravity: GravityComponent = $GravityComponent
@@ -101,3 +102,10 @@ func can_dash() -> bool:  #IMPLEMENTARE (controllo su stati)
 
 func add_to_queue(action: PlayerActions) -> void:
 	queue.add_to_queue(action)
+
+func input_active(id: String) -> bool:
+	if not powers.power_ups[id]:
+		print("Errore nell'assegnazione della stringa di input: ", id)
+		return false
+	
+	return powers.power_ups[id]["active"]
