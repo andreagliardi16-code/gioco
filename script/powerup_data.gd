@@ -8,23 +8,30 @@ extends Resource
 @export var power_ups: Dictionary = {
 	"jump" : {
 		"active" : false,
-		"cost" : 0.0 },
+		"cost" : 0.0,
+		"cooldown" : 0.0 },
 	"dash" : {
 		"active" : false,
-		"cost" : 3.0 },
+		"cost" : 3.0,
+		"cooldown" : 0.4 },
 	"wall_jump" : {
 		"active" : false,
-		"cost" : 0.5 },
+		"cost" : 0.5,
+		"cooldown" : 0.25 },
 	"freeze" : {
 		"active" : false,
-		"cost" : 20.0 },
+		"cost" : 20.0,
+		"cooldown" : 2.0 },
 	"inv_gravity" : {
 		"active" : false,
-		"cost" : 45.0 },
+		"cost" : 45.0,
+		"cooldown": 3.5 },
 	"shrink_swell" : {
 		"active" : false,
-		"cost" : 10.0 },
+		"cost" : 10.0,
+		"cooldown" : 2.0 },
 	"arpoon" : {
 		"active" : false,
-		"cost" : 15.0 }
+		"cost" : 15.0,
+		"cooldown" : 2.5 }
 }

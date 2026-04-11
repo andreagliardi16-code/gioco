@@ -17,6 +17,7 @@ enum PlayerActions {JUMP, DASH} #tutte le azioni che si possono bufferare
 @onready var movement: MovementComponent = $MovementComponent
 @onready var queue: QueueComponent = $QueueComponent
 @onready var camera: CameraComponent = $CameraComponent
+@onready var stats_manager: StatsComponent = $StatsComponent
 
 var friction: float = 0.0
 
@@ -33,6 +34,7 @@ func link_components() -> void:
 	base.setup(self)
 	queue.setup(movement, self)
 	camera.setup(stats, self)
+	stats_manager.setup(stats, powers, self)
 
 func _physics_process(delta: float) -> void:
 	check_physics_state()
@@ -94,7 +96,7 @@ func can_jump() -> bool:  #IMPLEMENTARE BENE (controllo su stati (non su variabi
 	return false
 
 func can_dash() -> bool:  #IMPLEMENTARE (controllo su stati)
-	if movement.in_dash_cooldown or movement.had_dash_jumped:
+	if movement.in_dash_cooldown or movement.had_dash_jumped or not check_power("dash"):
 		return false
 	
 	return true
@@ -103,9 +105,20 @@ func can_dash() -> bool:  #IMPLEMENTARE (controllo su stati)
 func add_to_queue(action: PlayerActions) -> void:
 	queue.add_to_queue(action)
 
+#region power-up
 func input_active(id: String) -> bool:
 	if not powers.power_ups[id]:
 		print("Errore nell'assegnazione della stringa di input: ", id)
 		return false
 	
 	return powers.power_ups[id]["active"]
+
+func check_power(id: String) -> bool:  #con poca energia l'azione si può svolgere fino a che non ci sia almeno metà del suo costo per rendere meno punitivo il sistema 
+	var n: float = stats_manager.get_energy()
+	
+	if n > powers.power_ups[id]["cost"]/2:
+		print("true")
+		return true
+	
+	return false
+#endregion

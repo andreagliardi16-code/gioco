@@ -23,6 +23,8 @@ const MAX_JUMP_TIME: float = 0.6
 const MAX_SPEED_CHANGE: int = 1000
 const DEF_DASH_DIRECTION: int = 1 #destra
 
+signal energy_spended(action: String) #la stringa deve corrispondere alla stringa con cui l'azione è salvata nel dizionario PowerUpData
+
 var parent: Player
 var gravity: GravityComponent
 var parent_stats: Stats
@@ -197,6 +199,7 @@ func jump() -> void:
 	#data dallo scalare frame-by-frame la gravità nel move_y
 	#il controllo sul poter saltare va fatto nella coda
 	#parent.change_player_state(Player.PlayerStates.JUMP)
+	emit_signal("energy_spended", "jump")
 	min_jump_timer = MIN_JUMP_TIME
 	max_jump_timer = MAX_JUMP_TIME
 	is_jumping = true
@@ -233,6 +236,7 @@ func call_dash() -> void:
 	parent.add_to_queue(Player.PlayerActions.DASH)
 
 func dash() -> void:
+	emit_signal("energy_spended", "dash")
 	dash_direction = _get_dash_direction()
 	dash_timer = parent_stats.dash_time
 	dash_cooldown_timer = parent_stats.dash_cooldown
