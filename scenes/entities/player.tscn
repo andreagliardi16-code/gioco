@@ -3,12 +3,56 @@
 [ext_resource type="Script" uid="uid://bbqrmjhhh3vf1" path="res://script/player_script.gd" id="1_ct4mp"]
 [ext_resource type="Resource" uid="uid://cmompcntnt3ch" path="res://data/PlayerStats.tres" id="2_d4qa6"]
 [ext_resource type="PackedScene" uid="uid://jds4dqoea26a" path="res://scenes/components/base_area.tscn" id="2_fvtld"]
-[ext_resource type="Resource" uid="uid://c48pij7paxevy" path="res://data/PowerUpData.tres" id="3_c5rqy"]
+[ext_resource type="Script" uid="uid://br70t1keus2n1" path="res://script/powerup_data.gd" id="3_b6tgf"]
 [ext_resource type="PackedScene" uid="uid://bqi4ny286gmut" path="res://scenes/components/gravity_component.tscn" id="4_s4jxa"]
 [ext_resource type="PackedScene" uid="uid://cpb7xf4mmxlvg" path="res://scenes/components/movement_component.tscn" id="5_oh5ij"]
 [ext_resource type="PackedScene" uid="uid://c52y6s5dguquu" path="res://scenes/components/input_component.tscn" id="5_s4jxa"]
 [ext_resource type="PackedScene" uid="uid://cywf5llr0wjom" path="res://scenes/components/queue_component.tscn" id="7_ss7kx"]
 [ext_resource type="PackedScene" uid="uid://caaq4qr5swtvy" path="res://scenes/components/camera_component.tscn" id="8_dnykm"]
+[ext_resource type="PackedScene" uid="uid://20ie8almuwlg" path="res://scenes/components/stats_component.tscn" id="11_5ki56"]
+[ext_resource type="PackedScene" uid="uid://n4n0uhtcgkqh" path="res://scenes/entities/hud.tscn" id="11_73kkf"]
+[ext_resource type="Curve" uid="uid://yjexd7u64g3f" path="res://resources/curves/energy_regen_curve.tres" id="11_n5sgd"]
+
+[sub_resource type="Resource" id="Resource_73kkf"]
+script = ExtResource("3_b6tgf")
+power_ups = {
+"arpoon": {
+"active": false,
+"cooldown": 2.5,
+"cost": 15.0
+},
+"dash": {
+"active": true,
+"cooldown": 0.5,
+"cost": 3.0
+},
+"freeze": {
+"active": false,
+"cooldown": 2.0,
+"cost": 20.0
+},
+"inv_gravity": {
+"active": false,
+"cooldown": 3.5,
+"cost": 45.0
+},
+"jump": {
+"active": true,
+"cooldown": 0.2,
+"cost": 0.0
+},
+"shrink_swell": {
+"active": false,
+"cooldown": 2.0,
+"cost": 10.0
+},
+"wall_jump": {
+"active": false,
+"cooldown": 0.25,
+"cost": 0.5
+}
+}
+metadata/_custom_type_script = "uid://br70t1keus2n1"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ss7kx"]
 size = Vector2(50, 80)
@@ -20,7 +64,7 @@ size = Vector2(50, 8.5)
 slide_on_ceiling = false
 script = ExtResource("1_ct4mp")
 stats = ExtResource("2_d4qa6")
-powers = ExtResource("3_c5rqy")
+powers = SubResource("Resource_73kkf")
 metadata/_edit_lock_ = true
 
 [node name="hitbox" type="CollisionShape2D" parent="." unique_id=485364704]
@@ -46,6 +90,14 @@ metadata/_edit_lock_ = true
 
 [node name="CameraComponent" parent="." unique_id=1473717657 instance=ExtResource("8_dnykm")]
 
+[node name="HUD" parent="." unique_id=585250603 instance=ExtResource("11_73kkf")]
+
+[node name="StatsComponent" parent="." unique_id=1290539021 instance=ExtResource("11_5ki56")]
+regen_curve = ExtResource("11_n5sgd")
+
+[connection signal="components_linked" from="." to="HUD" method="_on_character_body_2d_components_linked"]
 [connection signal="body_entered" from="BaseArea" to="BaseArea" method="_on_body_entered"]
 [connection signal="body_exited" from="BaseArea" to="BaseArea" method="_on_body_exited"]
 [connection signal="jump_input_changed" from="InputComponent" to="MovementComponent" method="_on_input_component_jump_input_changed"]
+[connection signal="energy_spended" from="MovementComponent" to="StatsComponent" method="_on_movement_component_energy_spended"]
+[connection signal="energy_changed" from="StatsComponent" to="HUD" method="_on_stats_component_energy_changed"]

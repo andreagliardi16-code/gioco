@@ -6,12 +6,13 @@
 script = ExtResource("1_gh82h")
 fall_gravity = 2400.0
 cut_gravity = 3400.0
-coyote_time = 0.08
+coyote_time = 0.09
 max_speed = 560
 acceleration = 3111.0
 deceleration = 5600.0
 max_distance = 100
 dash_time = 0.15
-dash_cut = -1500.0
+dash_cut = -1400.0
 dash_cooldown = 0.8
+regen_rate = 30.0
 metadata/_custom_type_script = "uid://dyh0jbom1lx5h"

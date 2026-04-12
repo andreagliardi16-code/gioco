@@ -41,3 +41,9 @@ extends Stats
 @export var dash_cut: float = -1200 #dovrebbe essere un numero negativoa
 @export var dash_cooldown: float = 0.45
 #endregion
+
+#region energy
+@export_group("Energy")
+@export var max_energy: int = 100
+@export var regen_rate: float = 0.0
+#endregion
