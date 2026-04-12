@@ -2,6 +2,8 @@ class_name Player
 
 extends CharacterBody2D
 
+signal components_linked
+
 enum PhysicsStates {DEFAULT, GROUND, AIR}
 var curr_physic_state: PhysicsStates = PhysicsStates.DEFAULT
 enum PlayerStates {IDLE, SLIDE, JUMP, FALL, DASH}
@@ -10,6 +12,7 @@ enum PlayerActions {JUMP, DASH} #tutte le azioni che si possono bufferare
 
 @export var stats: PlayerStats
 @export var powers: PowerUpData
+
 @onready var hitbox = $hitbox
 @onready var base: BaseArea = $BaseArea
 @onready var gravity: GravityComponent = $GravityComponent
@@ -18,6 +21,7 @@ enum PlayerActions {JUMP, DASH} #tutte le azioni che si possono bufferare
 @onready var queue: QueueComponent = $QueueComponent
 @onready var camera: CameraComponent = $CameraComponent
 @onready var stats_manager: StatsComponent = $StatsComponent
+@onready var hud: Hud = $HUD
 
 var friction: float = 0.0
 
@@ -35,6 +39,8 @@ func link_components() -> void:
 	queue.setup(movement, self)
 	camera.setup(stats, self)
 	stats_manager.setup(stats, powers, self)
+	hud.setup(stats, stats_manager)
+	emit_signal("components_linked")
 
 func _physics_process(delta: float) -> void:
 	check_physics_state()

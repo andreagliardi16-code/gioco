@@ -7,7 +7,7 @@ extends Node
 
 const MAX_COOLDOWN: float = 5.0
 
-signal energy_changed(amt: float)
+signal energy_changed(new_value: float)
 
 var parent: Player
 var parent_stats: Stats
