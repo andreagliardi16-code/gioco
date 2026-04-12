@@ -14,5 +14,5 @@ max_distance = 100
 dash_time = 0.15
 dash_cut = -1400.0
 dash_cooldown = 0.8
-regen_rate = 2.0
+regen_rate = 30.0
 metadata/_custom_type_script = "uid://dyh0jbom1lx5h"

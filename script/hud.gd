@@ -18,6 +18,7 @@ func setup(data: PlayerStats, stats: StatsComponent) -> void:
 func create_bar() -> void:
 	if not energy_bar: return
 	energy_bar.max_value = parent_data.max_energy
+	energy_bar.value = energy_bar.max_value
 #endregion
 
 #region segnali

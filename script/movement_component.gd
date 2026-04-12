@@ -113,7 +113,6 @@ func _move_x(delta: float) -> void:  ##DA AGGIUSTARE
 		velocity.x = _walk(delta)
 	
 	velocity.x += velocity_x_mod
-	print(velocity.x)
 	velocity_x_mod = 0.0
 
 #applica gravità quando necessario, forze di salto e altre
@@ -248,7 +247,6 @@ func dash() -> void:
 
 func _get_dash_direction() -> int:
 	if direction != 0:
-		print(direction)
 		return direction
 	if last_direction != 0:
 		return last_direction
