@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bucj32nxuwlvw" path="res://scenes/entities/player.tscn" id="3_48ne7"]
 [ext_resource type="Script" uid="uid://3vu781xj0xkc" path="res://script/material.gd" id="4_48ne7"]
 [ext_resource type="Script" uid="uid://dyh0jbom1lx5h" path="res://data/player_stats.gd" id="6_6xh4u"]
+[ext_resource type="PackedScene" uid="uid://b58nb63ldbbir" path="res://scenes/components/respawn_area.tscn" id="7_cyt5c"]
 
 [sub_resource type="Resource" id="Resource_6xh4u"]
 script = ExtResource("4_48ne7")
@@ -23,6 +24,9 @@ metadata/_custom_type_script = "uid://dyh0jbom1lx5h"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_48ne7"]
 size = Vector2(3127, 30)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cyt5c"]
+size = Vector2(378, 258)
 
 [node name="Level_Test" type="Node2D" unique_id=1339058086]
 metadata/_edit_lock_ = true
@@ -147,4 +151,12 @@ metadata/_custom_type_script = "uid://cjnqdmve4stwy"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticPlatform10" unique_id=1994902009]
 shape = ExtResource("2_v45ci")
+metadata/_edit_lock_ = true
+
+[node name="RespawnArea" parent="." unique_id=881202515 instance=ExtResource("7_cyt5c")]
+position = Vector2(-290, 781)
+id = &"test_level"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RespawnArea" unique_id=247233240]
+shape = SubResource("RectangleShape2D_cyt5c")
 metadata/_edit_lock_ = true

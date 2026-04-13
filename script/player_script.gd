@@ -22,6 +22,7 @@ enum PlayerActions {JUMP, DASH} #tutte le azioni che si possono bufferare
 @onready var camera: CameraComponent = $CameraComponent
 @onready var stats_manager: StatsComponent = $StatsComponent
 @onready var hud: Hud = $HUD
+@onready var respawn: RespawnComponent = $RespawnComponent
 
 var friction: float = 0.0
 
@@ -30,6 +31,7 @@ var can_walk: bool = true
 #region _ready, _process e setup
 func _ready() -> void:
 	link_components()
+	#da spostare in altro script
 
 func link_components() -> void:
 	gravity.setup(stats, self)
@@ -128,3 +130,8 @@ func check_power(id: String) -> bool:  #con poca energia l'azione si può svolge
 	
 	return false
 #endregion
+
+func spawn() -> void:   #da cambiare
+	RespawnManager.build_spawn_points
+	position = respawn.respawn()
+	print(respawn.respawn())
