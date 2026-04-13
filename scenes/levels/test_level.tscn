@@ -5,10 +5,21 @@
 [ext_resource type="Shape2D" uid="uid://c6alr4e42frkj" path="res://resources/shapes/default_rectangle_platform.tres" id="2_v45ci"]
 [ext_resource type="PackedScene" uid="uid://bucj32nxuwlvw" path="res://scenes/entities/player.tscn" id="3_48ne7"]
 [ext_resource type="Script" uid="uid://3vu781xj0xkc" path="res://script/material.gd" id="4_48ne7"]
+[ext_resource type="Script" uid="uid://dyh0jbom1lx5h" path="res://data/player_stats.gd" id="6_6xh4u"]
 
 [sub_resource type="Resource" id="Resource_6xh4u"]
 script = ExtResource("4_48ne7")
 metadata/_custom_type_script = "uid://3vu781xj0xkc"
+
+[sub_resource type="Resource" id="Resource_cyt5c"]
+script = ExtResource("6_6xh4u")
+max_speed = 560
+acceleration = 2400.0
+deceleration = 5600.0
+dash_time = 0.15
+dash_cut = -1500.0
+regen_rate = 30.0
+metadata/_custom_type_script = "uid://dyh0jbom1lx5h"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_48ne7"]
 size = Vector2(3127, 30)
@@ -113,6 +124,7 @@ shape = ExtResource("2_v45ci")
 metadata/_edit_lock_ = true
 
 [node name="CharacterBody2D" parent="." unique_id=1177918152 instance=ExtResource("3_48ne7")]
+stats = SubResource("Resource_cyt5c")
 
 [node name="StaticPlatform9" type="StaticBody2D" parent="." unique_id=1648012569]
 position = Vector2(1074, 925)
