@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="Ascatasuna"
-run/main_scene="uid://c5vene0lkc71j"
+run/main_scene="uid://bt44sy2mbko4w"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 
 [autoload]
 
 TimeManager="*uid://6qduanmr2oyq"
 RespawnManager="*uid://skajegoblhqk"
+LevelManager="*uid://cdk6rcerb62bo"
 
 [display]
 

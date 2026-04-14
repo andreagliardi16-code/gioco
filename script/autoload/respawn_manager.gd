@@ -2,10 +2,9 @@ extends Node
 
 var spawn_point_list: Dictionary = {}
 
-func build_spawn_points_map() -> void:
+func build_spawn_points_map(root: Node2D) -> void:
 	spawn_point_list.clear()
 	
-	var root = get_tree().get_current_scene()
 	var areas = root.find_children("*", "RespawnArea", true, false)
 	print (areas)
 	for i in range(areas.size()):
