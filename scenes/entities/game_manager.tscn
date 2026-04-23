@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://cphdak33301up"]
+
+[ext_resource type="Script" uid="uid://m7qrhqjya11j" path="res://script/game_manager.gd" id="1_ghpro"]
+[ext_resource type="PackedScene" uid="uid://bt44sy2mbko4w" path="res://scenes/ui/main_menu.tscn" id="2_82py0"]
+[ext_resource type="Resource" uid="uid://dt5xnxym8k7rh" path="res://resources/other/level_map.tres" id="2_ghpro"]
+[ext_resource type="PackedScene" uid="uid://bucj32nxuwlvw" path="res://scenes/entities/player.tscn" id="2_r5xev"]
+[ext_resource type="Script" uid="uid://dw6f0urhvucan" path="res://script/level_container.gd" id="3_nn85l"]
+[ext_resource type="Script" uid="uid://lwc76was6mlp" path="res://script/ui.gd" id="3_r5xev"]
+
+[node name="GameManager" type="Node" unique_id=15603347]
+script = ExtResource("1_ghpro")
+main_menu = ExtResource("2_82py0")
+level_map = ExtResource("2_ghpro")
+
+[node name="LevelContainer" type="Node" parent="." unique_id=1370507140]
+process_mode = 3
+script = ExtResource("3_nn85l")
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=201104455]
+script = ExtResource("3_r5xev")
+
+[node name="CharacterBody2D" parent="." unique_id=1177918152 instance=ExtResource("2_r5xev")]
+
+[connection signal="had_died" from="CharacterBody2D" to="." method="_on_character_body_2d_had_died"]

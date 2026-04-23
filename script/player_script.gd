@@ -3,10 +3,11 @@ class_name Player
 extends CharacterBody2D
 
 signal components_linked
+signal had_died
 
 enum PhysicsStates {DEFAULT, GROUND, AIR}
 var curr_physic_state: PhysicsStates = PhysicsStates.DEFAULT
-enum PlayerStates {IDLE, SLIDE, JUMP, FALL, DASH}
+enum PlayerStates {IDLE, SLIDE, JUMP, FALL, DASH, DEAD}
 var curr_player_state: PlayerStates = PlayerStates.IDLE
 enum PlayerActions {JUMP, DASH} #tutte le azioni che si possono bufferare
 
@@ -22,6 +23,7 @@ enum PlayerActions {JUMP, DASH} #tutte le azioni che si possono bufferare
 @onready var camera: CameraComponent = $CameraComponent
 @onready var stats_manager: StatsComponent = $StatsComponent
 @onready var hud: Hud = $HUD
+@onready var respawn: RespawnComponent = $RespawnComponent
 
 var friction: float = 0.0
 
@@ -30,6 +32,7 @@ var can_walk: bool = true
 #region _ready, _process e setup
 func _ready() -> void:
 	link_components()
+	#da spostare in altro script
 
 func link_components() -> void:
 	gravity.setup(stats, self)
@@ -41,6 +44,13 @@ func link_components() -> void:
 	stats_manager.setup(stats, powers, self)
 	hud.setup(stats, stats_manager)
 	emit_signal("components_linked")
+
+func activate(switch:bool) -> void:
+	visible = switch
+	if switch:
+		process_mode = Node.PROCESS_MODE_INHERIT
+		return
+	process_mode = Node.PROCESS_MODE_DISABLED
 
 func _physics_process(delta: float) -> void:
 	check_physics_state()
@@ -62,6 +72,9 @@ func check_physics_state() -> void:
 		curr_physic_state = PhysicsStates.AIR
 
 func check_player_state() -> void:
+	if respawn.death_timer and respawn.death_timer.time_left > 0:
+		curr_player_state = PlayerStates.DEAD
+		return
 	if movement.dash_timer > 0.0:
 		curr_player_state = PlayerStates.DASH
 		return
@@ -127,4 +140,14 @@ func check_power(id: String) -> bool:  #con poca energia l'azione si può svolge
 		return true
 	
 	return false
+#endregion
+
+#region spawn e respawn
+func die() -> void:
+	emit_signal("had_died")
+
+
+func spawn() -> void:   #da cambiare
+	position = respawn.respawn()
+	print("spawno in posizione: ", position)
 #endregion

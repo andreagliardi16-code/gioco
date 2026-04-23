@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://20ie8almuwlg" path="res://scenes/components/stats_component.tscn" id="11_5ki56"]
 [ext_resource type="PackedScene" uid="uid://n4n0uhtcgkqh" path="res://scenes/entities/hud.tscn" id="11_73kkf"]
 [ext_resource type="Curve" uid="uid://yjexd7u64g3f" path="res://resources/curves/energy_regen_curve.tres" id="11_n5sgd"]
+[ext_resource type="PackedScene" uid="uid://bclh6crnvr5iu" path="res://scenes/components/respawn_component.tscn" id="13_5ki56"]
 
 [sub_resource type="Resource" id="Resource_73kkf"]
 script = ExtResource("3_b6tgf")
@@ -95,9 +96,13 @@ metadata/_edit_lock_ = true
 [node name="StatsComponent" parent="." unique_id=1290539021 instance=ExtResource("11_5ki56")]
 regen_curve = ExtResource("11_n5sgd")
 
+[node name="RespawnComponent" parent="." unique_id=1155274813 instance=ExtResource("13_5ki56")]
+respawn_area = &"test_level"
+
 [connection signal="components_linked" from="." to="HUD" method="_on_character_body_2d_components_linked"]
 [connection signal="body_entered" from="BaseArea" to="BaseArea" method="_on_body_entered"]
 [connection signal="body_exited" from="BaseArea" to="BaseArea" method="_on_body_exited"]
 [connection signal="jump_input_changed" from="InputComponent" to="MovementComponent" method="_on_input_component_jump_input_changed"]
 [connection signal="energy_spended" from="MovementComponent" to="StatsComponent" method="_on_movement_component_energy_spended"]
 [connection signal="energy_changed" from="StatsComponent" to="HUD" method="_on_stats_component_energy_changed"]
+[connection signal="death_timer_finished" from="RespawnComponent" to="." method="_on_respawn_component_death_timer_finished"]

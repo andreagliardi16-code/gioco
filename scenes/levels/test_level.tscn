@@ -1,30 +1,27 @@
 [gd_scene format=3 uid="uid://c5vene0lkc71j"]
 
+[ext_resource type="Script" uid="uid://dvuni2tq0w3d6" path="res://script/test_level.gd" id="1_7x1jh"]
 [ext_resource type="Script" uid="uid://cjnqdmve4stwy" path="res://script/platform.gd" id="1_fr1um"]
 [ext_resource type="Resource" uid="uid://dhbylf6lt2h47" path="res://resources/materials/default_material.tres" id="2_48ne7"]
 [ext_resource type="Shape2D" uid="uid://c6alr4e42frkj" path="res://resources/shapes/default_rectangle_platform.tres" id="2_v45ci"]
-[ext_resource type="PackedScene" uid="uid://bucj32nxuwlvw" path="res://scenes/entities/player.tscn" id="3_48ne7"]
 [ext_resource type="Script" uid="uid://3vu781xj0xkc" path="res://script/material.gd" id="4_48ne7"]
-[ext_resource type="Script" uid="uid://dyh0jbom1lx5h" path="res://data/player_stats.gd" id="6_6xh4u"]
+[ext_resource type="PackedScene" uid="uid://cubx64g22g4ec" path="res://scenes/entities/kill_zone.tscn" id="7_7x1jh"]
+[ext_resource type="PackedScene" uid="uid://b58nb63ldbbir" path="res://scenes/components/respawn_area.tscn" id="7_cyt5c"]
 
 [sub_resource type="Resource" id="Resource_6xh4u"]
 script = ExtResource("4_48ne7")
 metadata/_custom_type_script = "uid://3vu781xj0xkc"
 
-[sub_resource type="Resource" id="Resource_cyt5c"]
-script = ExtResource("6_6xh4u")
-max_speed = 560
-acceleration = 2400.0
-deceleration = 5600.0
-dash_time = 0.15
-dash_cut = -1500.0
-regen_rate = 30.0
-metadata/_custom_type_script = "uid://dyh0jbom1lx5h"
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_48ne7"]
 size = Vector2(3127, 30)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cyt5c"]
+size = Vector2(378, 258)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_hfwtw"]
+
 [node name="Level_Test" type="Node2D" unique_id=1339058086]
+script = ExtResource("1_7x1jh")
 metadata/_edit_lock_ = true
 
 [node name="StaticPlatform" type="StaticBody2D" parent="." unique_id=981123477]
@@ -123,9 +120,6 @@ metadata/_edit_lock_ = true
 shape = ExtResource("2_v45ci")
 metadata/_edit_lock_ = true
 
-[node name="CharacterBody2D" parent="." unique_id=1177918152 instance=ExtResource("3_48ne7")]
-stats = SubResource("Resource_cyt5c")
-
 [node name="StaticPlatform9" type="StaticBody2D" parent="." unique_id=1648012569]
 position = Vector2(1074, 925)
 collision_layer = 3
@@ -144,7 +138,24 @@ collision_layer = 3
 script = ExtResource("1_fr1um")
 platform_material = ExtResource("2_48ne7")
 metadata/_custom_type_script = "uid://cjnqdmve4stwy"
+metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticPlatform10" unique_id=1994902009]
 shape = ExtResource("2_v45ci")
 metadata/_edit_lock_ = true
+
+[node name="RespawnArea" parent="." unique_id=881202515 instance=ExtResource("7_cyt5c")]
+position = Vector2(-290, 781)
+id = &"test_level"
+auto_update = false
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RespawnArea" unique_id=247233240]
+shape = SubResource("RectangleShape2D_cyt5c")
+metadata/_edit_lock_ = true
+
+[node name="KillZone" parent="." unique_id=1976485095 instance=ExtResource("7_7x1jh")]
+position = Vector2(298, 1333)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KillZone" unique_id=1548124919]
+shape = SubResource("WorldBoundaryShape2D_hfwtw")

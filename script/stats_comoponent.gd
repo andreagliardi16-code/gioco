@@ -32,7 +32,6 @@ func setup(stats: Stats, pwrups: PowerUpData, player: Player)-> void:
 func _process(delta: float) -> void:
 	_handle_timers(delta)
 	_regen_energy(parent_stats.regen_rate, delta)
-	print("energia: ", energy)
 #endregion
 
 #region sottrazione energia
