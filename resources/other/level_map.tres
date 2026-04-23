@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="LevelMap" format=3 uid="uid://dt5xnxym8k7rh"]
+
+[ext_resource type="Script" uid="uid://cdk6rcerb62bo" path="res://script/level_map.gd" id="1_bcpkp"]
+
+[resource]
+script = ExtResource("1_bcpkp")
+metadata/_custom_type_script = "uid://cdk6rcerb62bo"

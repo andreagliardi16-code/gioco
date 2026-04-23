@@ -14,7 +14,7 @@ extends Area2D
 			update_spawn_point()
 
 @onready var anchor: Marker2D = $Marker2D
-@onready var collision_shape: CollisionShape2D = null
+@onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
 
 func _ready() -> void:
@@ -23,7 +23,7 @@ func _ready() -> void:
 		if not collision_shape:
 			collision_shape = find_child("CollisionShape2D", true, false)
 			
-		update_spawn_point()
+	update_spawn_point()
 
 func _process(_delta: float) -> void:
 	update_configuration_warnings()
@@ -63,4 +63,4 @@ func _get_configuration_warnings() -> PackedStringArray:
 func get_id() -> StringName: return id
 
 func get_anchor_position() -> Vector2: 
-	return anchor.position
+	return anchor.global_position

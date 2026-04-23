@@ -1,4 +1,4 @@
-extends Node2D
+extends Level
 
 func _ready() -> void:
-	RespawnManager.build_spawn_points_map(self)
+	self.add_to_group(&"levels")

@@ -6,7 +6,7 @@ signal components_linked
 
 enum PhysicsStates {DEFAULT, GROUND, AIR}
 var curr_physic_state: PhysicsStates = PhysicsStates.DEFAULT
-enum PlayerStates {IDLE, SLIDE, JUMP, FALL, DASH}
+enum PlayerStates {IDLE, SLIDE, JUMP, FALL, DASH, DEAD}
 var curr_player_state: PlayerStates = PlayerStates.IDLE
 enum PlayerActions {JUMP, DASH} #tutte le azioni che si possono bufferare
 
@@ -44,6 +44,13 @@ func link_components() -> void:
 	hud.setup(stats, stats_manager)
 	emit_signal("components_linked")
 
+func activate(switch:bool) -> void:
+	visible = switch
+	if switch:
+		process_mode = Node.PROCESS_MODE_INHERIT
+		return
+	process_mode = Node.PROCESS_MODE_DISABLED
+
 func _physics_process(delta: float) -> void:
 	check_physics_state()
 	check_player_state()
@@ -64,6 +71,9 @@ func check_physics_state() -> void:
 		curr_physic_state = PhysicsStates.AIR
 
 func check_player_state() -> void:
+	if respawn.death_timer and respawn.death_timer.time_left > 0:
+		curr_player_state = PlayerStates.DEAD
+		return
 	if movement.dash_timer > 0.0:
 		curr_player_state = PlayerStates.DASH
 		return
@@ -131,7 +141,16 @@ func check_power(id: String) -> bool:  #con poca energia l'azione si può svolge
 	return false
 #endregion
 
+#region spawn e respawn
+func die() -> void:
+	respawn.handle_death()
+
+
 func spawn() -> void:   #da cambiare
-	RespawnManager.build_spawn_points
 	position = respawn.respawn()
-	print(respawn.respawn())
+	print("spawno in posizione: ", position)
+
+
+func _on_respawn_component_death_timer_finished() -> void:
+	spawn()
+#endregion

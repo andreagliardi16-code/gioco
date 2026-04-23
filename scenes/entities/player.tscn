@@ -105,3 +105,4 @@ respawn_area = &"test_level"
 [connection signal="jump_input_changed" from="InputComponent" to="MovementComponent" method="_on_input_component_jump_input_changed"]
 [connection signal="energy_spended" from="MovementComponent" to="StatsComponent" method="_on_movement_component_energy_spended"]
 [connection signal="energy_changed" from="StatsComponent" to="HUD" method="_on_stats_component_energy_changed"]
+[connection signal="death_timer_finished" from="RespawnComponent" to="." method="_on_respawn_component_death_timer_finished"]

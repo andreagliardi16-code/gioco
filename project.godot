@@ -11,14 +11,13 @@ config_version=5
 [application]
 
 config/name="Ascatasuna"
-run/main_scene="uid://bt44sy2mbko4w"
+run/main_scene="uid://cphdak33301up"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 
 [autoload]
 
 TimeManager="*uid://6qduanmr2oyq"
 RespawnManager="*uid://skajegoblhqk"
-LevelManager="*uid://cdk6rcerb62bo"
 
 [display]
 
@@ -39,6 +38,10 @@ folder_colors={
 "res://scenes/": "orange",
 "res://script/": "yellow"
 }
+
+[global_group]
+
+levels=""
 
 [input]
 
