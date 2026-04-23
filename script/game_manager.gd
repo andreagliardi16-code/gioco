@@ -12,6 +12,7 @@ var curr_game_state: GameState = GameState.TRANSITION
 @onready var ui: CanvasLayer = $UI
 
 var current_level: Level = null
+var death_timer: Timer = null
 
 func _ready() -> void:
 	start_game()
@@ -65,18 +66,41 @@ func change_activity() -> void:
 			level_container.activate(true)
 			player.activate(true)
 		GameState.PAUSE:
-			print("sgrodol")
 			ui.activate(true)
 			level_container.activate(false)
 			player.activate(false)
-		_:
-			ui.activate(false)
+		GameState.TRANSITION:
+			ui.activate(true)
 			level_container.activate(false)
 			player.activate(false)
 #endregion
+
 
 func start_game() -> void:
 	change_game_state(GameState.PAUSE)
 	var menu = main_menu.instantiate()
 	ui.add_child(menu)
 	menu.setup(self)
+
+
+func _on_character_body_2d_had_died() -> void:
+	handle_death()
+
+
+func handle_death() -> void:
+	player.spawn()
+	change_game_state(GameState.TRANSITION)
+	
+	death_timer = Timer.new()
+	death_timer.wait_time = 0.5
+	death_timer.one_shot = true
+	
+	death_timer.timeout.connect(_on_timer_timeout)
+	
+	add_child(death_timer)
+	death_timer.start()
+
+
+func _on_timer_timeout() -> void:
+	death_timer.queue_free()
+	change_game_state(GameState.GAME)

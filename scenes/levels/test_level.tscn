@@ -159,4 +159,3 @@ position = Vector2(298, 1333)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="KillZone" unique_id=1548124919]
 shape = SubResource("WorldBoundaryShape2D_hfwtw")
-metadata/_edit_lock_ = true

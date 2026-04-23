@@ -12,21 +12,6 @@ signal death_timer_finished
 var respawn_position = null
 var death_timer: Timer 
 
-func handle_death() -> void:
-	death_timer = Timer.new()
-	death_timer.wait_time = 0.5
-	death_timer.one_shot = true
-	
-	death_timer.timeout.connect(_on_timer_timeout)
-	
-	add_child(death_timer)
-	death_timer.start()
-
-
-func _on_timer_timeout() -> void:
-	emit_signal("death_timer_finished")
-	death_timer.queue_free()
-
 
 func respawn() -> Vector2:
 	if not (respawn_position == null):

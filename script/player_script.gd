@@ -3,6 +3,7 @@ class_name Player
 extends CharacterBody2D
 
 signal components_linked
+signal had_died
 
 enum PhysicsStates {DEFAULT, GROUND, AIR}
 var curr_physic_state: PhysicsStates = PhysicsStates.DEFAULT
@@ -143,14 +144,10 @@ func check_power(id: String) -> bool:  #con poca energia l'azione si può svolge
 
 #region spawn e respawn
 func die() -> void:
-	respawn.handle_death()
+	emit_signal("had_died")
 
 
 func spawn() -> void:   #da cambiare
 	position = respawn.respawn()
 	print("spawno in posizione: ", position)
-
-
-func _on_respawn_component_death_timer_finished() -> void:
-	spawn()
 #endregion
