@@ -18,6 +18,7 @@ config/features=PackedStringArray("4.6", "GL Compatibility")
 
 TimeManager="*uid://6qduanmr2oyq"
 RespawnManager="*uid://skajegoblhqk"
+Global="*uid://bstv5fmcirgio"
 
 [display]
 
