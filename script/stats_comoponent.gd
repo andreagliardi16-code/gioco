@@ -37,6 +37,9 @@ func _process(delta: float) -> void:
 #region sottrazione energia
 func _on_movement_component_energy_spended(action: String) -> void:
 	var n: float = powers.power_ups[action]["cost"]
+	if n == 0:
+		return
+	print("energia cambiata")
 	energy = clampf(energy-n, 0.0, float(parent_stats.max_energy))
 	emit_signal("energy_changed", energy)
 	
@@ -68,7 +71,7 @@ func _regen_energy(rate: float, delta: float) -> void:
 	energy = clamp(energy+rate * delta, 0.0, parent_stats.max_energy) 
 	emit_signal("energy_changed", energy)
 
-func _get_regen(rate: float, delta: float) -> float:
+func _get_regen(rate: float, _delta: float) -> float:
 	if not regen_is_accelerating:
 		return rate
 	

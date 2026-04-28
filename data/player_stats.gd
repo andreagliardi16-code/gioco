@@ -47,3 +47,9 @@ extends Stats
 @export var max_energy: int = 100
 @export var regen_rate: float = 0.0
 #endregion
+
+#region pogo
+@export_group("Pogo")
+@export var side_force: float = 1500
+@export var vertical_force: float = -1000
+#endregion

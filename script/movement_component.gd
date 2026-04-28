@@ -22,12 +22,17 @@ const MIN_JUMP_TIME: float = 0.1
 const MAX_JUMP_TIME: float = 0.6
 const MAX_SPEED_CHANGE: int = 1000
 const DEF_DASH_DIRECTION: int = 1 #destra
+const VECTOR_X: String = "x"
+const VECTOR_Y: String = "y"
 
 signal energy_spended(action: String) #la stringa deve corrispondere alla stringa con cui l'azione è salvata nel dizionario PowerUpData
 
+@export var pogo_scene: PackedScene
+
 var parent: Player
 var gravity: GravityComponent
-var parent_stats: Stats
+var parent_stats: PlayerStats
+var pogo: Pogo = null
 
 var velocity: Vector2= Vector2(0,0)
 var friction: float = 1.0
@@ -38,7 +43,7 @@ var velocity_x_mod: float = 0.0  #accumula gli "impulsi" di cambio velocità
 var direction: int = 0  #determina se il giocatore compie movimento orizzontale. Quando è fermo torna a 0 
 var last_direction: int = 0  #determina l'ultima direzione in cui si è girato il player, anche se è fermo
 var dash_direction: int = DEF_DASH_DIRECTION
-var dash_cooldown_timer: float = 0.0
+var pogo_direction: Global.Direction = Global.Direction.SOUTH
 
 #region timer var
 var jump_cut_timer: float = 0.0
@@ -46,6 +51,8 @@ var min_jump_timer: float = 0.0
 var coyote_timer: float = 0.0
 var max_jump_timer: float = 0.0
 var dash_timer: float = 0.0
+var dash_cooldown_timer: float = 0.0
+var pogo_impulse_timer: float = 0.0
 #endregion
 
 #region bool var
@@ -56,6 +63,8 @@ var is_jump_held: bool = false
 var in_coyote_time: bool = false
 var in_dash_cooldown: bool = false
 var had_dash_jumped: bool = false
+var side_pogo: bool = false
+var is_fading_pogo: bool = false
 var time_frozen: bool = false   #serve per freeze del movimento senza rompere gli stati
 #endregion
 
@@ -67,9 +76,12 @@ func setup(stats: Stats, gravity_comp: GravityComponent, owner_node: Node2D):
 	parent = owner_node
 	gravity = gravity_comp
 
+
 func _physics_process(delta: float) -> void:
 	_calc_friction()
 	_handle_timers(delta)
+	if is_fading_pogo:
+		_handle_pogo_fade(delta)
 	if parent.curr_player_state == Player.PlayerStates.JUMP and not is_jump_held:
 		_cut_jump()
 #endregion
@@ -95,7 +107,6 @@ func _handle_timers(delta: float) -> void:
 		coyote_timer -= delta
 		if coyote_timer <= 0:
 			coyote_timer = 0.0
-			#print("fine c_time")
 			in_coyote_time = false
 	if dash_timer > 0:
 		dash_timer -= delta
@@ -105,6 +116,10 @@ func _handle_timers(delta: float) -> void:
 		dash_cooldown_timer -= delta
 		if dash_cooldown_timer <= 0:
 			in_dash_cooldown = false
+	if pogo_impulse_timer > 0:
+		pogo_impulse_timer -= delta
+		if pogo_impulse_timer <= 0:
+			_call_pogo_fade()
 #endregion
 
 #region move
@@ -132,7 +147,6 @@ func _move_y(delta: float) -> void:
 func move(delta: float) -> void:
 	_move_x(delta)
 	_move_y(delta)
-	#print("velocity 1: ", velocity)
 	parent.apply_movement(velocity)
 #endregion
 
@@ -199,10 +213,12 @@ func jump() -> void:
 	#il controllo sul poter saltare va fatto nella coda
 	#parent.change_player_state(Player.PlayerStates.JUMP)
 	emit_signal("energy_spended", "jump")
+	
 	min_jump_timer = MIN_JUMP_TIME
 	max_jump_timer = MAX_JUMP_TIME
 	is_jumping = true
 	
+	_fast_stop([VECTOR_Y])
 	vel_y_request(parent_stats.jump_force)
 
 func _cut_jump() -> void:
@@ -230,16 +246,18 @@ func _on_input_component_jump_input_changed(state: bool) -> void:
 #endregion
 
 #region dash 
-##rifare meglio
 func call_dash() -> void:
 	parent.add_to_queue(Player.PlayerActions.DASH)
 
 func dash() -> void:
+	_fast_stop([VECTOR_X, VECTOR_Y])
+	
 	emit_signal("energy_spended", "dash")
 	dash_direction = _get_dash_direction()
+	vel_x_request(parent_stats.dash_speed_amt*dash_direction)
+	
 	dash_timer = parent_stats.dash_time
 	dash_cooldown_timer = parent_stats.dash_cooldown
-	vel_x_request(parent_stats.dash_speed_amt*dash_direction)
 	in_dash_cooldown = true
 	
 	if parent.curr_physic_state != Player.PhysicsStates.GROUND:
@@ -260,6 +278,67 @@ func change_dash_jump_bool(arg: bool) -> void:
 	had_dash_jumped = arg
 #endregion
 
+#region pogo
+func call_pogo(dir: Global.Direction):
+	parent.add_to_queue(Player.PlayerActions.POGO)
+	pogo_direction = dir
+
+
+func do_pogo() -> void:
+	emit_signal("energy_spended", "pogo")
+	pogo.pogo_jump(pogo_direction)
+
+
+func _on_pogo_started() -> void:
+	var vector: Vector2 = _create_pogo_impulse()
+	
+	_start_pogo_timer()
+	
+	vel_x_request(vector.x)
+	vel_y_request(vector.y)
+
+
+
+func _start_pogo_timer() -> void:
+	pogo_impulse_timer = pogo.IMPULSE_DURATION
+
+
+func _create_pogo_impulse() -> Vector2:
+	match pogo_direction:
+		Global.Direction.EAST:
+			side_pogo = true
+			return Vector2(-parent_stats.side_force, parent_stats.vertical_force)
+		Global.Direction.SOUTH:
+			side_pogo = false
+			return Vector2(0.0, parent_stats.vertical_force)
+		Global.Direction.WEST:
+			side_pogo = true
+			return Vector2(parent_stats.side_force, parent_stats.vertical_force)
+		_: 
+			_fast_stop([VECTOR_X, VECTOR_Y])
+			side_pogo = false
+			pogo.end_pogo()
+			return Vector2.ZERO
+
+
+func _call_pogo_fade() -> void:
+	pogo.fade_pogo_jump()
+
+
+func _handle_pogo_fade(delta: float) -> void:
+	var n: float 
+	n = -pogo.sample_fade(delta)
+	vel_x_request(n)
+
+
+func _on_pogo_fade_started() -> void:
+	is_fading_pogo = true
+
+
+func _on_pogo_ended() -> void:
+	is_fading_pogo = false
+#endregion
+
 #region misc
 func _calc_friction() -> void:
 	var n
@@ -269,7 +348,17 @@ func _calc_friction() -> void:
 	else:
 		friction = n
 
-func _fast_stop() -> void: velocity = Vector2(0.0, 0.0)
+func _fast_stop(axis: Array[String]) -> void: 
+	var a: int = axis.size()
+	if a > 2:
+		push_warning("argomenti passati a _fast_stop non validi: ", axis)
+		return
+	
+	for i in range(a):
+		if axis[i] == "x":
+			velocity.x = 0.0
+		if axis[i] == "y":
+			velocity.y = 0.0
 
 func hit_ceiling() -> void:  #controllare bool e edge cases
 	velocity.y = 0
@@ -284,4 +373,17 @@ func vel_y_request(new_request: float) -> void:
 
 func vel_x_request(new_request: float) -> void:
 	velocity_x_mod += new_request
+#endregion
+
+#region add_powerups
+func add_pogo() -> void:
+	if is_instance_valid(pogo):
+		push_warning("Pogo seems to be already instanced: ", pogo)
+		return
+	
+	pogo = pogo_scene.instantiate()
+	add_child(pogo)
+	
+	pogo.pogo_started.connect(_on_pogo_started)
+	pogo.pogo_fade_started.connect(_on_pogo_fade_started)
 #endregion

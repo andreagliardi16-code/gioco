@@ -7,6 +7,8 @@ class_name InputComponent
 
 extends Node
 
+const VERT_ANGLE_THERSHOLD: float = 0.65
+
 signal jump_input_changed(state: bool)  #dice a moovement quando viene premuto e rilasciato il salto
 
 var parent: CharacterBody2D
@@ -29,6 +31,14 @@ func check_inputs() -> void:
 		if not parent.input_active("dash"):
 			return
 		movement.call_dash()
+	
+	if Input.is_action_just_pressed("pogo"):
+		if not parent.input_active("pogo"):
+			return
+		var d = _get_direction()
+		if not d == Global.Direction.NULL:
+			movement.call_pogo(d)
+	
 	if Input.is_action_just_pressed("jump"):
 		if not parent.input_active("jump"):
 			return
@@ -46,3 +56,22 @@ func check_inputs() -> void:
 		movement.change_direction(-1) 
 	elif Input.is_action_just_released("move_left"):
 		movement.change_direction(0) 
+
+func _get_direction() -> Global.Direction:    #return null se non è premuta direzione, altrimenti global.direction
+	var input_vector: Vector2 = Input.get_vector("move_left", "move_right", "look_up", "look_down")
+	
+	if input_vector.length() < 0.2:
+		return Global.Direction.NULL
+	
+	var dir: Vector2 = input_vector.normalized()
+	
+	if dir.dot(Vector2.DOWN) > VERT_ANGLE_THERSHOLD:
+		return Global.Direction.SOUTH
+	
+	if dir.dot(Vector2.UP) > VERT_ANGLE_THERSHOLD:
+		return Global.Direction.NORTH
+	
+	if dir.x > 0:
+		return Global.Direction.EAST
+	
+	return Global.Direction.WEST

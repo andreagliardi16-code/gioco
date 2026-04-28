@@ -1,3 +1,3 @@
 extends Node
 
-enum Direction {NORTH, EAST, SOUTH, WEST}
+enum Direction {NORTH, EAST, SOUTH, WEST, NULL}

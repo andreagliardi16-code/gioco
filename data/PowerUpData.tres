@@ -7,31 +7,38 @@ script = ExtResource("1_re3mx")
 power_ups = {
 "arpoon": {
 "active": false,
+"cooldown": 2.5,
 "cost": 15.0
 },
 "dash": {
 "active": true,
+"cooldown": 0.4,
 "cost": 3.0
 },
 "freeze": {
 "active": false,
+"cooldown": 2.0,
 "cost": 20.0
 },
 "inv_gravity": {
 "active": false,
+"cooldown": 3.5,
 "cost": 45.0
 },
 "jump": {
 "active": true,
+"cooldown": 0.0,
 "cost": 0.0
+},
+"pogo": {
+"active": true,
+"cooldown": 0.25,
+"cost": 0.5
 },
 "shrink_swell": {
 "active": false,
+"cooldown": 2.0,
 "cost": 10.0
-},
-"wall_jump": {
-"active": false,
-"cost": 0.5
 }
 }
 metadata/_custom_type_script = "uid://br70t1keus2n1"

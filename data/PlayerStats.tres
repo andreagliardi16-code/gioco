@@ -6,7 +6,7 @@
 script = ExtResource("1_gh82h")
 fall_gravity = 2400.0
 cut_gravity = 3400.0
-coyote_time = 0.09
+coyote_time = 0.08
 max_speed = 560
 acceleration = 3111.0
 deceleration = 5600.0

@@ -14,7 +14,7 @@ extends Resource
 		"active" : false,
 		"cost" : 3.0,
 		"cooldown" : 0.4 },
-	"wall_jump" : {
+	"pogo" : {
 		"active" : false,
 		"cost" : 0.5,
 		"cooldown" : 0.25 },

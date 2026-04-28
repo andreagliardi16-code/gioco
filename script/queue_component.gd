@@ -31,15 +31,17 @@ func _update_queue(delta: float) -> void:
 		&"jump":
 			if parent.can_jump():
 				movement.jump()
-				input_queue.remove_at(0)
 		&"dash":
 			if parent.can_dash():
 				movement.dash()
-				input_queue.remove_at(0)
-		#ecc...
+		&"pogo":
+			if parent.can_pogo():
+				movement.do_pogo()
 		&"error":
 			print("errore nel passaggio di elementi in coda. Arg: ", input_queue[0].error_arg) 
 			input_queue.remove_at(0)
+	
+	input_queue.remove_at(0)
 	
 	for i in range(input_queue.size() -1, -1, -1):
 		input_queue[i].life -= delta
@@ -72,6 +74,8 @@ func create_queue_item(player_action: Player.PlayerActions) -> QueueItem:
 			return QueueJump.new()
 		Player.PlayerActions.DASH:
 			return QueueDash.new()
+		Player.PlayerActions.POGO:
+			return QueuePogo.new()
 		_:
 			return QueueError.new(player_action)
 #endregion

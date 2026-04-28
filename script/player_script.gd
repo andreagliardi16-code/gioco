@@ -7,9 +7,9 @@ signal had_died
 
 enum PhysicsStates {DEFAULT, GROUND, AIR}
 var curr_physic_state: PhysicsStates = PhysicsStates.DEFAULT
-enum PlayerStates {IDLE, SLIDE, JUMP, FALL, DASH, DEAD}
+enum PlayerStates {IDLE, SLIDE, JUMP, FALL, DASH, POGO, DEAD}
 var curr_player_state: PlayerStates = PlayerStates.IDLE
-enum PlayerActions {JUMP, DASH} #tutte le azioni che si possono bufferare
+enum PlayerActions {JUMP, DASH, POGO} #tutte le azioni che si possono bufferare
 
 @export var stats: PlayerStats
 @export var powers: PowerUpData
@@ -32,7 +32,15 @@ var can_walk: bool = true
 #region _ready, _process e setup
 func _ready() -> void:
 	link_components()
+	check_power_ups()
 	#da spostare in altro script
+
+
+func check_power_ups() -> void:
+	if powers.power_ups["pogo"]["active"]:
+		_unlock_powerup(PlayerActions.POGO)
+	#aggiungere tutti gli altri man mano che si implementano
+
 
 func link_components() -> void:
 	gravity.setup(stats, self)
@@ -74,20 +82,29 @@ func check_physics_state() -> void:
 func check_player_state() -> void:
 	if respawn.death_timer and respawn.death_timer.time_left > 0:
 		curr_player_state = PlayerStates.DEAD
+		if movement.side_pogo: _set_can_walk(false)
 		return
+	if movement.pogo_impulse_timer > 0.0:
+		curr_player_state = PlayerStates.POGO
+		_set_can_walk(false)
 	if movement.dash_timer > 0.0:
 		curr_player_state = PlayerStates.DASH
+		_set_can_walk(false)
 		return
 	if movement.is_jumping:
+		_set_can_walk(true)
 		curr_player_state = PlayerStates.JUMP
 		return
 	if velocity.y > 0:
+		_set_can_walk(true)
 		curr_player_state = PlayerStates.FALL
 		return
 	if velocity.x > 0:
+		_set_can_walk(true)
 		curr_player_state = PlayerStates.SLIDE
 		return
 	else:
+		_set_can_walk(true)
 		curr_player_state = PlayerStates.IDLE
 		return 
 
@@ -102,7 +119,6 @@ func apply_movement(vel: Vector2) -> void:
 	velocity = vel
 
 func start_coyote_time():
-	print("inizio coyote time")
 	movement.coyote_timer = stats.coyote_time
 	movement.in_coyote_time = true
 #endregion
@@ -114,15 +130,23 @@ func can_jump() -> bool:  #IMPLEMENTARE BENE (controllo su stati (non su variabi
 	
 	return false
 
+
 func can_dash() -> bool:  #IMPLEMENTARE (controllo su stati)
 	if movement.in_dash_cooldown or movement.had_dash_jumped or not check_power("dash"):
 		return false
 	
 	return true
-#endregion
 
-func add_to_queue(action: PlayerActions) -> void:
-	queue.add_to_queue(action)
+
+func can_pogo() -> bool:
+	if is_on_floor():
+		return false
+	
+	return true
+
+func _set_can_walk(arg: bool) -> void:
+	can_walk = arg
+#endregion
 
 #region power-up
 func input_active(id: String) -> bool:
@@ -136,7 +160,6 @@ func check_power(id: String) -> bool:  #con poca energia l'azione si può svolge
 	var n: float = stats_manager.get_energy()
 	
 	if n > powers.power_ups[id]["cost"]/2:
-		print("true")
 		return true
 	
 	return false
@@ -151,3 +174,13 @@ func spawn() -> void:   #da cambiare
 	position = respawn.respawn()
 	print("spawno in posizione: ", position)
 #endregion
+
+
+func _unlock_powerup(powerup: PlayerActions) -> void:
+	match powerup:
+		PlayerActions.POGO:
+			movement.add_pogo()
+
+
+func add_to_queue(action: PlayerActions) -> void:
+	queue.add_to_queue(action)
