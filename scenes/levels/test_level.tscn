@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://3vu781xj0xkc" path="res://script/material.gd" id="4_48ne7"]
 [ext_resource type="PackedScene" uid="uid://cubx64g22g4ec" path="res://scenes/entities/kill_zone.tscn" id="7_7x1jh"]
 [ext_resource type="PackedScene" uid="uid://b58nb63ldbbir" path="res://scenes/components/respawn_area.tscn" id="7_cyt5c"]
+[ext_resource type="Script" uid="uid://hcbxckylrqww" path="res://script/timed_pogoable_area.gd" id="8_7x1jh"]
 
 [sub_resource type="Resource" id="Resource_6xh4u"]
 script = ExtResource("4_48ne7")
@@ -19,6 +20,9 @@ size = Vector2(3127, 30)
 size = Vector2(378, 258)
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_hfwtw"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hfwtw"]
+radius = 13.0
 
 [node name="Level_Test" type="Node2D" unique_id=1339058086]
 script = ExtResource("1_7x1jh")
@@ -156,6 +160,17 @@ metadata/_edit_lock_ = true
 
 [node name="KillZone" parent="." unique_id=1976485095 instance=ExtResource("7_7x1jh")]
 position = Vector2(298, 1333)
+metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="KillZone" unique_id=1548124919]
 shape = SubResource("WorldBoundaryShape2D_hfwtw")
+
+[node name="TimedPogoableArea" type="Area2D" parent="." unique_id=1331681762]
+position = Vector2(2304, 768)
+script = ExtResource("8_7x1jh")
+metadata/_custom_type_script = "uid://hcbxckylrqww"
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TimedPogoableArea" unique_id=1951519258]
+shape = SubResource("CircleShape2D_hfwtw")
+metadata/_edit_lock_ = true

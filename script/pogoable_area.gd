@@ -27,3 +27,8 @@ func _get_configuration_warnings() -> PackedStringArray:
 		warnings.append("")
 	
 	return warnings
+
+
+func _switch(on: bool) -> void:
+	set_deferred("monitorable", on)
+	set_deferred("monitoring", on)

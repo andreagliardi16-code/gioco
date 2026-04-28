@@ -84,22 +84,22 @@ func check_player_state() -> void:
 		curr_player_state = PlayerStates.DEAD
 		if movement.side_pogo: _set_can_walk(false)
 		return
-	if movement.pogo_impulse_timer > 0.0:
+	elif movement.pogo_impulse_timer > 0.0:
 		curr_player_state = PlayerStates.POGO
 		_set_can_walk(false)
-	if movement.dash_timer > 0.0:
+	elif movement.dash_timer > 0.0:
 		curr_player_state = PlayerStates.DASH
 		_set_can_walk(false)
 		return
-	if movement.is_jumping:
+	elif movement.is_jumping:
 		_set_can_walk(true)
 		curr_player_state = PlayerStates.JUMP
 		return
-	if velocity.y > 0:
+	elif velocity.y > 0:
 		_set_can_walk(true)
 		curr_player_state = PlayerStates.FALL
 		return
-	if velocity.x > 0:
+	elif velocity.x > 0:
 		_set_can_walk(true)
 		curr_player_state = PlayerStates.SLIDE
 		return

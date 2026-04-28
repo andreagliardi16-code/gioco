@@ -2,12 +2,14 @@
 
 [ext_resource type="Script" uid="uid://brqmndojo8prp" path="res://script/pogo.gd" id="1_o1jd1"]
 [ext_resource type="Script" uid="uid://12eg80yfqjhq" path="res://script/pogo_area.gd" id="2_qucst"]
+[ext_resource type="Curve" uid="uid://bcea0hxy0u0as" path="res://resources/curves/pogo_fade_curve.tres" id="2_s61k6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_s61k6"]
 radius = 30.0
 
 [node name="PogoComponent" type="Node2D" unique_id=1738184679]
 script = ExtResource("1_o1jd1")
+pogo_fade_curve = ExtResource("2_s61k6")
 
 [node name="PogoArea" type="Area2D" parent="." unique_id=1510559126]
 script = ExtResource("2_qucst")

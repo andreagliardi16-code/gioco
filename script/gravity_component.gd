@@ -56,7 +56,7 @@ func update_gravity() -> void:
 			if curr_grav_mode != GravityModes.JUMP_CUT:
 				change_gravity_state(GravityModes.JUMP_CUT)
 			return
-		if parent.curr_player_state == Player.PlayerStates.JUMP:
+		if parent.curr_player_state == Player.PlayerStates.JUMP or parent.curr_player_state == Player.PlayerStates.POGO:
 			if curr_grav_mode != GravityModes.NORMAL:
 				change_gravity_state(GravityModes.NORMAL)
 				return

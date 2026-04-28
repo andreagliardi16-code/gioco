@@ -15,6 +15,8 @@ var parent: CharacterBody2D
 var movement: MovementComponent #forse non serve il collegamento diretto
 var queue
 
+var last_direction: Global.Direction = Global.Direction.NULL
+
 func _ready() -> void:
 	self.set_meta("ID", &"InputComponent")
 
@@ -49,10 +51,12 @@ func check_inputs() -> void:
 		#movement.end_jump()
 	
 	if Input.is_action_pressed("move_right"):
+		last_direction = Global.Direction.EAST
 		movement.change_direction(1) 
 	elif Input.is_action_just_released("move_right"):
 		movement.change_direction(0) 
 	if Input.is_action_pressed("move_left"):
+		last_direction = Global.Direction.WEST
 		movement.change_direction(-1) 
 	elif Input.is_action_just_released("move_left"):
 		movement.change_direction(0) 
@@ -61,7 +65,7 @@ func _get_direction() -> Global.Direction:    #return null se non è premuta dir
 	var input_vector: Vector2 = Input.get_vector("move_left", "move_right", "look_up", "look_down")
 	
 	if input_vector.length() < 0.2:
-		return Global.Direction.NULL
+		return last_direction
 	
 	var dir: Vector2 = input_vector.normalized()
 	

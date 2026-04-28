@@ -124,7 +124,8 @@ func _handle_timers(delta: float) -> void:
 
 #region move
 func _move_x(delta: float) -> void:  ##DA AGGIUSTARE
-	if parent.can_walk and parent.curr_player_state != Player.PlayerStates.DASH:  #implementare controlli
+	if parent.curr_player_state != Player.PlayerStates.DASH and parent.curr_player_state != Player.PlayerStates.POGO:  #implementare controlli
+		print("state: ", parent.curr_player_state)
 		velocity.x = _walk(delta)
 	
 	velocity.x += velocity_x_mod
@@ -148,6 +149,7 @@ func move(delta: float) -> void:
 	_move_x(delta)
 	_move_y(delta)
 	parent.apply_movement(velocity)
+	print("la velocità è: ", velocity)
 #endregion
 
 #region gravity
@@ -155,6 +157,7 @@ func apply_gravity(delta: float) -> void:
 	if parent.curr_physic_state == Player.PhysicsStates.GROUND or parent.curr_player_state == Player.PlayerStates.DASH:
 		velocity.y = 0.0
 		return
+	
 	var g = gravity.get_gravity()
 	vel_y_request(g * delta)
 #endregion
@@ -290,10 +293,12 @@ func do_pogo() -> void:
 
 
 func _on_pogo_started() -> void:
+	print("inizio pogo")
 	var vector: Vector2 = _create_pogo_impulse()
 	
 	_start_pogo_timer()
 	
+	_fast_stop([VECTOR_X, VECTOR_Y])
 	vel_x_request(vector.x)
 	vel_y_request(vector.y)
 
@@ -323,6 +328,7 @@ func _create_pogo_impulse() -> Vector2:
 
 func _call_pogo_fade() -> void:
 	pogo.fade_pogo_jump()
+	print("inizio pogo fade")
 
 
 func _handle_pogo_fade(delta: float) -> void:
@@ -337,6 +343,7 @@ func _on_pogo_fade_started() -> void:
 
 func _on_pogo_ended() -> void:
 	is_fading_pogo = false
+	print("fine pogo")
 #endregion
 
 #region misc
@@ -386,4 +393,5 @@ func add_pogo() -> void:
 	
 	pogo.pogo_started.connect(_on_pogo_started)
 	pogo.pogo_fade_started.connect(_on_pogo_fade_started)
+	pogo.pogo_ended.connect(_on_pogo_ended)
 #endregion

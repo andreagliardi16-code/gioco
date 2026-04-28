@@ -7,12 +7,12 @@ extends Node2D
 class_name Pogo
 
 
-const IMPULSE_DURATION: float = 0.125
+const IMPULSE_DURATION: float = 0.15
 const FADE_DURATION: float = 0.3
 
 enum State {IMPULSE, FADE, OFF}  #determina il comportamento con altri power-up  
 
-signal pogo_started(force: Vector2)
+signal pogo_started()
 signal pogo_fade_started()
 signal pogo_ended()
 
@@ -33,7 +33,7 @@ func pogo_jump(dir: Global.Direction) -> void:
 func _start_pogo_jump() -> void:
 	curr_pogo_state = State.IMPULSE
 	
-	emit_signal("pogo_started", pogo_direction)  #il movement si occupa di applicarlo
+	emit_signal("pogo_started")  #il movement si occupa di applicarlo
 
 
 func fade_pogo_jump() -> void:
@@ -44,8 +44,8 @@ func fade_pogo_jump() -> void:
 
 
 func sample_fade(delta: float) -> float:
-	if not curr_pogo_state == State.OFF:
-		push_warning("sample_fadde() chiamato in maniera impropria")
+	if curr_pogo_state == State.OFF:
+		push_warning("sample_fade() chiamato in maniera impropria")
 		return 0
 	
 	var speed: float = 0.0
@@ -96,6 +96,9 @@ func _create_vector() -> Vector2:
 func _on_pogo_area_area_entered(area: Area2D) -> void:
 	if not area.is_in_group("pogoable_areas"):
 		return
+	
+	if area is TimedPogoableArea:
+		area.used()
 	
 	coll_area.end_detection()
 	_start_pogo_jump()
