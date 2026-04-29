@@ -124,9 +124,8 @@ func _handle_timers(delta: float) -> void:
 
 #region move
 func _move_x(delta: float) -> void:  ##DA AGGIUSTARE
-	if parent.curr_player_state != Player.PlayerStates.DASH and parent.curr_player_state != Player.PlayerStates.POGO:  #implementare controlli
+	if parent.can_walk:  #implementare controlli
 		velocity.x = _walk(delta)
-		print("velocity camminata: ", velocity.x)
 	
 	velocity.x += velocity_x_mod
 	velocity_x_mod = 0.0
@@ -138,8 +137,6 @@ func _move_y(delta: float) -> void:
 	apply_gravity(delta)
 	
 	velocity.y += velocity_y_mod
-	#print("velocity_y_mod: ", velocity_y_mod)
-	#print("velocity.y: ", velocity.y)
 	velocity_y_mod = 0.0
 
 #raccoglie i calcoli di move_x e move_y e li unisce in velocity, 
@@ -165,18 +162,25 @@ func apply_gravity(delta: float) -> void:
 func change_direction(n: int) -> void:
 	direction = clampi(n, -1, 1)
 
-func _change_last_direction():
-	if direction == 0:
+
+func _change_last_direction(add_value = null):
+	if add_value:
+		last_direction = add_value
 		return
-	last_direction = direction
+	
+	else:
+		if direction == 0:
+			return
+		last_direction = direction
+
 
 func changing_direction() -> bool:  #serve per quando il giocatore cambia direzione e deve prima decelerare e poi acceleraree
 	if direction == last_direction or last_direction == 0:
-		#print("returning false")
 		return false
+	
 	elif abs(velocity.x) > 10:
-		#print("returning true")
 		return true
+	
 	return false
 #endregion
 
@@ -185,7 +189,6 @@ func _walk(delta: float) -> float:
 	var new_speed_x: float = velocity.x #velocità della camminata in un frame
 	var acc: float = 0
 	if direction == 0 or changing_direction():
-		print("pfrz")
 		acc = apply_sign(new_speed_x, delta*parent_stats.deceleration*friction)
 		new_speed_x = move_toward(new_speed_x, 0, acc)
 		return new_speed_x
@@ -300,9 +303,19 @@ func _on_pogo_started() -> void:
 	_start_pogo_timer()
 	
 	_fast_stop([VECTOR_X, VECTOR_Y])
+	_change_last_direction(translate_pogo_dir())
 	vel_x_request(vector.x)
 	vel_y_request(vector.y)
 
+
+func translate_pogo_dir() -> int:
+	match pogo_direction:
+		Global.Direction.EAST:
+			return -1
+		Global.Direction.WEST:
+			return 1
+		_:
+			return 0
 
 
 func _start_pogo_timer() -> void:

@@ -1,0 +1,208 @@
+[gd_scene format=3 uid="uid://cfktkhfplhbsy"]
+
+[ext_resource type="Script" uid="uid://w0hs350wsxio" path="res://script/level.gd" id="1_i4g7q"]
+
+[node name="TutorialLevel" type="Node2D" unique_id=795748767]
+script = ExtResource("1_i4g7q")
+
+[node name="Reference" type="Node2D" parent="." unique_id=345934898]
+
+[node name="LevelBorders" type="Node2D" parent="Reference" unique_id=2025096901]
+metadata/_edit_lock_ = true
+
+[node name="ColorRect8" type="ColorRect" parent="Reference/LevelBorders" unique_id=2071402702]
+offset_left = 552.0
+offset_top = -592.0
+offset_right = 3776.0
+offset_bottom = -64.0
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="ColorRect10" type="ColorRect" parent="Reference/LevelBorders" unique_id=1804382796]
+offset_left = 4032.0
+offset_right = 4288.0
+offset_bottom = 320.0
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="ColorRect9" type="ColorRect" parent="Reference/LevelBorders" unique_id=1915547534]
+offset_left = 3648.0
+offset_top = -464.0
+offset_right = 4288.0
+offset_bottom = 64.0
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="ColorRect7" type="ColorRect" parent="Reference/LevelBorders" unique_id=1317454377]
+offset_left = -168.0
+offset_top = -456.0
+offset_right = 704.0
+offset_bottom = 64.0
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="ColorRect6" type="ColorRect" parent="Reference/LevelBorders" unique_id=1197565962]
+offset_left = 3904.0
+offset_top = 448.0
+offset_right = 4288.0
+offset_bottom = 896.0
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="ColorRect5" type="ColorRect" parent="Reference/LevelBorders" unique_id=1062414977]
+offset_left = 2432.0
+offset_top = 448.0
+offset_right = 2624.0
+offset_bottom = 896.0
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="ColorRect4" type="ColorRect" parent="Reference/LevelBorders" unique_id=375087671]
+offset_left = 640.0
+offset_top = 640.0
+offset_right = 832.0
+offset_bottom = 896.0
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="ColorRect3" type="ColorRect" parent="Reference/LevelBorders" unique_id=535438375]
+offset_left = 1280.0
+offset_top = 448.0
+offset_right = 1600.0
+offset_bottom = 896.0
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="ColorRect2" type="ColorRect" parent="Reference/LevelBorders" unique_id=2047387727]
+offset_left = -64.0
+offset_top = 704.0
+offset_right = 1280.0
+offset_bottom = 896.0
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Reference/LevelBorders" unique_id=484419863]
+offset_left = -240.0
+offset_bottom = 896.0
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="DamageAreas2" type="Node2D" parent="Reference" unique_id=1262236824]
+metadata/_edit_lock_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Reference/DamageAreas2" unique_id=173701765]
+offset_left = 1600.0
+offset_top = 768.0
+offset_right = 2432.0
+offset_bottom = 896.0
+color = Color(1, 0, 0, 1)
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="ColorRect2" type="ColorRect" parent="Reference/DamageAreas2" unique_id=364835018]
+offset_left = 2624.0
+offset_top = 768.0
+offset_right = 3904.0
+offset_bottom = 896.0
+color = Color(1, 0, 0, 1)
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="Platforms" type="Node2D" parent="Reference" unique_id=1313072209]
+metadata/_edit_lock_ = true
+
+[node name="static" type="ColorRect" parent="Reference/Platforms" unique_id=817013134]
+offset_left = 960.0
+offset_top = 576.0
+offset_right = 1024.0
+offset_bottom = 600.0
+color = Color(0, 0, 1, 1)
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="static2" type="ColorRect" parent="Reference/Platforms" unique_id=2018233507]
+offset_left = 1088.0
+offset_top = 448.0
+offset_right = 1152.0
+offset_bottom = 472.0
+color = Color(0, 0, 1, 1)
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="static3" type="ColorRect" parent="Reference/Platforms" unique_id=1652969078]
+offset_left = 1728.0
+offset_top = 448.0
+offset_right = 1792.0
+offset_bottom = 472.0
+color = Color(0, 0, 1, 1)
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="static4" type="ColorRect" parent="Reference/Platforms" unique_id=1469930642]
+offset_left = 1984.0
+offset_top = 448.0
+offset_right = 2048.0
+offset_bottom = 472.0
+color = Color(0, 0, 1, 1)
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="static5" type="ColorRect" parent="Reference/Platforms" unique_id=996248169]
+offset_left = 2176.0
+offset_top = 384.0
+offset_right = 2240.0
+offset_bottom = 408.0
+color = Color(0, 0, 1, 1)
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="moving" type="ColorRect" parent="Reference/Platforms" unique_id=1043381923]
+offset_left = 2752.0
+offset_top = 512.0
+offset_right = 2816.0
+offset_bottom = 536.0
+color = Color(0, 1, 1, 1)
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="moving2" type="ColorRect" parent="Reference/Platforms" unique_id=399829062]
+offset_left = 3136.0
+offset_top = 512.0
+offset_right = 3200.0
+offset_bottom = 536.0
+color = Color(0, 1, 1, 1)
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="moving3" type="ColorRect" parent="Reference/Platforms" unique_id=979977091]
+offset_left = 3520.0
+offset_top = 512.0
+offset_right = 3584.0
+offset_bottom = 536.0
+color = Color(0, 1, 1, 1)
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="SpawnAreas" type="Node2D" parent="Reference" unique_id=1799833106]
+metadata/_edit_lock_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Reference/SpawnAreas" unique_id=2075405161]
+offset_left = 128.0
+offset_top = 512.0
+offset_right = 320.0
+offset_bottom = 704.0
+color = Color(0, 1, 0.5, 1)
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="Exit" type="Node2D" parent="Reference" unique_id=1592534406]
+metadata/_edit_lock_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Reference/Exit" unique_id=529743476]
+offset_left = 4160.0
+offset_top = 320.0
+offset_right = 4288.0
+offset_bottom = 448.0
+color = Color(1, 0.9666667, 0, 1)
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true

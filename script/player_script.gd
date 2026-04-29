@@ -86,7 +86,10 @@ func check_player_state() -> void:
 		return
 	elif movement.pogo_impulse_timer > 0.0:
 		curr_player_state = PlayerStates.POGO
-		_set_can_walk(false)
+		if movement.side_pogo:
+			_set_can_walk(false)
+		else:
+			_set_can_walk(true)
 	elif movement.dash_timer > 0.0:
 		curr_player_state = PlayerStates.DASH
 		_set_can_walk(false)

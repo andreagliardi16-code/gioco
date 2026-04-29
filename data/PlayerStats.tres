@@ -16,5 +16,5 @@ dash_cut = -1400.0
 dash_cooldown = 0.8
 regen_rate = 30.0
 side_force = 1200.0
-vertical_force = -2500.0
+vertical_force = -2800.0
 metadata/_custom_type_script = "uid://dyh0jbom1lx5h"
