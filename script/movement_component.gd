@@ -125,8 +125,8 @@ func _handle_timers(delta: float) -> void:
 #region move
 func _move_x(delta: float) -> void:  ##DA AGGIUSTARE
 	if parent.curr_player_state != Player.PlayerStates.DASH and parent.curr_player_state != Player.PlayerStates.POGO:  #implementare controlli
-		print("state: ", parent.curr_player_state)
 		velocity.x = _walk(delta)
+		print("velocity camminata: ", velocity.x)
 	
 	velocity.x += velocity_x_mod
 	velocity_x_mod = 0.0
@@ -149,7 +149,6 @@ func move(delta: float) -> void:
 	_move_x(delta)
 	_move_y(delta)
 	parent.apply_movement(velocity)
-	print("la velocità è: ", velocity)
 #endregion
 
 #region gravity
@@ -175,7 +174,7 @@ func changing_direction() -> bool:  #serve per quando il giocatore cambia direzi
 	if direction == last_direction or last_direction == 0:
 		#print("returning false")
 		return false
-	if abs(velocity.x) > 10:
+	elif abs(velocity.x) > 10:
 		#print("returning true")
 		return true
 	return false
@@ -186,6 +185,7 @@ func _walk(delta: float) -> float:
 	var new_speed_x: float = velocity.x #velocità della camminata in un frame
 	var acc: float = 0
 	if direction == 0 or changing_direction():
+		print("pfrz")
 		acc = apply_sign(new_speed_x, delta*parent_stats.deceleration*friction)
 		new_speed_x = move_toward(new_speed_x, 0, acc)
 		return new_speed_x
@@ -194,9 +194,10 @@ func _walk(delta: float) -> float:
 	acc = apply_sign(new_speed_x, delta*parent_stats.acceleration*friction)
 	new_speed_x = move_toward(new_speed_x, target_speed, acc)
 	if sign(new_speed_x) == sign(direction):
-			_change_last_direction()
+		_change_last_direction()
 	
 	return new_speed_x
+
 
 func apply_sign(new_speed_x: float, a: float) -> float:
 	if not abs(new_speed_x) > parent_stats.max_speed:
