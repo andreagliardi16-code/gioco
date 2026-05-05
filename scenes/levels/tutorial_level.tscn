@@ -4,8 +4,10 @@
 
 [node name="TutorialLevel" type="Node2D" unique_id=795748767]
 script = ExtResource("1_i4g7q")
+metadata/_edit_lock_ = true
 
 [node name="Reference" type="Node2D" parent="." unique_id=345934898]
+scale = Vector2(1.35, 1.35)
 
 [node name="LevelBorders" type="Node2D" parent="Reference" unique_id=2025096901]
 metadata/_edit_lock_ = true

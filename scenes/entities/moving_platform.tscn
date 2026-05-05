@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://dhcr41ce48omk"]
+
+[ext_resource type="Script" uid="uid://dk2fjnn5xbgc7" path="res://script/moving_platform.gd" id="1_14jqb"]
+
+[node name="MovingPlatform" type="StaticBody2D" unique_id=593543352]
+script = ExtResource("1_14jqb")
+metadata/_custom_type_script = "uid://cjnqdmve4stwy"
+
+[node name="Marker2D" type="Marker2D" parent="." unique_id=655360286]
