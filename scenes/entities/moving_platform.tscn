@@ -1,9 +1,18 @@
 [gd_scene format=3 uid="uid://dhcr41ce48omk"]
 
-[ext_resource type="Script" uid="uid://dk2fjnn5xbgc7" path="res://script/moving_platform.gd" id="1_14jqb"]
+[ext_resource type="Script" uid="uid://i61xtynihe2l" path="res://script/moving_platform.gd" id="1_14jqb"]
 
-[node name="MovingPlatform" type="StaticBody2D" unique_id=593543352]
+[sub_resource type="Curve2D" id="Curve2D_14jqb"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -3.125, 0, 0, 0, 0, 0, 12.5, 0, 0, 0, 0, 0, 28.125, 0)
+}
+point_count = 3
+
+[node name="MovingPlatform" type="Path2D" unique_id=804774838]
+scale = Vector2(2.56, -0.010416667)
+curve = SubResource("Curve2D_14jqb")
 script = ExtResource("1_14jqb")
-metadata/_custom_type_script = "uid://cjnqdmve4stwy"
 
-[node name="Marker2D" type="Marker2D" parent="." unique_id=655360286]
+[node name="PathFollow2D" type="PathFollow2D" parent="." unique_id=1524636491]
+position = Vector2(-3.125, 0)
+rotates = false

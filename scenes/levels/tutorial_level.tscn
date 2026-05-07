@@ -1,12 +1,26 @@
 [gd_scene format=3 uid="uid://cfktkhfplhbsy"]
 
 [ext_resource type="Script" uid="uid://w0hs350wsxio" path="res://script/level.gd" id="1_i4g7q"]
+[ext_resource type="PackedScene" uid="uid://cea5l1k5yok22" path="res://scenes/entities/platform.tscn" id="2_xl0d0"]
+[ext_resource type="Resource" uid="uid://dhbylf6lt2h47" path="res://resources/materials/default_material.tres" id="3_8r123"]
+[ext_resource type="Shape2D" uid="uid://c6alr4e42frkj" path="res://resources/shapes/default_rectangle_platform.tres" id="4_bmrm0"]
+[ext_resource type="PackedScene" uid="uid://dhcr41ce48omk" path="res://scenes/entities/moving_platform.tscn" id="5_77k6j"]
+[ext_resource type="PackedScene" uid="uid://dkl7o0v2culkd" path="res://scenes/entities/movable_platform.tscn" id="6_d0g56"]
+[ext_resource type="PackedScene" uid="uid://cubx64g22g4ec" path="res://scenes/entities/kill_zone.tscn" id="7_gs1om"]
+[ext_resource type="PackedScene" uid="uid://b58nb63ldbbir" path="res://scenes/components/respawn_area.tscn" id="8_8r123"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i8m3h"]
+size = Vector2(48, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bmrm0"]
+size = Vector2(64, 32)
 
 [node name="TutorialLevel" type="Node2D" unique_id=795748767]
 script = ExtResource("1_i4g7q")
 metadata/_edit_lock_ = true
 
 [node name="Reference" type="Node2D" parent="." unique_id=345934898]
+position = Vector2(-320, -2024)
 scale = Vector2(1.35, 1.35)
 
 [node name="LevelBorders" type="Node2D" parent="Reference" unique_id=2025096901]
@@ -208,3 +222,86 @@ offset_bottom = 448.0
 color = Color(1, 0.9666667, 0, 1)
 metadata/_edit_use_anchors_ = true
 metadata/_edit_lock_ = true
+
+[node name="Platform" parent="." unique_id=1964932851 instance=ExtResource("2_xl0d0")]
+position = Vector2(-600, -696)
+platform_material = ExtResource("3_8r123")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform" unique_id=168934348]
+shape = ExtResource("4_bmrm0")
+metadata/_edit_lock_ = true
+
+[node name="MovingPlatform" parent="." unique_id=804774838 instance=ExtResource("5_77k6j")]
+position = Vector2(-632, -640)
+m_platform = ExtResource("6_d0g56")
+metadata/_edit_lock_ = true
+
+[node name="KillZone" parent="." unique_id=1976485095 instance=ExtResource("7_gs1om")]
+position = Vector2(-600, -600)
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KillZone" unique_id=1964935309]
+shape = SubResource("RectangleShape2D_i8m3h")
+metadata/_edit_lock_ = true
+
+[node name="RespawnArea" parent="." unique_id=881202515 instance=ExtResource("8_8r123")]
+position = Vector2(-600, -544)
+id = &"esempio"
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RespawnArea" unique_id=1277693512]
+shape = SubResource("RectangleShape2D_bmrm0")
+metadata/_edit_lock_ = true
+
+[node name="Testi da rimuovere" type="Control" parent="." unique_id=280279547]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 136.0
+offset_bottom = 40.0
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Testi da rimuovere" unique_id=1803658658]
+layout_mode = 0
+offset_left = -640.0
+offset_top = -744.0
+offset_right = -409.0
+offset_bottom = -704.0
+text = "Blocchi per costruire il livello: "
+metadata/_edit_group_ = true
+
+[node name="Label2" type="Label" parent="Testi da rimuovere" unique_id=387677294]
+layout_mode = 0
+offset_left = -544.0
+offset_top = -704.0
+offset_right = -320.0
+offset_bottom = -680.0
+text = "piattaforma statica normale"
+metadata/_edit_group_ = true
+
+[node name="Label3" type="Label" parent="Testi da rimuovere" unique_id=1712766102]
+layout_mode = 0
+offset_left = -544.0
+offset_top = -664.0
+offset_right = 249.0
+offset_bottom = -640.0
+text = "Piattaforma mobile. Occorre selezionare il percorso di movimento. (la forma diventa visibile a runtime)"
+metadata/_edit_group_ = true
+
+[node name="Label4" type="Label" parent="Testi da rimuovere" unique_id=560707341]
+layout_mode = 0
+offset_left = -544.0
+offset_top = -616.0
+offset_right = -205.0
+offset_bottom = -593.0
+text = "Area che uccide il player o la fa respawnare."
+metadata/_edit_group_ = true
+
+[node name="Label5" type="Label" parent="Testi da rimuovere" unique_id=1070007488]
+layout_mode = 0
+offset_left = -544.0
+offset_top = -552.0
+offset_right = 531.0
+offset_bottom = -529.0
+text = "Area che assegna un nuovo punuto di respawn (croce colorata). Ricordarsi di impostare \"update now\" una volta posizionata correttamente."
+metadata/_edit_group_ = true

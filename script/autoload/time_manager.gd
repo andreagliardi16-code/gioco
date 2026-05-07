@@ -26,3 +26,6 @@ func end_timer():
 	timer = game_duration
 	#fine partita e respawn
 	pass
+
+func get_time() -> float:
+	return timer

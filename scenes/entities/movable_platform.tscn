@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://dkl7o0v2culkd"]
+
+[ext_resource type="Script" uid="uid://b6nvt0qj028up" path="res://script/movable_platform.gd" id="1_mwvbd"]
+[ext_resource type="Shape2D" uid="uid://c6alr4e42frkj" path="res://resources/shapes/default_rectangle_platform.tres" id="2_yvrxq"]
+
+[node name="MovablePlatform" type="AnimatableBody2D" unique_id=989653176]
+script = ExtResource("1_mwvbd")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=557770646]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1949752660]
+shape = ExtResource("2_yvrxq")

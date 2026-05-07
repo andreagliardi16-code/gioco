@@ -1,66 +1,48 @@
-@tool
-
-extends StaticPlatform
-class_name MovingPlatform
+extends Path2D
 
 
-const MAX_RANGE: int = 1000
+@export var movement_curve: Curve = null
+@export var m_platform: PackedScene = null
+@export var period: float = 0.0
 
-enum State {ON, OFF}
+@onready var path_follow: PathFollow2D = $PathFollow2D
 
-
-@export var curve: Curve = null
-@export var target_position: Vector2 = Vector2.ZERO:
-	set(value):
-		target_position = value
-		update_configuration_warnings()
-@export var def_speed: float = 0.0
-@export var pause_time: float = 0.0
-
-@onready var target_anchor: Marker2D = $Marker2D
-
-var curr_state: State = State.OFF
-var mov_timer: float = 0.0
+var platform: MovablePlatform = null
+var time_prog: float = 0.0
 
 
 func _ready() -> void:
-	_set_anchor_position()
+	if m_platform:
+		platform = m_platform.instantiate()
+		path_follow.add_child(platform)
 
 
-func _process(delta: float) -> void:
-	if Engine.is_editor_hint():
+func _physics_process(_delta: float) -> void:
+	_move()
+
+
+func _move() -> void:
+	time_prog = _get_time_prog()
+	
+	var curve_value: float = time_prog
+	
+	if not movement_curve == null:
+		curve_value = movement_curve.sample(time_prog)
+	
+	_apply_offset(curve_value)
+
+
+func _get_time_prog() -> float:
+	var time: float = TimeManager.get_time()
+	
+	var progress: float = fmod(time, period) / period
+	
+	return progress
+
+
+func _apply_offset(value: float) -> void:
+	if value < 0 or value > 1:
+		push_error("la funzione calcola un valore di posizione sbagliato: ", value)
 		return
 	
-	else:
-		_move(delta)
-
-
-func _get_configuration_warnings() -> PackedStringArray:
-	var msg: PackedStringArray 
-	
-	if target_position == Vector2.ZERO:
-		msg.append("Inserire una posizione target")
-	
-	return msg
-
-
-func _set_anchor_position() -> void:
-	if target_position != Vector2.ZERO and _in_range():
-		target_anchor.position = target_position
-		return
-	
-	push_warning("posizione dell'anchor non valida per la piattaforma: ", self)
-
-
-func _in_range() -> bool:
-	if abs(target_position.x) > MAX_RANGE or abs(target_position.y) > MAX_RANGE:
-		return false
-	
-	return true
-
-func _move(delta: float) -> void:
-	# creare una funzione che calcola la posizione in base al tempo globale
-	# o il tempo in una stanza. Fare poi in modo che se c'è una curva 
-	# dall'editor si leghi la posizione al tempo usando la curva, altrimenti
-	# che la velocità sia costante.
-	return
+	path_follow.progress_ratio = value
