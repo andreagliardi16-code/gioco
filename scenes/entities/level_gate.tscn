@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://1htlli4fmx5d"]
+
+[ext_resource type="Script" uid="uid://dpam277ytaw00" path="res://script/level_gate.gd" id="1_anlsp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_anlsp"]
+
+[node name="LevelGate" type="Area2D" unique_id=138255016]
+script = ExtResource("1_anlsp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1049421088]
+shape = SubResource("RectangleShape2D_anlsp")
+
+[node name="Marker2D" type="Marker2D" parent="." unique_id=590821271]
