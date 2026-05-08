@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dhcr41ce48omk"]
 
 [ext_resource type="Script" uid="uid://i61xtynihe2l" path="res://script/moving_platform.gd" id="1_14jqb"]
+[ext_resource type="PackedScene" uid="uid://dkl7o0v2culkd" path="res://scenes/entities/movable_platform.tscn" id="2_jrosv"]
 
 [sub_resource type="Curve2D" id="Curve2D_14jqb"]
 _data = {
@@ -12,6 +13,7 @@ point_count = 3
 scale = Vector2(2.56, -0.010416667)
 curve = SubResource("Curve2D_14jqb")
 script = ExtResource("1_14jqb")
+m_platform = ExtResource("2_jrosv")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="." unique_id=1524636491]
 position = Vector2(-3.125, 0)

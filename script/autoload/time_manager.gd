@@ -7,8 +7,6 @@ extends Node
 var timer: float = game_duration
 var is_running: bool = false
 
-func _ready() -> void:
-	_switch_timer(true)
 
 func _process(delta: float) -> void:
 	if not is_running:
@@ -18,14 +16,17 @@ func _process(delta: float) -> void:
 	if timer <= 0.0:
 		end_timer()
 
-func _switch_timer(arg: bool) -> void:
+
+func switch_timer(arg: bool) -> void:
 	is_running = arg
 
+
 func end_timer():
-	_switch_timer(false)
+	switch_timer(false)
 	timer = game_duration
 	#fine partita e respawn
 	pass
+
 
 func get_time() -> float:
 	return timer

@@ -6,6 +6,7 @@ var curr_game_state: GameState = GameState.TRANSITION
 
 @export var main_menu: PackedScene
 @export var level_map: LevelMap = null
+@export var level_list: LevelsList = null
 
 @onready var player: Player = $CharacterBody2D
 @onready var level_container: Node = $LevelContainer
@@ -16,6 +17,7 @@ var death_timer: Timer = null
 
 func _ready() -> void:
 	start_game()
+	TimeManager.switch_timer(true)
 
 #region cambio livelli
 func change_level(scene_id: StringName) -> void:
