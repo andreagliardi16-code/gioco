@@ -1,6 +1,7 @@
 extends Node
 
 enum Direction {NORTH, EAST, SOUTH, WEST, NULL}
+enum Outcome {OK, FAIL}
 
 
 func translate_direction_x(dir: Direction) -> int:

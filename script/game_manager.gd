@@ -6,7 +6,6 @@ var curr_game_state: GameState = GameState.TRANSITION
 
 @export var main_menu: PackedScene
 @export var level_map: LevelMap = null
-@export var level_list: LevelsList = null
 
 @onready var player: Player = $CharacterBody2D
 @onready var level_container: Node = $LevelContainer

@@ -4,10 +4,15 @@ extends Area2D
 class_name LevelGate
 
 
+signal gate_created(own_id: StringName)
+
+
 @export_group("Collegamento tra Livelli")
-@export var level_ptr: StringName = &""
 @export var gate_ptr: StringName = &""
-@export var own_ptr: StringName = &""
+@export var own_ptr: StringName:
+	set(value):
+		own_ptr = value
+		emit_signal("gate_created", own_ptr)
 @export_group("Posizione Spawn")
 @export var player_height: float = 80.0
 @export var facing_direction: Global.Direction = Global.Direction.NULL
@@ -19,14 +24,14 @@ class_name LevelGate
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var marker: Marker2D = $Marker2D
 
-var level_map: LevelsList = LevelsList.new()
 var spawn_pos: Vector2 = Vector2.ZERO
+var level_map: LevelMap = LevelMap.new()
 
 
 #region process e ready
 func _ready() -> void:
 	if Engine.is_editor_hint():
-		pass
+		pass 
 	else:
 		_adjust_spawn_pos()
 
@@ -68,9 +73,6 @@ func _position_marker() -> void:
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var string: PackedStringArray 
-	
-	if not level_map.list.find_key(level_ptr):
-		string.append("Il riferimento al livello collegato non esiste")
 	
 	if own_ptr == &"":
 		string.append("Assegnare un identificativo a questo collegamento")
