@@ -16,13 +16,18 @@ var death_timer: Timer = null
 
 func _ready() -> void:
 	start_game()
+	level_map.reload_level_db()
 	TimeManager.switch_timer(true)
 
 #region cambio livelli
 func change_level(scene_id: StringName) -> void:
 	print(scene_id)
-	var scene = find_level(scene_id)
-	load_level(scene)
+	var scene_path: String = find_level(scene_id)
+	
+	if scene_path.is_empty():
+		return
+	
+	load_level(scene_path)
 	
 	await get_tree().process_frame
 	
@@ -32,22 +37,23 @@ func change_level(scene_id: StringName) -> void:
 	change_game_state(GameState.GAME)
 
 
-func load_level(scene: PackedScene) -> void:
+func load_level(scene_path: String) -> void:
 	if current_level:
 		current_level.queue_free()
 	
+	var scene: PackedScene = load(scene_path)
 	current_level = scene.instantiate()
 	level_container.add_child(current_level)
 
 
-func find_level(id: StringName) -> PackedScene:
-	var a = level_map.levels.get(id)
+func find_level(id: StringName) -> String:
+	var level_data: LevelData = level_map.levels.get(id)
 	
-	if a == null:
-		push_error("Id non corretto, scena non trovata")
-		return
+	if level_data == null:
+		push_error("Id non corretto, scena non trovata, id: ", id)
+		return ""
 	
-	return a
+	return level_data.scene_path
 #endregion
 
 #region stati

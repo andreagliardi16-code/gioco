@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://w0hs350wsxio" path="res://script/level.gd" id="1_7x1jh"]
 [ext_resource type="Script" uid="uid://cjnqdmve4stwy" path="res://script/platform.gd" id="1_fr1um"]
 [ext_resource type="Resource" uid="uid://dhbylf6lt2h47" path="res://resources/materials/default_material.tres" id="2_48ne7"]
+[ext_resource type="Resource" uid="uid://hn5n012y5xsy" path="res://data/levels/test_level.tres" id="2_hfwtw"]
 [ext_resource type="Shape2D" uid="uid://c6alr4e42frkj" path="res://resources/shapes/default_rectangle_platform.tres" id="2_v45ci"]
 [ext_resource type="Script" uid="uid://3vu781xj0xkc" path="res://script/material.gd" id="4_48ne7"]
 [ext_resource type="PackedScene" uid="uid://cubx64g22g4ec" path="res://scenes/entities/kill_zone.tscn" id="7_7x1jh"]
@@ -26,6 +27,8 @@ radius = 13.0
 
 [node name="Level_Test" type="Node2D" unique_id=1339058086]
 script = ExtResource("1_7x1jh")
+level_id = &"test_level"
+level_data = ExtResource("2_hfwtw")
 metadata/_edit_lock_ = true
 
 [node name="StaticPlatform" type="StaticBody2D" parent="." unique_id=981123477]

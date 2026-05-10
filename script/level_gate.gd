@@ -4,15 +4,16 @@ extends Area2D
 class_name LevelGate
 
 
-signal gate_created(own_id: StringName)
+signal new_gate_id(new_id: StringName, old_id: StringName, gate: LevelGate)
 
 
 @export_group("Collegamento tra Livelli")
 @export var gate_ptr: StringName = &""
 @export var own_ptr: StringName:
 	set(value):
+		old_own_ptr = own_ptr
 		own_ptr = value
-		emit_signal("gate_created", own_ptr)
+		emit_signal("new_gate_id", own_ptr, old_own_ptr, self)
 @export_group("Posizione Spawn")
 @export var player_height: float = 80.0
 @export var facing_direction: Global.Direction = Global.Direction.NULL
@@ -26,6 +27,7 @@ signal gate_created(own_id: StringName)
 
 var spawn_pos: Vector2 = Vector2.ZERO
 var level_map: LevelMap = LevelMap.new()
+var old_own_ptr: StringName
 
 
 #region process e ready
@@ -44,7 +46,7 @@ func _process(_delta: float) -> void:
 
 #region posizione spawn
 func _adjust_spawn_pos()-> void:
-	if not collision_shape or not collision_shape.shape == RectangleShape2D:
+	if not collision_shape or not collision_shape.shape is RectangleShape2D:
 		push_warning("L'area di collisone non è impostata nel modo giusto, impossibile generare punto di spawn")
 		return
 	

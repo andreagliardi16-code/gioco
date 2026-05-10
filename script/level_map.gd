@@ -1,13 +1,37 @@
+@tool
+
 extends Resource
 class_name LevelMap
 
-var levels: Dictionary[StringName, Dictionary] = {
-	&"test": {
-		"instance" : preload("res://scenes/levels/test_level.tscn"),
-		"data" : LevelData.new(&"test")
-		},
-	&"tutorial": {
-		"instance" : preload("res://scenes/levels/tutorial_level.tscn"),
-		"data" : LevelData.new(&"tutorial")
-	}
-}
+
+@export var levels_directory: String = "res://data/levels/"
+
+var levels: Dictionary[StringName, LevelData]
+
+
+# creo un dizionario, a partire dalla cartella levels, in cui vengono 
+# salvate tutte le risorse .tres dei levelData, con i percorsi 
+# delle scene per caricarle, I loro id, e tutte le loro entrate.
+func reload_level_db() -> void:
+	levels.clear()
+	var dir = DirAccess.open(levels_directory)
+	
+	if not dir:
+		push_error("Impossibile accedere alla cartella dei livelli: ", levels_directory)
+		return
+	
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	
+	while not file_name == "":
+		if not dir.current_is_dir() and file_name.ends_with(".tres"):
+			var full_path = levels_directory + file_name
+			var data = load(full_path)
+			
+			if data is LevelData:
+				print(data)
+				levels[data.level_id] = data
+		
+		file_name = dir.get_next()
+	
+	print("level_map: ", levels)
