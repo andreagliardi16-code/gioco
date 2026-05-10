@@ -64,3 +64,10 @@ func get_id() -> StringName: return id
 
 func get_anchor_position() -> Vector2: 
 	return anchor.global_position
+
+
+func _on_body_entered(body: Node2D) -> void:
+	if not body is Player:
+		return
+	
+	body.update_spawn(anchor.global_position,id)

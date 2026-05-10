@@ -33,6 +33,7 @@ var can_walk: bool = true
 func _ready() -> void:
 	link_components()
 	check_power_ups()
+	set_deferred("monitoring", true)
 	#da spostare in altro script
 
 
@@ -77,6 +78,7 @@ func check_physics_state() -> void:
 		curr_physic_state = PhysicsStates.GROUND
 		movement.change_dash_jump_bool(false)
 	else:
+		print("rilevo di essere in aria")
 		curr_physic_state = PhysicsStates.AIR
 
 func check_player_state() -> void:
@@ -175,7 +177,10 @@ func die() -> void:
 
 func spawn() -> void:   #da cambiare
 	position = respawn.respawn()
-	print("spawno in posizione: ", position)
+
+
+func update_spawn(pos: Vector2, id: StringName) -> void:
+	respawn.update_pos(pos, id)
 #endregion
 
 

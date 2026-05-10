@@ -44,6 +44,7 @@ folder_colors={
 
 levels=""
 pogoable_areas="aree rilevate dall'area che permette il pogo"
+floor_areas="zone su cui è permesso camminare"
 
 [input]
 

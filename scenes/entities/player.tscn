@@ -22,6 +22,7 @@ size = Vector2(50, 80)
 size = Vector2(50, 8.5)
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=1177918152]
+collision_mask = 2
 slide_on_ceiling = false
 script = ExtResource("1_ct4mp")
 stats = ExtResource("2_d4qa6")
@@ -58,7 +59,7 @@ metadata/_edit_lock_ = true
 regen_curve = ExtResource("11_n5sgd")
 
 [node name="RespawnComponent" parent="." unique_id=1155274813 instance=ExtResource("13_5ki56")]
-respawn_area = &"test_level"
+respawn_area = &"tutorial_1"
 
 [connection signal="components_linked" from="." to="HUD" method="_on_character_body_2d_components_linked"]
 [connection signal="body_entered" from="BaseArea" to="BaseArea" method="_on_body_entered"]

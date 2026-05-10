@@ -6,3 +6,5 @@
 script = ExtResource("1_1ubke")
 
 [node name="Marker2D" type="Marker2D" parent="." unique_id=1214948300]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

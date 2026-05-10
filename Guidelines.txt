@@ -172,3 +172,8 @@ Come:
 In questo modo possono essere inserite da editor in qualsiasi altra scena.
 Le scene devono essere composte da nodi chiari e con chiare 
 responsabilità.
+
+10 LIVELLI
+
+-Altezza base salto: 150px
+-Altezza massima: circa 300px

@@ -31,7 +31,10 @@ func change_friction(area: Node2D = null) -> float:
 	
 	return max_friction
 
+
 func _on_body_entered(body: Node2D) -> void:
+	if not body.is_in_group(&"floor_areas"):
+		return
 	current_areas.append(body)
 	on_floor = true
 	#if body:
@@ -39,7 +42,10 @@ func _on_body_entered(body: Node2D) -> void:
 	
 	parent.friction = change_friction(body)
 
+
 func _on_body_exited(body: Node2D) -> void:
+	if not body.is_in_group(&"floor_areas"):
+		return
 	current_areas.erase(body)
 	on_floor = current_areas.size()>0
 	parent.friction = change_friction(body)

@@ -19,3 +19,8 @@ func respawn() -> Vector2:
 	
 	respawn_position = RespawnManager.get_spawn_point(respawn_area)
 	return respawn_position
+
+
+func update_pos(pos: Vector2, id: StringName) -> void:
+	respawn_area = id
+	respawn_position = pos

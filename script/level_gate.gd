@@ -76,6 +76,8 @@ func _position_marker() -> void:
 func _get_configuration_warnings() -> PackedStringArray:
 	var string: PackedStringArray 
 	
+	string.append("Assicurati di posizionare l'area in modo che non possa essere aggirata")
+	
 	if own_ptr == &"":
 		string.append("Assegnare un identificativo a questo collegamento")
 	
