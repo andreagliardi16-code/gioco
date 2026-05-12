@@ -78,7 +78,6 @@ func check_physics_state() -> void:
 		curr_physic_state = PhysicsStates.GROUND
 		movement.change_dash_jump_bool(false)
 	else:
-		print("rilevo di essere in aria")
 		curr_physic_state = PhysicsStates.AIR
 
 func check_player_state() -> void:

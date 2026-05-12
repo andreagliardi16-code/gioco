@@ -24,6 +24,7 @@ func setup(movement_component: MovementComponent, parent_node: Player) -> void:
 
 #region aggiornamento coda
 func _update_queue(delta: float) -> void:
+	
 	if input_queue.is_empty():
 		return
 	
@@ -31,17 +32,18 @@ func _update_queue(delta: float) -> void:
 		&"jump":
 			if parent.can_jump():
 				movement.jump()
+				input_queue.remove_at(0)
 		&"dash":
 			if parent.can_dash():
 				movement.dash()
+				input_queue.remove_at(0)
 		&"pogo":
 			if parent.can_pogo():
 				movement.do_pogo()
+				input_queue.remove_at(0)
 		&"error":
 			print("errore nel passaggio di elementi in coda. Arg: ", input_queue[0].error_arg) 
 			input_queue.remove_at(0)
-	
-	input_queue.remove_at(0)
 	
 	for i in range(input_queue.size() -1, -1, -1):
 		input_queue[i].life -= delta

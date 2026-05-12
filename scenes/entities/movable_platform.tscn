@@ -4,6 +4,7 @@
 [ext_resource type="Shape2D" uid="uid://c6alr4e42frkj" path="res://resources/shapes/default_rectangle_platform.tres" id="2_yvrxq"]
 
 [node name="MovablePlatform" type="AnimatableBody2D" unique_id=989653176]
+collision_layer = 3
 script = ExtResource("1_mwvbd")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=557770646]
