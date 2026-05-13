@@ -23,9 +23,6 @@ func _get_configuration_warnings() -> PackedStringArray:
 	if self.get_children().size() == 0:
 		warnings.append("A shape must be assigned")
 	
-	else:
-		warnings.append("")
-	
 	return warnings
 
 

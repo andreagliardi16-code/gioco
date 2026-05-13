@@ -5,7 +5,7 @@
 [ext_resource type="Curve" uid="uid://bcea0hxy0u0as" path="res://resources/curves/pogo_fade_curve.tres" id="2_s61k6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_s61k6"]
-radius = 30.0
+radius = 33.01515
 
 [node name="PogoComponent" type="Node2D" unique_id=1738184679]
 script = ExtResource("1_o1jd1")

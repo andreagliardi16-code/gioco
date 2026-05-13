@@ -221,6 +221,7 @@ func jump() -> void:
 	#parent.change_player_state(Player.PlayerStates.JUMP)
 	emit_signal("energy_spended", "jump")
 	
+	jump_cut_timer = 0
 	min_jump_timer = MIN_JUMP_TIME
 	max_jump_timer = MAX_JUMP_TIME
 	is_jumping = true

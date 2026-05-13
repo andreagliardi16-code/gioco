@@ -7,12 +7,18 @@ extends Area2D
 class_name PogoArea
 
 
-const TIME: float = 0.2
+const TIME: float = 0.15
 
 var active: bool = false
 var active_timer: float = 0.0
 
 @onready var collision = $CollisionShape2D
+
+
+func _ready() -> void:
+	monitoring = false
+	monitorable = false
+
 
 func _process(delta: float) -> void:
 	_handle_timers(delta)

@@ -16,10 +16,10 @@
 [ext_resource type="PackedScene" uid="uid://bclh6crnvr5iu" path="res://scenes/components/respawn_component.tscn" id="13_5ki56"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ss7kx"]
-size = Vector2(50, 80)
+size = Vector2(38, 75)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g2vtq"]
-size = Vector2(50, 8.5)
+size = Vector2(38, 8.5)
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=1177918152]
 collision_mask = 2
@@ -31,7 +31,6 @@ metadata/_edit_lock_ = true
 
 [node name="hitbox" type="CollisionShape2D" parent="." unique_id=485364704]
 shape = SubResource("RectangleShape2D_ss7kx")
-metadata/_edit_lock_ = true
 
 [node name="GravityComponent" parent="." unique_id=636153743 instance=ExtResource("4_s4jxa")]
 metadata/_edit_lock_ = true
@@ -40,7 +39,7 @@ metadata/_edit_lock_ = true
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BaseArea" unique_id=2039928362]
-position = Vector2(0, 36)
+position = Vector2(0, 34)
 shape = SubResource("RectangleShape2D_g2vtq")
 
 [node name="InputComponent" parent="." unique_id=51350239 instance=ExtResource("5_s4jxa")]
@@ -59,7 +58,7 @@ metadata/_edit_lock_ = true
 regen_curve = ExtResource("11_n5sgd")
 
 [node name="RespawnComponent" parent="." unique_id=1155274813 instance=ExtResource("13_5ki56")]
-respawn_area = &"tutorial_1"
+respawn_area = &"test_level"
 
 [connection signal="components_linked" from="." to="HUD" method="_on_character_body_2d_components_linked"]
 [connection signal="body_entered" from="BaseArea" to="BaseArea" method="_on_body_entered"]

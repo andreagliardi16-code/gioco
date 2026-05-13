@@ -4,7 +4,6 @@ class_name StaticPlatform
 
 extends StaticBody2D
 
-var value
 
 @export var platform_material: PlatformMaterial = null:
 	set(value):

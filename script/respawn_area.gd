@@ -6,7 +6,7 @@ class_name RespawnArea
 extends Area2D
 
 @export var id: StringName = &""
-@export var player_height: float = 80.0
+@export var player_height: float = 75.0
 @export var auto_update: bool = true
 @export var update_now: bool:
 	set(value):
