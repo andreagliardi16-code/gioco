@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://kjen34bt1yum" path="res://addons/platforms/MovingPlatform.tscn" id="9_hfwtw"]
 [ext_resource type="Script" uid="uid://b6nvt0qj028up" path="res://script/movable_platform.gd" id="10_2mu0v"]
 [ext_resource type="PackedScene" uid="uid://cubx64g22g4ec" path="res://scenes/entities/kill_zone.tscn" id="11_jmx14"]
+[ext_resource type="PackedScene" uid="uid://1htlli4fmx5d" path="res://scenes/entities/level_gate.tscn" id="12_eaa0b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cyt5c"]
 size = Vector2(384, 256)
@@ -224,4 +225,56 @@ position = Vector2(-88, 0)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform3/KillZone2" unique_id=566012258]
 shape = SubResource("RectangleShape2D_eaa0b")
 
+[node name="MovingPlatform2" parent="." unique_id=1181608027 instance=ExtResource("9_hfwtw")]
+position = Vector2(1088, 136)
+platform_material = ExtResource("2_48ne7")
+
+[node name="Platform" parent="MovingPlatform2" index="0"]
+collision_layer = 3
+script = ExtResource("10_2mu0v")
+metadata/_edit_lock_ = true
+
+[node name="ColorRect" parent="MovingPlatform2/Platform" index="0"]
+offset_left = -64.0
+offset_right = 64.0
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" parent="MovingPlatform2/Platform" index="1"]
+shape = ExtResource("2_v45ci")
+one_way_collision = false
+metadata/_edit_lock_ = true
+
+[node name="MoveLocation" parent="MovingPlatform2" index="1"]
+position = Vector2(0, 320)
+
+[node name="Platform4" parent="." unique_id=721423812 instance=ExtResource("6_cyt5c")]
+position = Vector2(192, 72)
+collision_layer = 3
+platform_material = ExtResource("2_48ne7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform4" unique_id=1639352786]
+shape = ExtResource("2_v45ci")
+metadata/_edit_lock_ = true
+
+[node name="Line2D2" type="Line2D" parent="." unique_id=503201249]
+position = Vector2(1130.5455, 73.87778)
+points = PackedVector2Array(-122.54553, 54.122223, 37.454468, 54.122223)
+default_color = Color(0.32241136, 0.4891739, 1, 1)
+metadata/_edit_lock_ = true
+
+[node name="LevelGate" parent="." unique_id=138255016 instance=ExtResource("12_eaa0b")]
+position = Vector2(640, 872)
+gate_ptr = &"Tutorial_West"
+own_ptr = &"Test_Level_Center"
+player_height = 75.0
+facing_direction = 3
+
+[node name="Label" type="Label" parent="." unique_id=301285489]
+offset_left = 480.0
+offset_top = 808.0
+offset_right = 808.0
+offset_bottom = 831.0
+text = "Teletrasporto a tutorial (da implementare)"
+
 [editable path="MovingPlatform"]
+[editable path="MovingPlatform2"]

@@ -51,6 +51,7 @@ metadata/_edit_lock_ = true
 [node name="QueueComponent" parent="." unique_id=1971145583 instance=ExtResource("7_ss7kx")]
 
 [node name="CameraComponent" parent="." unique_id=1473717657 instance=ExtResource("8_dnykm")]
+zoom = Vector2(0.8, 0.8)
 
 [node name="HUD" parent="." unique_id=585250603 instance=ExtResource("11_73kkf")]
 
@@ -58,7 +59,7 @@ metadata/_edit_lock_ = true
 regen_curve = ExtResource("11_n5sgd")
 
 [node name="RespawnComponent" parent="." unique_id=1155274813 instance=ExtResource("13_5ki56")]
-respawn_area = &"test_level"
+respawn_area = &"tutorial_01"
 
 [connection signal="components_linked" from="." to="HUD" method="_on_character_body_2d_components_linked"]
 [connection signal="body_entered" from="BaseArea" to="BaseArea" method="_on_body_entered"]

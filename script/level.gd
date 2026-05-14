@@ -79,6 +79,7 @@ func _create_entrances_list() -> void:
 		if child is LevelGate:
 			entrances.append(child)
 			_connect_entrance(child)
+	print("entrate: ", entrances)
 	
 	if entrances.size() < 1:
 		push_warning("Il livello dovrebbe avere almeno un entrata/uscita")
@@ -91,6 +92,8 @@ func _connect_entrance(gate: LevelGate) -> void:
 
 func _on_new_gate_id(new_id: StringName, gate: LevelGate) -> void:
 	if entrances.has(gate):
+		print("modifico entrata")
 		level_data.modify_entrance(new_id, level_id)
 	else:
+		print("aggiungo entrata")
 		level_data.add_entrance(new_id)
