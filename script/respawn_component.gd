@@ -22,5 +22,7 @@ func respawn() -> Vector2:
 
 
 func update_pos(pos: Vector2, id: StringName) -> void:
-	respawn_area = id
+	if not id == &"":
+		respawn_area = id
+	
 	respawn_position = pos

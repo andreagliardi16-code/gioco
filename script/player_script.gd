@@ -2,6 +2,7 @@ class_name Player
 
 extends CharacterBody2D
 
+
 signal components_linked
 signal had_died
 
@@ -26,8 +27,9 @@ enum PlayerActions {JUMP, DASH, POGO} #tutte le azioni che si possono bufferare
 @onready var respawn: RespawnComponent = $RespawnComponent
 
 var friction: float = 0.0
-
 var can_walk: bool = true
+var just_changed_level: bool = false
+
 
 #region _ready, _process e setup
 func _ready() -> void:
@@ -71,6 +73,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y = 0
 		movement.hit_ceiling()
 #endregion
+
 
 #region state
 func check_physics_state() -> void:
@@ -178,7 +181,7 @@ func spawn() -> void:   #da cambiare
 	position = respawn.respawn()
 
 
-func update_spawn(pos: Vector2, id: StringName) -> void:
+func update_spawn(pos: Vector2, id: StringName = &"") -> void:
 	respawn.update_pos(pos, id)
 #endregion
 
@@ -191,3 +194,7 @@ func _unlock_powerup(powerup: PlayerActions) -> void:
 
 func add_to_queue(action: PlayerActions) -> void:
 	queue.add_to_queue(action)
+
+
+func set_level_changed(arg: bool) -> void:
+	just_changed_level = arg

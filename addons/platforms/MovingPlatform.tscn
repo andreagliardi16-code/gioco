@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://kjen34bt1yum"]
+[gd_scene format=3 uid="uid://kjen34bt1yum"]
 
-[ext_resource type="Script" path="res://addons/platforms/Platform.gd" id="1_5k0de"]
-[ext_resource type="Script" path="res://addons/platforms/info.gd" id="1_aryny"]
+[ext_resource type="Script" uid="uid://cdbtbrbjrk5dx" path="res://addons/platforms/Platform.gd" id="1_5k0de"]
+[ext_resource type="Script" uid="uid://xoq3bpoyfo4p" path="res://addons/platforms/info.gd" id="1_aryny"]
+[ext_resource type="Script" uid="uid://b6nvt0qj028up" path="res://script/movable_platform.gd" id="2_btqff"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gy3bh"]
 resource_local_to_scene = true
@@ -11,13 +12,14 @@ size = Vector2(80, 16)
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_11ri7"]
 
-[node name="MovingPlatform" type="Node2D"]
+[node name="MovingPlatform" type="Node2D" unique_id=494163059]
 position = Vector2(0, -8)
 script = ExtResource("1_aryny")
 
-[node name="Platform" type="AnimatableBody2D" parent="."]
+[node name="Platform" type="AnimatableBody2D" parent="." unique_id=1763591774]
+script = ExtResource("2_btqff")
 
-[node name="ColorRect" type="ColorRect" parent="Platform"]
+[node name="ColorRect" type="ColorRect" parent="Platform" unique_id=1438514948]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -30,18 +32,16 @@ offset_bottom = 8.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform" unique_id=2107752898]
 shape = SubResource("RectangleShape2D_gy3bh")
 one_way_collision = true
 one_way_collision_margin = 2.0
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Platform" node_paths=PackedStringArray("marker")]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Platform" unique_id=1581949504 node_paths=PackedStringArray("marker")]
 root_node = NodePath("../..")
-libraries = {
-"": SubResource("AnimationLibrary_lu2py"),
-"Platforms": SubResource("AnimationLibrary_11ri7")
-}
+libraries/ = SubResource("AnimationLibrary_lu2py")
+libraries/Platforms = SubResource("AnimationLibrary_11ri7")
 script = ExtResource("1_5k0de")
 marker = NodePath("../../MoveLocation")
 
-[node name="MoveLocation" type="Marker2D" parent="."]
+[node name="MoveLocation" type="Marker2D" parent="." unique_id=690896136]

@@ -19,10 +19,21 @@ func add_entrance(id: StringName) -> Global.Outcome:
 
 
 func modify_entrance(new_id: StringName, old_id: StringName) -> Global.Outcome:
+	print("modifico entrata in LevelData")
 	if not entrances.has(old_id):
 		return Global.Outcome.FAIL
 	
 	var i = entrances.find(old_id)
 	entrances[i] = new_id
 	
+	print("Entrances in LevelData: ", entrances)
+	
 	return Global.Outcome.OK
+
+
+func find_entrances(id: StringName) -> bool:
+	for i in range(entrances.size()):
+		if entrances[i] == id:
+			return true
+	
+	return false

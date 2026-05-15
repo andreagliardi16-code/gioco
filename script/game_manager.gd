@@ -13,27 +13,37 @@ var curr_game_state: GameState = GameState.TRANSITION
 
 var current_level: Level = null
 var death_timer: Timer = null
+var using_gate: bool = false
 
 func _ready() -> void:
 	start_game()
 	level_map.reload_level_db()
 	TimeManager.switch_timer(true)
 
+
 #region cambio livelli
-func change_level(scene_id: StringName) -> void:
+func change_level(scene_id: StringName, gate_id: StringName = &"") -> void:
 	var scene_path: String = find_level(scene_id)
 	
 	if scene_path.is_empty():
 		return
 	
-	load_level(scene_path)
+	call_deferred("load_level", scene_path)
 	
 	await get_tree().process_frame
 	
 	RespawnManager.build_spawn_map(current_level)
 	
+	await get_tree().process_frame
+	
+	if using_gate:
+		var pos: Vector2 = _get_gate_pos(gate_id)
+		player.update_spawn(pos)
+	
 	player.spawn()
+	
 	change_game_state(GameState.GAME)
+	using_gate = false
 
 
 func load_level(scene_path: String) -> void:
@@ -89,6 +99,7 @@ func start_game() -> void:
 	menu.setup(self)
 
 
+#region death
 func _on_character_body_2d_had_died() -> void:
 	handle_death()
 
@@ -110,3 +121,25 @@ func handle_death() -> void:
 func _on_timer_timeout() -> void:
 	death_timer.queue_free()
 	change_game_state(GameState.GAME)
+#endregion
+
+
+func _on_level_container_child_entered_tree(node: Node) -> void:
+	if node is not Level:
+		return
+	
+	node.level_exited.connect(_on_level_exited)
+
+
+func _on_level_exited(level_id: StringName, gate_id: StringName) -> void:
+	if not level_map.has_gate(level_id, gate_id):
+		return
+	
+	using_gate = true
+	change_level(level_id, gate_id)
+
+
+func _get_gate_pos(gate_id: StringName) -> Vector2:
+	var v: Vector2 = current_level.get_gate_pos(gate_id)
+	
+	return v

@@ -6,3 +6,4 @@
 script = ExtResource("1_n5oib")
 level_id = &"test_level"
 scene_path = "res://scenes/levels/test_level.tscn"
+entrances = Array[StringName]([&"test_level_center"])

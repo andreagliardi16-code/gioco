@@ -4,6 +4,9 @@ extends Node2D
 class_name Level
 
 
+signal level_exited(level_id: StringName, gate_id: StringName)
+
+
 @export var refresh_entrances_now: bool:
 	set(value):
 		if value:
@@ -32,6 +35,7 @@ func _ready() -> void:
 #endregion
 
 
+#region LevelData e entrances list
 func _create_level_data_resource():
 	if level_id == &"": 
 		print("ozz")
@@ -61,6 +65,7 @@ func _create_level_data_resource():
 	print("Sto salvando:")
 	print("level_id =", data.level_id)
 	print("scene_path =", data.scene_path)
+	print("scene_entrances =", data.entrances)
 	
 	var err = ResourceSaver.save(data, path)
 	if err != OK:
@@ -86,14 +91,37 @@ func _create_entrances_list() -> void:
 
 
 func _connect_entrance(gate: LevelGate) -> void:
+	print("Gate connected")
 	if not gate.new_gate_id.is_connected(_on_new_gate_id):
 		gate.new_gate_id.connect(_on_new_gate_id)
+		gate.gate_entered.connect(_on_gate_entered)
 
 
-func _on_new_gate_id(new_id: StringName, gate: LevelGate) -> void:
+func _on_new_gate_id(new_id: StringName, old_gate_id: StringName, gate: LevelGate) -> void:
 	if entrances.has(gate):
 		print("modifico entrata")
-		level_data.modify_entrance(new_id, level_id)
+		var flag: Global.Outcome = level_data.modify_entrance(new_id, old_gate_id)
+		if flag == Global.Outcome.FAIL:
+			push_warning("old_gate_id non trovato in level data, aggiungo new_gate_id")
+			level_data.add_entrance(new_id)
+	
 	else:
 		print("aggiungo entrata")
 		level_data.add_entrance(new_id)
+#endregion
+
+
+#region gate
+func _on_gate_entered(gate_ptr: StringName, level_ptr: StringName) -> void:
+	emit_signal("level_exited", level_ptr, gate_ptr)
+
+
+func get_gate_pos(gate_id: StringName) -> Vector2:
+	for i in range(entrances.size()):
+		if entrances[i].own_ptr == gate_id:
+			var pos := entrances[i].marker.global_position
+			return pos
+	
+	push_error("entrata non trovata")
+	return Vector2.ZERO
+#endregion

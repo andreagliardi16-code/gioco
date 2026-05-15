@@ -3,11 +3,17 @@
 [ext_resource type="Script" uid="uid://dpam277ytaw00" path="res://script/level_gate.gd" id="1_anlsp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_anlsp"]
+size = Vector2(64, 64)
 
 [node name="LevelGate" type="Area2D" unique_id=138255016]
 script = ExtResource("1_anlsp")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1049421088]
-shape = SubResource("RectangleShape2D_anlsp")
+player_height = 75.0
 
 [node name="Marker2D" type="Marker2D" parent="." unique_id=590821271]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1609169460]
+shape = SubResource("RectangleShape2D_anlsp")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
+[connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]

@@ -9,7 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://b58nb63ldbbir" path="res://scenes/components/respawn_area.tscn" id="7_cyt5c"]
 [ext_resource type="PackedScene" uid="uid://ciiju7767yywy" path="res://scenes/entities/pogoable_area.tscn" id="8_7x1jh"]
 [ext_resource type="PackedScene" uid="uid://kjen34bt1yum" path="res://addons/platforms/MovingPlatform.tscn" id="9_hfwtw"]
-[ext_resource type="Script" uid="uid://b6nvt0qj028up" path="res://script/movable_platform.gd" id="10_2mu0v"]
 [ext_resource type="PackedScene" uid="uid://cubx64g22g4ec" path="res://scenes/entities/kill_zone.tscn" id="11_jmx14"]
 [ext_resource type="PackedScene" uid="uid://1htlli4fmx5d" path="res://scenes/entities/level_gate.tscn" id="12_eaa0b"]
 
@@ -192,22 +191,21 @@ text = "(altezza pogo V) ->
 position = Vector2(256, 456)
 platform_material = ExtResource("2_48ne7")
 
-[node name="Platform" parent="MovingPlatform" index="0"]
+[node name="Platform" parent="MovingPlatform" index="0" unique_id=1763591774]
 collision_layer = 3
-script = ExtResource("10_2mu0v")
 metadata/_edit_lock_ = true
 
-[node name="ColorRect" parent="MovingPlatform/Platform" index="0"]
+[node name="ColorRect" parent="MovingPlatform/Platform" index="0" unique_id=1438514948]
 offset_left = -64.0
 offset_right = 64.0
 metadata/_edit_lock_ = true
 
-[node name="CollisionShape2D" parent="MovingPlatform/Platform" index="1"]
+[node name="CollisionShape2D" parent="MovingPlatform/Platform" index="1" unique_id=2107752898]
 shape = ExtResource("2_v45ci")
 one_way_collision = false
 metadata/_edit_lock_ = true
 
-[node name="MoveLocation" parent="MovingPlatform" index="1"]
+[node name="MoveLocation" parent="MovingPlatform" index="1" unique_id=690896136]
 position = Vector2(576, 0)
 
 [node name="Platform3" parent="." unique_id=1255011832 instance=ExtResource("6_cyt5c")]
@@ -229,22 +227,21 @@ shape = SubResource("RectangleShape2D_eaa0b")
 position = Vector2(1088, 136)
 platform_material = ExtResource("2_48ne7")
 
-[node name="Platform" parent="MovingPlatform2" index="0"]
+[node name="Platform" parent="MovingPlatform2" index="0" unique_id=1763591774]
 collision_layer = 3
-script = ExtResource("10_2mu0v")
 metadata/_edit_lock_ = true
 
-[node name="ColorRect" parent="MovingPlatform2/Platform" index="0"]
+[node name="ColorRect" parent="MovingPlatform2/Platform" index="0" unique_id=1438514948]
 offset_left = -64.0
 offset_right = 64.0
 metadata/_edit_lock_ = true
 
-[node name="CollisionShape2D" parent="MovingPlatform2/Platform" index="1"]
+[node name="CollisionShape2D" parent="MovingPlatform2/Platform" index="1" unique_id=2107752898]
 shape = ExtResource("2_v45ci")
 one_way_collision = false
 metadata/_edit_lock_ = true
 
-[node name="MoveLocation" parent="MovingPlatform2" index="1"]
+[node name="MoveLocation" parent="MovingPlatform2" index="1" unique_id=690896136]
 position = Vector2(0, 320)
 
 [node name="Platform4" parent="." unique_id=721423812 instance=ExtResource("6_cyt5c")]
@@ -264,17 +261,25 @@ metadata/_edit_lock_ = true
 
 [node name="LevelGate" parent="." unique_id=138255016 instance=ExtResource("12_eaa0b")]
 position = Vector2(640, 872)
-gate_ptr = &"Tutorial_West"
-own_ptr = &"Test_Level_Center"
-player_height = 75.0
-facing_direction = 3
+gate_ptr = &"tutorial_west"
+level_ptr = &"tutorial_level"
+own_ptr = &"test_level_center"
+facing_direction = 1
+
+[node name="Marker2D" parent="LevelGate" index="0" unique_id=590821271]
+position = Vector2(32, -5.5)
+
+[node name="CollisionShape2D" parent="LevelGate" index="1" unique_id=1609169460]
+position = Vector2(0, -8)
+metadata/_edit_lock_ = true
 
 [node name="Label" type="Label" parent="." unique_id=301285489]
 offset_left = 480.0
-offset_top = 808.0
+offset_top = 792.0
 offset_right = 808.0
-offset_bottom = 831.0
+offset_bottom = 815.0
 text = "Teletrasporto a tutorial (da implementare)"
 
 [editable path="MovingPlatform"]
 [editable path="MovingPlatform2"]
+[editable path="LevelGate"]

@@ -7,7 +7,6 @@
 [ext_resource type="Resource" uid="uid://dhbylf6lt2h47" path="res://resources/materials/default_material.tres" id="4_8r123"]
 [ext_resource type="Shape2D" uid="uid://c6alr4e42frkj" path="res://resources/shapes/default_rectangle_platform.tres" id="4_bmrm0"]
 [ext_resource type="PackedScene" uid="uid://b58nb63ldbbir" path="res://scenes/components/respawn_area.tscn" id="8_bmrm0"]
-[ext_resource type="Script" uid="uid://b6nvt0qj028up" path="res://script/movable_platform.gd" id="8_d0g56"]
 [ext_resource type="PackedScene" uid="uid://cubx64g22g4ec" path="res://scenes/entities/kill_zone.tscn" id="9_77k6j"]
 [ext_resource type="PackedScene" uid="uid://kjen34bt1yum" path="res://addons/platforms/MovingPlatform.tscn" id="9_bmrm0"]
 [ext_resource type="PackedScene" uid="uid://1htlli4fmx5d" path="res://scenes/entities/level_gate.tscn" id="10_77k6j"]
@@ -16,7 +15,7 @@
 size = Vector2(320, 192)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gs1om"]
-size = Vector2(2176, 64)
+size = Vector2(1984, 64)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bmrm0"]
 size = Vector2(4672, 64)
@@ -61,10 +60,10 @@ platform_material = ExtResource("4_8r123")
 metadata/_custom_type_script = "uid://cjnqdmve4stwy"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Floor2" unique_id=740691619]
-polygon = PackedVector2Array(2560, 128, 5248, 128, 5248, -576, 4736, -576, 4736, 64, 2560, 64)
+polygon = PackedVector2Array(2560, 128, 5248, 128, 5248, -576, 4544, -576, 4544, 64, 2560, 64)
 
 [node name="Platform3" parent="." unique_id=360673445 instance=ExtResource("2_xl0d0")]
-position = Vector2(3200, -248)
+position = Vector2(3072, -248)
 collision_layer = 3
 platform_material = ExtResource("4_8r123")
 
@@ -73,7 +72,7 @@ shape = ExtResource("4_bmrm0")
 metadata/_edit_lock_ = true
 
 [node name="Platform4" parent="." unique_id=1852991482 instance=ExtResource("2_xl0d0")]
-position = Vector2(3648, -440)
+position = Vector2(3520, -440)
 collision_layer = 3
 platform_material = ExtResource("4_8r123")
 
@@ -82,7 +81,7 @@ shape = ExtResource("4_bmrm0")
 metadata/_edit_lock_ = true
 
 [node name="Platform5" parent="." unique_id=1862960212 instance=ExtResource("2_xl0d0")]
-position = Vector2(4288, -440)
+position = Vector2(4096, -440)
 collision_layer = 3
 platform_material = ExtResource("4_8r123")
 
@@ -104,76 +103,73 @@ polygon = PackedVector2Array(-120, 0, 4552, 0, 4552, -320, 5064, -320, 5064, -44
 position = Vector2(5760, -376)
 platform_material = ExtResource("4_8r123")
 
-[node name="Platform" parent="MovingPlatform" index="0"]
+[node name="Platform" parent="MovingPlatform" index="0" unique_id=1763591774]
 collision_layer = 3
-script = ExtResource("8_d0g56")
 metadata/_edit_lock_ = true
 
-[node name="ColorRect" parent="MovingPlatform/Platform" index="0"]
+[node name="ColorRect" parent="MovingPlatform/Platform" index="0" unique_id=1438514948]
 offset_left = -64.0
 offset_right = 64.0
 metadata/_edit_lock_ = true
 
-[node name="CollisionShape2D" parent="MovingPlatform/Platform" index="1"]
+[node name="CollisionShape2D" parent="MovingPlatform/Platform" index="1" unique_id=2107752898]
 shape = ExtResource("4_bmrm0")
 one_way_collision = false
 metadata/_edit_lock_ = true
 
-[node name="AnimationPlayer" parent="MovingPlatform/Platform" index="2"]
+[node name="AnimationPlayer" parent="MovingPlatform/Platform" index="2" unique_id=1581949504]
 stopframe = 0.3
 
-[node name="MoveLocation" parent="MovingPlatform" index="1"]
+[node name="MoveLocation" parent="MovingPlatform" index="1" unique_id=690896136]
 position = Vector2(832, 0)
 
 [node name="MovingPlatform2" parent="." unique_id=1819788212 instance=ExtResource("9_bmrm0")]
 position = Vector2(8000, -376)
 platform_material = ExtResource("4_8r123")
 
-[node name="Platform" parent="MovingPlatform2" index="0"]
+[node name="Platform" parent="MovingPlatform2" index="0" unique_id=1763591774]
 collision_layer = 3
-script = ExtResource("8_d0g56")
 metadata/_edit_lock_ = true
 
-[node name="ColorRect" parent="MovingPlatform2/Platform" index="0"]
+[node name="ColorRect" parent="MovingPlatform2/Platform" index="0" unique_id=1438514948]
 offset_left = -64.0
 offset_right = 64.0
 metadata/_edit_lock_ = true
 
-[node name="CollisionShape2D" parent="MovingPlatform2/Platform" index="1"]
+[node name="CollisionShape2D" parent="MovingPlatform2/Platform" index="1" unique_id=2107752898]
 shape = ExtResource("4_bmrm0")
 one_way_collision = false
 metadata/_edit_lock_ = true
 
-[node name="AnimationPlayer" parent="MovingPlatform2/Platform" index="2"]
+[node name="AnimationPlayer" parent="MovingPlatform2/Platform" index="2" unique_id=1581949504]
 root_node = NodePath("../../../MovingPlatform2")
 stopframe = 0.3
 
-[node name="MoveLocation" parent="MovingPlatform2" index="1"]
+[node name="MoveLocation" parent="MovingPlatform2" index="1" unique_id=690896136]
 position = Vector2(-832, 0)
 
 [node name="MovingPlatform3" parent="." unique_id=1792983853 instance=ExtResource("9_bmrm0")]
 position = Vector2(8576, -376)
 platform_material = ExtResource("4_8r123")
 
-[node name="Platform" parent="MovingPlatform3" index="0"]
+[node name="Platform" parent="MovingPlatform3" index="0" unique_id=1763591774]
 collision_layer = 3
-script = ExtResource("8_d0g56")
 metadata/_edit_lock_ = true
 
-[node name="ColorRect" parent="MovingPlatform3/Platform" index="0"]
+[node name="ColorRect" parent="MovingPlatform3/Platform" index="0" unique_id=1438514948]
 offset_left = -64.0
 offset_right = 64.0
 metadata/_edit_lock_ = true
 
-[node name="CollisionShape2D" parent="MovingPlatform3/Platform" index="1"]
+[node name="CollisionShape2D" parent="MovingPlatform3/Platform" index="1" unique_id=2107752898]
 shape = ExtResource("4_bmrm0")
 one_way_collision = false
 metadata/_edit_lock_ = true
 
-[node name="AnimationPlayer" parent="MovingPlatform3/Platform" index="2"]
+[node name="AnimationPlayer" parent="MovingPlatform3/Platform" index="2" unique_id=1581949504]
 stopframe = 0.3
 
-[node name="MoveLocation" parent="MovingPlatform3" index="1"]
+[node name="MoveLocation" parent="MovingPlatform3" index="1" unique_id=690896136]
 position = Vector2(832, 0)
 metadata/_edit_lock_ = true
 
@@ -187,11 +183,11 @@ shape = SubResource("RectangleShape2D_d0g56")
 metadata/_edit_lock_ = true
 
 [node name="KillZone" parent="." unique_id=1976485095 instance=ExtResource("9_77k6j")]
-position = Vector2(3680, 32)
+position = Vector2(3552, 32)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="KillZone" unique_id=1630693284]
-position = Vector2(-32, 0)
 shape = SubResource("RectangleShape2D_gs1om")
+metadata/_edit_lock_ = true
 
 [node name="KillZone2" parent="." unique_id=593731293 instance=ExtResource("9_77k6j")]
 position = Vector2(7584, 32)
@@ -201,10 +197,20 @@ shape = SubResource("RectangleShape2D_bmrm0")
 metadata/_edit_lock_ = true
 
 [node name="LevelGate" parent="." unique_id=138255016 instance=ExtResource("10_77k6j")]
-position = Vector2(72, -872)
-gate_ptr = &"Test_Level_Center"
-own_ptr = &"Tutorial_West"
+position = Vector2(64, -832)
+gate_ptr = &"test_level_center"
+level_ptr = &"test_level"
+own_ptr = &"tutorial_west"
+facing_direction = 1
+
+[node name="Marker2D" parent="LevelGate" index="0" unique_id=590821271]
+position = Vector2(32, -5.5)
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" parent="LevelGate" index="1" unique_id=1609169460]
+metadata/_edit_lock_ = true
 
 [editable path="MovingPlatform"]
 [editable path="MovingPlatform2"]
 [editable path="MovingPlatform3"]
+[editable path="LevelGate"]

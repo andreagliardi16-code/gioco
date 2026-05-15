@@ -5,10 +5,12 @@ class_name LevelGate
 
 
 signal new_gate_id(new_id: StringName, old_id: StringName, gate: LevelGate)
+signal gate_entered(id_ptr: StringName, level_ptr: StringName)
 
 
 @export_group("Collegamento tra Livelli")
 @export var gate_ptr: StringName = &""
+@export var level_ptr: StringName = &""
 @export var own_ptr: StringName:
 	set(value):
 		old_own_ptr = own_ptr
@@ -70,6 +72,7 @@ func _adjust_spawn_pos()-> void:
 
 func _position_marker() -> void:
 	marker.position = spawn_pos
+	print("SPAWN_POS: ", spawn_pos)
 #endregion
 
 
@@ -85,3 +88,23 @@ func _get_configuration_warnings() -> PackedStringArray:
 		string.append("Assegnare l'identificatore dell'entrata al livello successivo collegata a quest'area.\n Assicurarsi che esista nel livello desiderato (un errore non viene identificato automaticamente).")
 	
 	return string
+
+
+func _on_body_entered(body: Node2D) -> void:
+	if body is not Player:
+		return
+	
+	if body.just_changed_level:
+		return
+	
+	body.set_level_changed(true)
+	print("STO CAMBIANDO LIVELLO")
+	emit_signal("gate_entered", gate_ptr, level_ptr)
+
+
+func _on_body_exited(body: Node2D) -> void:
+	if body is not Player:
+		return
+	
+	print("STO TOGLIENDO TUTTO")
+	body.call_deferred("set_level_changed", true)
