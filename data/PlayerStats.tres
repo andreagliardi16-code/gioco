@@ -11,6 +11,7 @@ max_speed = 560
 acceleration = 3111.0
 deceleration = 5600.0
 max_distance = 100
+y_pan_target = 350
 dash_speed_amt = 2500
 dash_time = 0.16
 dash_cut = -1850.0

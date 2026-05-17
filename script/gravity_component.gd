@@ -47,11 +47,11 @@ func get_gravity() -> float:
 
 #region state
 func update_gravity() -> void:
-	if parent.curr_physic_state == Player.PhysicsStates.GROUND:
+	if parent.curr_physic_state == Player.PhysicsState.GROUND:
 		if curr_grav_mode != GravityModes.GROUNDED:
 			change_gravity_state(GravityModes.GROUNDED)
 			return
-	elif parent.curr_physic_state == Player.PhysicsStates.AIR:
+	elif parent.curr_physic_state == Player.PhysicsState.AIR:
 		if parent.movement.jump_cut_timer > 0.0:
 			if curr_grav_mode != GravityModes.JUMP_CUT:
 				change_gravity_state(GravityModes.JUMP_CUT)

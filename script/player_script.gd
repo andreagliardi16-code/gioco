@@ -6,9 +6,9 @@ extends CharacterBody2D
 signal components_linked
 signal had_died
 
-enum PhysicsStates {DEFAULT, GROUND, AIR}
-var curr_physic_state: PhysicsStates = PhysicsStates.DEFAULT
-enum PlayerStates {IDLE, SLIDE, JUMP, FALL, DASH, POGO, DEAD}
+enum PhysicsState {DEFAULT, GROUND, AIR}
+var curr_physic_state: PhysicsState = PhysicsState.DEFAULT
+enum PlayerStates {IDLE, SLIDE, JUMP, FALL, DASH, POGO, LOOK_AROUND, DEAD}
 var curr_player_state: PlayerStates = PlayerStates.IDLE
 enum PlayerActions {JUMP, DASH, POGO} #tutte le azioni che si possono bufferare
 
@@ -78,10 +78,10 @@ func _physics_process(delta: float) -> void:
 #region state
 func check_physics_state() -> void:
 	if base.on_floor:
-		curr_physic_state = PhysicsStates.GROUND
+		curr_physic_state = PhysicsState.GROUND
 		movement.change_dash_jump_bool(false)
 	else:
-		curr_physic_state = PhysicsStates.AIR
+		curr_physic_state = PhysicsState.AIR
 
 func check_player_state() -> void:
 	if respawn.death_timer and respawn.death_timer.time_left > 0:
@@ -101,6 +101,10 @@ func check_player_state() -> void:
 	elif movement.is_jumping:
 		_set_can_walk(true)
 		curr_player_state = PlayerStates.JUMP
+		return
+	elif camera.curr_cam_state == CameraComponent.State.PAN:
+		curr_player_state = PlayerStates.LOOK_AROUND
+		_set_can_walk(true)
 		return
 	elif velocity.y > 0:
 		_set_can_walk(true)
@@ -131,15 +135,23 @@ func start_coyote_time():
 #endregion
 
 #region controllo sulle azioni
-func can_jump() -> bool:  #IMPLEMENTARE BENE (controllo su stati (non su variabili), coyote time ecc...)
-	if (movement.in_coyote_time or curr_physic_state == PhysicsStates.GROUND) and curr_player_state != PlayerStates.JUMP:
+func can_jump() -> bool:
+	if (curr_player_state == PlayerStates.LOOK_AROUND):
+		return false
+	
+	if (movement.in_coyote_time or curr_physic_state == PhysicsState.GROUND) \
+	and curr_player_state != PlayerStates.JUMP:
 		return true
 	
 	return false
 
 
 func can_dash() -> bool:  #IMPLEMENTARE (controllo su stati)
-	if movement.in_dash_cooldown or movement.had_dash_jumped or not check_power("dash"):
+	if movement.in_dash_cooldown or movement.had_dash_jumped \
+	or not check_power("dash"):
+		return false
+	
+	if curr_player_state == PlayerStates.LOOK_AROUND:
 		return false
 	
 	return true
@@ -151,8 +163,21 @@ func can_pogo() -> bool:
 	
 	return true
 
+
 func _set_can_walk(arg: bool) -> void:
 	can_walk = arg
+
+
+func _can_look_around() -> bool:
+	if not curr_physic_state == PhysicsState.GROUND:
+		return false
+	
+	if not (curr_player_state == PlayerStates.IDLE 
+	or curr_player_state == PlayerStates.SLIDE 
+	or curr_player_state == PlayerStates.LOOK_AROUND):
+		return false
+	 
+	return true
 #endregion
 
 #region power-up
@@ -198,3 +223,10 @@ func add_to_queue(action: PlayerActions) -> void:
 
 func set_level_changed(arg: bool) -> void:
 	just_changed_level = arg
+
+
+func _on_input_component_look_input_changed(dir: int) -> void:
+	if not camera:
+		return
+	
+	if _can_look_around(): camera.pan_camera(dir)

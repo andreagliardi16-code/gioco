@@ -29,9 +29,11 @@ extends Stats
 #region camera
 @export_group("Camera")
 @export var zoom: float = 1
-@export var distance_n: float = 0.1  #coefficente che determina relazione tra distanza player centro cam e velocità del player
+##coefficente che determina relazione tra distanza player centro cam e velocità del player
+@export var distance_n: float = 0.1  
 @export var max_distance: int = 80   #massima distanza in pixel dal player al centro della camera
-@export var vertical_modifier: float = 300 #distanza in pixel della modifica verticale (con input)
+@export var x_pan_target: int = 600
+@export var y_pan_target: int = 300
 #endregion
 
 #region dash

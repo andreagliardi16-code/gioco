@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://20ie8almuwlg" path="res://scenes/components/stats_component.tscn" id="11_5ki56"]
 [ext_resource type="PackedScene" uid="uid://n4n0uhtcgkqh" path="res://scenes/entities/hud.tscn" id="11_73kkf"]
 [ext_resource type="Curve" uid="uid://yjexd7u64g3f" path="res://resources/curves/energy_regen_curve.tres" id="11_n5sgd"]
+[ext_resource type="Curve" uid="uid://dc7nn3pk3p3sf" path="res://resources/curves/camera_pan_curve.tres" id="11_ogpgs"]
 [ext_resource type="PackedScene" uid="uid://bclh6crnvr5iu" path="res://scenes/components/respawn_component.tscn" id="13_5ki56"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ss7kx"]
@@ -52,6 +53,7 @@ metadata/_edit_lock_ = true
 
 [node name="CameraComponent" parent="." unique_id=1473717657 instance=ExtResource("8_dnykm")]
 zoom = Vector2(0.9, 0.9)
+pan_curve = ExtResource("11_ogpgs")
 
 [node name="HUD" parent="." unique_id=585250603 instance=ExtResource("11_73kkf")]
 
@@ -65,6 +67,7 @@ respawn_area = &"test_level"
 [connection signal="body_entered" from="BaseArea" to="BaseArea" method="_on_body_entered"]
 [connection signal="body_exited" from="BaseArea" to="BaseArea" method="_on_body_exited"]
 [connection signal="jump_input_changed" from="InputComponent" to="MovementComponent" method="_on_input_component_jump_input_changed"]
+[connection signal="look_input_changed" from="InputComponent" to="." method="_on_input_component_look_input_changed"]
 [connection signal="energy_spended" from="MovementComponent" to="StatsComponent" method="_on_movement_component_energy_spended"]
 [connection signal="energy_changed" from="StatsComponent" to="HUD" method="_on_stats_component_energy_changed"]
 [connection signal="death_timer_finished" from="RespawnComponent" to="." method="_on_respawn_component_death_timer_finished"]

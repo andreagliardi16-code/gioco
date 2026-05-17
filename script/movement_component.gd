@@ -150,7 +150,8 @@ func move(delta: float) -> void:
 
 #region gravity
 func apply_gravity(delta: float) -> void:
-	if parent.curr_physic_state == Player.PhysicsStates.GROUND or parent.curr_player_state == Player.PlayerStates.DASH:
+	if parent.curr_physic_state == Player.PhysicsState.GROUND\
+	or parent.curr_player_state == Player.PlayerStates.DASH:
 		velocity.y = 0.0
 		return
 	
@@ -219,7 +220,7 @@ func jump() -> void:
 	#data dallo scalare frame-by-frame la gravità nel move_y
 	#il controllo sul poter saltare va fatto nella coda
 	#parent.change_player_state(Player.PlayerStates.JUMP)
-	emit_signal("energy_spended", "jump")
+	energy_spended.emit("jump")
 	
 	jump_cut_timer = 0
 	min_jump_timer = MIN_JUMP_TIME
@@ -268,7 +269,7 @@ func dash() -> void:
 	dash_cooldown_timer = parent_stats.dash_cooldown
 	in_dash_cooldown = true
 	
-	if parent.curr_physic_state != Player.PhysicsStates.GROUND:
+	if parent.curr_physic_state != Player.PhysicsState.GROUND:
 		change_dash_jump_bool(true)
 
 func _get_dash_direction() -> int:
