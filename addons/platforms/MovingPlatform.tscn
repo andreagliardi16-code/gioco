@@ -17,6 +17,7 @@ position = Vector2(0, -8)
 script = ExtResource("1_aryny")
 
 [node name="Platform" type="AnimatableBody2D" parent="." unique_id=1763591774]
+collision_layer = 3
 script = ExtResource("2_btqff")
 
 [node name="ColorRect" type="ColorRect" parent="Platform" unique_id=1438514948]

@@ -38,8 +38,8 @@ func setup(statistics: Stats, player: CharacterBody2D) -> void:
 	
 	if Global.debug_mode:
 		sprite.visible = true
-		curve_area = _calculate_curve_area(pan_curve, 100)
-		_calc_max_speed()
+		#curve_area = _calculate_curve_area(pan_curve, 100)
+		#_calc_max_speed()
 	else:
 		sprite.visible = false
 		sprite.process_mode = Node.PROCESS_MODE_DISABLED
@@ -77,6 +77,7 @@ func _handle_timers(delta: float) -> void:
 	if transition_timer > 0:
 		transition_timer -= delta
 		if transition_timer <= 0:
+			_end_pan_transition()
 			transition_timer = 0
 
 
@@ -157,11 +158,9 @@ func _sample_pan_curve() -> Vector2:
 
 func _end_pan_transition()->void:
 	if abs(offset.x) < MIN_OFFSET and abs(offset.y) < MIN_OFFSET:
-		print("ZIOK")
 		offset = DEF_OFFSET
 		change_state(State.DEFAULT)
 	else: 
-		print("PAN")
 		change_state(State.PAN)
 
 func _get_return_vel(progress: float) -> Vector2:
