@@ -3,6 +3,7 @@ class_name CameraComponent
 extends Camera2D
 
 
+const DEF_OFFSET: Vector2 = Vector2.ZERO
 const MIN_OFFSET: int = 10
 const DELTA_OFFSET: int = 100
 const TRANSITION_TIME: float = 1.0
@@ -76,7 +77,7 @@ func _handle_timers(delta: float) -> void:
 	if transition_timer > 0:
 		transition_timer -= delta
 		if transition_timer <= 0:
-			_end_pan_transition()
+			transition_timer = 0
 
 
 func _update_offset(delta: float) -> void:
@@ -87,8 +88,6 @@ func _update_offset(delta: float) -> void:
 			offset.y = move_toward(offset.y, target_offset.y, DELTA_OFFSET*delta)
 		State.PAN_TRANSITION:
 			_handle_pan_transition(delta)
-		State.PAN:
-			pass
 
 
 func _calc_offset() -> Vector2:
@@ -137,6 +136,9 @@ func _handle_pan_transition(delta:float) -> void:
 	
 	offset.x = move_toward(offset.x, target_offset.x, prog_vector.x*delta)
 	offset.y = move_toward(offset.y, target_offset.y, prog_vector.y*delta)
+	
+	if offset == target_offset:
+		_end_pan_transition()
 
 
 func _sample_pan_curve() -> Vector2:
@@ -151,12 +153,15 @@ func _sample_pan_curve() -> Vector2:
 			return Vector2(progress*MAX_SPEED_X, 0)
 		_:
 			return _get_return_vel(progress) #L'OFFSET DEVE TORNARE VERSO IL PUNTO 0 DEL PLAYER
-
+	
 
 func _end_pan_transition()->void:
-	if abs(offset.x) < 10 and abs(offset.y) < 10:
+	if abs(offset.x) < MIN_OFFSET and abs(offset.y) < MIN_OFFSET:
+		print("ZIOK")
+		offset = DEF_OFFSET
 		change_state(State.DEFAULT)
 	else: 
+		print("PAN")
 		change_state(State.PAN)
 
 func _get_return_vel(progress: float) -> Vector2:

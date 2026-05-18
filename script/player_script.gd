@@ -170,13 +170,18 @@ func _set_can_walk(arg: bool) -> void:
 
 func _can_look_around() -> bool:
 	if not curr_physic_state == PhysicsState.GROUND:
+		print("NON PANNO PER STATO FISICO")
 		return false
 	
 	if not (curr_player_state == PlayerStates.IDLE 
-	or curr_player_state == PlayerStates.SLIDE 
-	or curr_player_state == PlayerStates.LOOK_AROUND):
+	or curr_player_state == PlayerStates.SLIDE):
+		print("NON PANNO PER STATO PLAYER")
 		return false
-	 
+	
+	if camera.curr_cam_state == CameraComponent.State.PAN_TRANSITION:
+		print("NON PANNO PER STATO CAM")
+		return false
+	
 	return true
 #endregion
 
@@ -229,4 +234,5 @@ func _on_input_component_look_input_changed(dir: int) -> void:
 	if not camera:
 		return
 	
-	if _can_look_around(): camera.pan_camera(dir)
+	if _can_look_around() or dir == Global.Direction.NULL: 
+		camera.pan_camera(dir)

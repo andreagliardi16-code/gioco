@@ -87,14 +87,17 @@ func _get_direction() -> Global.Direction:    #return null se non è premuta dir
 func _look_around() -> void:
 	var vec: Vector2 = _get_look_vector()
 	
-	#if vec.length() < 0.2 and _last_pan_input.length() < 0.2:
-		#return
+	if vec.length() < 0.2 and _last_pan_input.length() < 0.2:
+		return
 	
 	_last_pan_input = vec
 	
 	var dir: Global.Direction = _translate_vec_to_dir(vec.normalized(), LOOK_VERT_THRESHOLD)
 	
-	if dir == look_direction: return
+	if dir == look_direction: 
+		return
+	if look_direction != Global.Direction.NULL and dir != Global.Direction.NULL:
+		return
 	else:
 		look_direction = dir
 		look_input_changed.emit(look_direction)
