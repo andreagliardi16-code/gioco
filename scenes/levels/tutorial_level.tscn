@@ -104,7 +104,6 @@ position = Vector2(5760, -376)
 platform_material = ExtResource("4_8r123")
 
 [node name="Platform" parent="MovingPlatform" index="0" unique_id=1763591774]
-collision_layer = 3
 metadata/_edit_lock_ = true
 
 [node name="ColorRect" parent="MovingPlatform/Platform" index="0" unique_id=1438514948]
@@ -118,7 +117,8 @@ one_way_collision = false
 metadata/_edit_lock_ = true
 
 [node name="AnimationPlayer" parent="MovingPlatform/Platform" index="2" unique_id=1581949504]
-stopframe = 0.3
+speed = 0.6
+stopframe = 0.8
 
 [node name="MoveLocation" parent="MovingPlatform" index="1" unique_id=690896136]
 position = Vector2(832, 0)
@@ -128,7 +128,6 @@ position = Vector2(8000, -376)
 platform_material = ExtResource("4_8r123")
 
 [node name="Platform" parent="MovingPlatform2" index="0" unique_id=1763591774]
-collision_layer = 3
 metadata/_edit_lock_ = true
 
 [node name="ColorRect" parent="MovingPlatform2/Platform" index="0" unique_id=1438514948]
@@ -143,7 +142,8 @@ metadata/_edit_lock_ = true
 
 [node name="AnimationPlayer" parent="MovingPlatform2/Platform" index="2" unique_id=1581949504]
 root_node = NodePath("../../../MovingPlatform2")
-stopframe = 0.3
+speed = 0.6
+stopframe = 0.8
 
 [node name="MoveLocation" parent="MovingPlatform2" index="1" unique_id=690896136]
 position = Vector2(-832, 0)
@@ -153,7 +153,6 @@ position = Vector2(8576, -376)
 platform_material = ExtResource("4_8r123")
 
 [node name="Platform" parent="MovingPlatform3" index="0" unique_id=1763591774]
-collision_layer = 3
 metadata/_edit_lock_ = true
 
 [node name="ColorRect" parent="MovingPlatform3/Platform" index="0" unique_id=1438514948]
@@ -167,7 +166,8 @@ one_way_collision = false
 metadata/_edit_lock_ = true
 
 [node name="AnimationPlayer" parent="MovingPlatform3/Platform" index="2" unique_id=1581949504]
-stopframe = 0.3
+speed = 0.6
+stopframe = 0.8
 
 [node name="MoveLocation" parent="MovingPlatform3" index="1" unique_id=690896136]
 position = Vector2(832, 0)
