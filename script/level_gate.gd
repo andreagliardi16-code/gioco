@@ -4,6 +4,9 @@ extends Area2D
 class_name LevelGate
 
 
+const SPAWN_OFFSET: int = 50
+
+
 signal new_gate_id(new_id: StringName, old_id: StringName, gate: LevelGate)
 signal gate_entered(id_ptr: StringName, level_ptr: StringName)
 
@@ -60,9 +63,9 @@ func _adjust_spawn_pos()-> void:
 	
 	match facing_direction:
 		Global.Direction.EAST:
-			spawn_pos.x = extents.x
+			spawn_pos.x = extents.x + SPAWN_OFFSET
 		Global.Direction.WEST:
-			spawn_pos.x = -extents.x
+			spawn_pos.x = -extents.x - SPAWN_OFFSET
 		_:
 			spawn_pos = Vector2.ZERO
 			push_error("L'entrata di un livello può essere rivolta solo a destra o sinistra")
@@ -95,6 +98,7 @@ func _on_body_entered(body: Node2D) -> void:
 		return
 	
 	if body.just_changed_level:
+		print("JGDYDF")
 		return
 	
 	body.set_level_changed(true)
@@ -107,4 +111,4 @@ func _on_body_exited(body: Node2D) -> void:
 		return
 	
 	print("STO TOGLIENDO TUTTO")
-	body.call_deferred("set_level_changed", true)
+	body.call_deferred("set_level_changed", false)

@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://bsghofgkl8653"]
+
+[ext_resource type="Script" uid="uid://cjnqdmve4stwy" path="res://script/platform.gd" id="1_bcxj2"]
+[ext_resource type="Script" uid="uid://w0hs350wsxio" path="res://script/level.gd" id="1_wggnu"]
+[ext_resource type="Resource" uid="uid://dhbylf6lt2h47" path="res://resources/materials/default_material.tres" id="2_0a80w"]
+[ext_resource type="Resource" uid="uid://568ix8yb7tyh" path="res://data/levels/hub_level.tres" id="2_rymmw"]
+[ext_resource type="PackedScene" uid="uid://1htlli4fmx5d" path="res://scenes/entities/level_gate.tscn" id="3_lictt"]
+[ext_resource type="PackedScene" uid="uid://b58nb63ldbbir" path="res://scenes/components/respawn_area.tscn" id="6_ny5ni"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f6ncv"]
+size = Vector2(256, 320)
+
+[node name="hub_level" type="Node2D" unique_id=363095738]
+script = ExtResource("1_wggnu")
+level_id = &"hub_level"
+level_data = ExtResource("2_rymmw")
+
+[node name="Floor" type="StaticBody2D" parent="." unique_id=1658196910]
+collision_layer = 3
+script = ExtResource("1_bcxj2")
+platform_material = ExtResource("2_0a80w")
+metadata/_custom_type_script = "uid://cjnqdmve4stwy"
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Floor" unique_id=2000267931]
+polygon = PackedVector2Array(-128, -128, -128, 128, 2304, 128, 2304, -128, 2240, -128, 2240, 0, -64, 0, -64, -128)
+metadata/_edit_lock_ = true
+
+[node name="Roof" type="StaticBody2D" parent="." unique_id=1783081119]
+collision_layer = 3
+script = ExtResource("1_bcxj2")
+platform_material = ExtResource("2_0a80w")
+metadata/_custom_type_script = "uid://cjnqdmve4stwy"
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Roof" unique_id=1021041476]
+polygon = PackedVector2Array(-128, -128, -128, -448, 2304, -448, 2304, -128, 2112, -128, 2112, -384, 64, -384, 64, -128)
+
+[node name="LevelGate" parent="." unique_id=138255016 instance=ExtResource("3_lictt")]
+position = Vector2(0, -64)
+gate_ptr = &"tutorial_east"
+level_ptr = &"tutorial_level"
+own_ptr = &"hub_west"
+facing_direction = 1
+metadata/_edit_lock_ = true
+
+[node name="Marker2D" parent="LevelGate" index="0" unique_id=590821271]
+position = Vector2(114, 26.5)
+
+[node name="CollisionShape2D" parent="LevelGate" index="1" unique_id=1609169460]
+metadata/_edit_lock_ = true
+
+[node name="RespawnArea" parent="." unique_id=881202515 instance=ExtResource("6_ny5ni")]
+position = Vector2(1152, -160)
+id = &"hub_spawn"
+is_game_spawn = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RespawnArea" unique_id=368801742]
+shape = SubResource("RectangleShape2D_f6ncv")
+metadata/_edit_lock_ = true
+
+[editable path="LevelGate"]

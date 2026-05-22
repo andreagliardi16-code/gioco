@@ -23,6 +23,8 @@ func _ready() -> void:
 
 #region cambio livelli
 func change_level(scene_id: StringName, gate_id: StringName = &"") -> void:
+	print("CAMBIO LIVELLO")
+	
 	var scene_path: String = find_level(scene_id)
 	
 	if scene_path.is_empty():

@@ -8,6 +8,7 @@ extends Area2D
 @export var id: StringName = &""
 @export var player_height: float = 75.0
 @export var auto_update: bool = true
+@export var is_game_spawn: bool = false
 @export var update_now: bool:
 	set(value):
 		if value:
@@ -69,5 +70,8 @@ func get_anchor_position() -> Vector2:
 func _on_body_entered(body: Node2D) -> void:
 	if not body is Player:
 		return
+	
+	if is_game_spawn and Global.debug_mode:
+		Global.change_game_spawn(get_parent().level_id, self.id, body)
 	
 	body.update_spawn(anchor.global_position,id)
