@@ -61,7 +61,6 @@ pan_curve = ExtResource("11_ogpgs")
 regen_curve = ExtResource("11_n5sgd")
 
 [node name="RespawnComponent" parent="." unique_id=1155274813 instance=ExtResource("13_5ki56")]
-respawn_area = &"test_level"
 
 [connection signal="components_linked" from="." to="HUD" method="_on_character_body_2d_components_linked"]
 [connection signal="body_entered" from="BaseArea" to="BaseArea" method="_on_body_entered"]

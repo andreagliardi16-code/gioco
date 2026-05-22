@@ -5,24 +5,29 @@ class_name RespawnComponent
 
 extends Node
 
+
+const ERR_VECTOR: Vector2 = Vector2(-1, -1)
+
+
 signal death_timer_finished
 
-@export var respawn_area: StringName = &""
 
-var respawn_position = null
+var respawn_area: StringName = &""
+var respawn_position : Vector2 = ERR_VECTOR
 var death_timer: Timer 
 
 
 func respawn() -> Vector2:
-	if not (respawn_position == null):
+	if not (respawn_position == ERR_VECTOR):
 		return respawn_position
 	
 	respawn_position = RespawnManager.get_spawn_point(respawn_area)
 	return respawn_position
 
 
-func update_pos(pos: Vector2, id: StringName) -> void:
+func update_pos(id: StringName, pos: Vector2 = ERR_VECTOR) -> void:
 	if not id == &"":
 		respawn_area = id
 	
-	respawn_position = pos
+	if not pos == ERR_VECTOR:
+		respawn_position = pos

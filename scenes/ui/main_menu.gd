@@ -13,4 +13,5 @@ func setup(node: GameManager) -> void:
 
 func _on_button_pressed() -> void:
 	queue_free()
+	print("global_spawn: ", Global.spawn_level_id)
 	game_manager.change_level(Global.spawn_level_id)

@@ -71,7 +71,18 @@ func _on_body_entered(body: Node2D) -> void:
 	if not body is Player:
 		return
 	
-	if is_game_spawn and Global.debug_mode:
-		Global.change_game_spawn(get_parent().level_id, self.id, body)
+	if is_game_spawn and not Global.debug_mode:
+		var parent = get_parent()
+		var level_id: StringName = ""
+		
+		if parent is Level:
+			level_id = get_parent().level_id
+		else: 
+			push_error("Il nodo non è figlio diretto del livello")
+			return
+		
+		print("CAMBIO SPAWN GENERALE: ", id)
+		print("ID_LIVELLO: ", level_id)
+		Global.change_game_spawn(level_id, id)
 	
 	body.update_spawn(anchor.global_position,id)

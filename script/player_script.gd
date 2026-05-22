@@ -209,7 +209,7 @@ func spawn() -> void:   #da cambiare
 
 
 func update_spawn(pos: Vector2, id: StringName = &"") -> void:
-	respawn.update_pos(pos, id)
+	respawn.update_pos(id, pos)
 #endregion
 
 

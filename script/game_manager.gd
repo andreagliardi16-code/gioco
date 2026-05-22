@@ -1,8 +1,13 @@
 extends Node
 class_name GameManager
 
+
+const SPAWN_FILE_PATH: String = "user://spawn_data"
+
+
 enum GameState {GAME, PAUSE, TRANSITION}
 var curr_game_state: GameState = GameState.TRANSITION
+
 
 @export var main_menu: PackedScene
 @export var level_map: LevelMap = null
@@ -15,7 +20,10 @@ var current_level: Level = null
 var death_timer: Timer = null
 var using_gate: bool = false
 
+
 func _ready() -> void:
+	Global.set_game_manager(self)
+	
 	start_game()
 	level_map.reload_level_db()
 	TimeManager.switch_timer(true)
@@ -96,6 +104,12 @@ func change_activity() -> void:
 
 func start_game() -> void:
 	change_game_state(GameState.PAUSE)
+	
+	var err = _check_config_and_load()
+	if err != Global.Outcome.OK:
+		push_error("Impossibile caricare il file con i dati di spawn per iniziare la partita")
+		get_tree().quit()
+	
 	var menu = main_menu.instantiate()
 	ui.add_child(menu)
 	menu.setup(self)
@@ -145,3 +159,57 @@ func _get_gate_pos(gate_id: StringName) -> Vector2:
 	var v: Vector2 = current_level.get_gate_pos(gate_id)
 	
 	return v
+
+
+#region spawn data ConfigFile
+func _check_config_and_load() -> Global.Outcome:
+	var config: ConfigFile = ConfigFile.new()
+	
+	#carico il file dal computer dell'utente
+	var err = config.load(SPAWN_FILE_PATH)
+	
+	# se il file non esiste (o si è corrotto) si crea uno nuovo con dati di inizio partita
+	var c: int = 0
+	while err != OK:
+		c += 1
+		_build_spawn_file(config)
+		err = config.load(SPAWN_FILE_PATH)
+		
+		if c > 3:
+			return Global.Outcome.FAIL
+	
+	#se il file esiste già lo leggo e "scrivo i distribuisco" i dati dove servono
+	var spawn_level: StringName = config.get_value("spawn_data", "spawn_level")
+	var spawn_id: StringName = config.get_value("spawn_data", "spawn_id")
+	
+	player.respawn.update_pos(spawn_id)
+	Global.set_spawn_level(spawn_level)
+	
+	return Global.Outcome.OK
+
+
+func _build_spawn_file(config: ConfigFile) -> void:
+	#aggiungo i valori di base al file
+	config.set_value("spawn_data", "spawn_level", &"test_level")
+	config.set_value("spawn_data", "spawn_id", &"test_level")
+	
+	#salvo il file su disco
+	config.save(SPAWN_FILE_PATH)
+
+
+func change_spawn_data(spawn_id: StringName, spawn_level: StringName) -> Global.Outcome:
+	var config: ConfigFile = ConfigFile.new()
+	
+	var err = config.load(SPAWN_FILE_PATH)
+	if err != OK:
+		push_error("Impossibile accedere ai file con dati dello spawn")
+		return Global.Outcome.FAIL
+	
+	# modifico i dati
+	config.set_value("spawn_data", "spawn_level", spawn_level)
+	config.set_value("spawn_data", "spawn_id", spawn_id)
+	
+	# salvo sul comupter dell'utente
+	config.save(SPAWN_FILE_PATH)  # si potrebbe aggiungere controllo sulla sovrascrittura
+	return Global.Outcome.OK
+#endregion
