@@ -206,6 +206,8 @@ func die() -> void:
 
 func spawn() -> void:   #da cambiare
 	position = respawn.respawn()
+	if position == Vector2.ZERO:
+		push_error("Probabilmente c'è stato un errore nel passare la posizione dello spawn")
 
 
 func update_spawn(pos: Vector2, id: StringName = &"") -> void:

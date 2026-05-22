@@ -16,6 +16,7 @@ func build_spawn_map(curr_level: Level) -> void:
 
 
 func get_spawn_point(identifier: StringName) -> Vector2:
+	print("\nSPAWN POINT LIST: ", spawn_point_list)
 	if spawn_point_list.has(identifier):
 		return spawn_point_list[identifier]
 	else:

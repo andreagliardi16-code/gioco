@@ -20,6 +20,7 @@ script = ExtResource("3_nn85l")
 script = ExtResource("3_r5xev")
 
 [node name="CharacterBody2D" parent="." unique_id=1177918152 instance=ExtResource("2_r5xev")]
+position = Vector2(-141, -61)
 
 [connection signal="child_entered_tree" from="LevelContainer" to="." method="_on_level_container_child_entered_tree"]
 [connection signal="had_died" from="CharacterBody2D" to="." method="_on_character_body_2d_had_died"]

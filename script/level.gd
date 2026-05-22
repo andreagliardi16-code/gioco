@@ -38,7 +38,6 @@ func _ready() -> void:
 #region LevelData e entrances list
 func _create_level_data_resource():
 	if level_id == &"": 
-		print("ozz")
 		return
 	
 	var path: String = "res://data/levels/" + str(level_id) + ".tres"
@@ -84,14 +83,14 @@ func _create_entrances_list() -> void:
 		if child is LevelGate:
 			entrances.append(child)
 			_connect_entrance(child)
-	print("entrate: ", entrances)
+	#print("entrate: ", entrances)
 	
 	if entrances.size() < 1:
 		push_warning("Il livello dovrebbe avere almeno un entrata/uscita")
 
 
 func _connect_entrance(gate: LevelGate) -> void:
-	print("Gate connected")
+	#print("Gate connected")
 	if not gate.new_gate_id.is_connected(_on_new_gate_id):
 		gate.new_gate_id.connect(_on_new_gate_id)
 		gate.gate_entered.connect(_on_gate_entered)
@@ -99,14 +98,14 @@ func _connect_entrance(gate: LevelGate) -> void:
 
 func _on_new_gate_id(new_id: StringName, old_gate_id: StringName, gate: LevelGate) -> void:
 	if entrances.has(gate):
-		print("modifico entrata")
+		#print("modifico entrata")
 		var flag: Global.Outcome = level_data.modify_entrance(new_id, old_gate_id)
 		if flag == Global.Outcome.FAIL:
 			push_warning("old_gate_id non trovato in level data, aggiungo new_gate_id")
 			level_data.add_entrance(new_id)
 	
 	else:
-		print("aggiungo entrata")
+		#print("aggiungo entrata")
 		level_data.add_entrance(new_id)
 #endregion
 

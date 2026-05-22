@@ -19,6 +19,7 @@ var curr_game_state: GameState = GameState.TRANSITION
 var current_level: Level = null
 var death_timer: Timer = null
 var using_gate: bool = false
+var is_loading_level: bool = false
 
 
 func _ready() -> void:
@@ -31,18 +32,30 @@ func _ready() -> void:
 
 #region cambio livelli
 func change_level(scene_id: StringName, gate_id: StringName = &"") -> void:
-	print("CAMBIO LIVELLO")
+	if is_loading_level:
+		return
+	
+	is_loading_level = true
+	print("CARICAMENTO LIVELLO\n")
 	
 	var scene_path: String = find_level(scene_id)
+	print("scene path: ", scene_path)
 	
 	if scene_path.is_empty():
+		print("IL PERCORSO è VUOTO")
 		return
+	
+	print("IL PATH NON è EMPTY")
 	
 	call_deferred("load_level", scene_path)
 	
 	await get_tree().process_frame
 	
+	if current_level.has_method("force_update_transform"):
+		current_level.force_update_transform()
+	
 	RespawnManager.build_spawn_map(current_level)
+	print("CREO MAPPA DI SPAWN DI: ", current_level)
 	
 	await get_tree().process_frame
 	
@@ -51,9 +64,11 @@ func change_level(scene_id: StringName, gate_id: StringName = &"") -> void:
 		player.update_spawn(pos)
 	
 	player.spawn()
+	print("SPAWNATO NEL LIVELLO: ", current_level)
 	
 	change_game_state(GameState.GAME)
 	using_gate = false
+	is_loading_level = false
 
 
 func load_level(scene_path: String) -> void:
@@ -63,6 +78,7 @@ func load_level(scene_path: String) -> void:
 	var scene: PackedScene = load(scene_path)
 	current_level = scene.instantiate()
 	level_container.add_child(current_level)
+	print("ISTANZIATO LIVELLO\n")
 
 
 func find_level(id: StringName) -> String:

@@ -29,15 +29,15 @@ func reload_level_db() -> void:
 			var data = load(full_path)
 			
 			if data is LevelData:
-				print(data)
+				#print(data)
 				levels[data.level_id] = data
 		
 		file_name = dir.get_next()
 	
-	print("level_map: ", levels)
+	#print("level_map: ", levels)
 
 
-func has_gate(level: StringName, level_gate: StringName) -> bool:
+func has_gate(level: StringName, _level_gate: StringName) -> bool:
 	if not levels.has(level):
 		push_warning("Livello non presente nel dizionario: ", level)
 		return false

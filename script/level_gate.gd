@@ -75,7 +75,6 @@ func _adjust_spawn_pos()-> void:
 
 func _position_marker() -> void:
 	marker.position = spawn_pos
-	print("SPAWN_POS: ", spawn_pos)
 #endregion
 
 
@@ -98,17 +97,15 @@ func _on_body_entered(body: Node2D) -> void:
 		return
 	
 	if body.just_changed_level:
-		print("JGDYDF")
 		return
 	
 	body.set_level_changed(true)
-	print("STO CAMBIANDO LIVELLO")
-	emit_signal("gate_entered", gate_ptr, level_ptr)
+	print("\ncambiando livello")
+	gate_entered.emit(gate_ptr, level_ptr)
 
 
 func _on_body_exited(body: Node2D) -> void:
 	if body is not Player:
 		return
 	
-	print("STO TOGLIENDO TUTTO")
 	body.call_deferred("set_level_changed", false)

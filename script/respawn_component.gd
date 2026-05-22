@@ -23,6 +23,8 @@ func respawn() -> Vector2:
 		return respawn_position
 	
 	respawn_position = RespawnManager.get_spawn_point(respawn_area)
+	print(respawn_area)
+	print("nel respawn: ", respawn_position)
 	return respawn_position
 
 
