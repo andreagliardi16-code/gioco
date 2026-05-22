@@ -68,10 +68,11 @@ func get_anchor_position() -> Vector2:
 
 
 func _on_body_entered(body: Node2D) -> void:
+	print("ENTRATO PLAYER")
 	if not body is Player:
 		return
 	
-	if is_game_spawn and not Global.debug_mode:
+	if is_game_spawn and Global.debug_mode:
 		var parent = get_parent()
 		var level_id: StringName = ""
 		

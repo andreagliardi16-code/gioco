@@ -19,6 +19,7 @@ var death_timer: Timer
 
 func respawn() -> Vector2:
 	if not (respawn_position == ERR_VECTOR):
+		print(respawn_position)
 		return respawn_position
 	
 	respawn_position = RespawnManager.get_spawn_point(respawn_area)

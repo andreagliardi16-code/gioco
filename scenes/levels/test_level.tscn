@@ -39,6 +39,7 @@ position = Vector2(-1984, 768)
 id = &"test_level"
 player_height = 80.0
 auto_update = false
+is_game_spawn = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RespawnArea" unique_id=247233240]
 shape = SubResource("RectangleShape2D_cyt5c")

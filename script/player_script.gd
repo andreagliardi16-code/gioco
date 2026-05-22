@@ -201,7 +201,7 @@ func check_power(id: String) -> bool:  #con poca energia l'azione si può svolge
 
 #region spawn e respawn
 func die() -> void:
-	emit_signal("had_died")
+	had_died.emit()
 
 
 func spawn() -> void:   #da cambiare

@@ -200,7 +200,7 @@ shape = SubResource("RectangleShape2D_bmrm0")
 metadata/_edit_lock_ = true
 
 [node name="LevelGate" parent="." unique_id=138255016 instance=ExtResource("10_77k6j")]
-position = Vector2(64, -832)
+position = Vector2(64, -256)
 gate_ptr = &"test_level_center"
 level_ptr = &"test_level"
 own_ptr = &"tutorial_west"
