@@ -4,3 +4,5 @@
 .inport/
 .export/
 .export.cfg
+.idea/
+*.iml

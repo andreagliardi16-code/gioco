@@ -1,0 +1,24 @@
+{
+  "obj_name": "player_data",
+
+  "gravity": [
+    {
+      "default_gravity": 1666.7,
+      "fall_gravity": 2300.0,
+      "cut_gravity": 3100
+    }
+  ],
+  "jump": [
+    {
+      "jump_force": -1000,
+      "coyote_time": 0.25
+    }
+  ],
+  "h_movement": [
+    {
+      "max_speed": 280,
+      "acceleration": 840,
+      "deceleration": 1400
+    }
+  ]
+}
