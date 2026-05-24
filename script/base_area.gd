@@ -6,23 +6,25 @@ class_name BaseArea
 
 extends Area2D
 
-const AIR_FRICTION: float = 0.5
 
 var parent
 var on_floor: bool = false
 var current_areas: Array = []
+var air_friction: float
 
 func setup(parent_node: Node2D) -> void:
+	air_friction = Global.physics_stats.air_friction
+	
 	parent = parent_node
-	parent.friction = AIR_FRICTION
+	parent.friction = air_friction
 
 func change_friction(area: Node2D = null) -> float:
 	if area == null:
-		return AIR_FRICTION
+		return air_friction
 	#if current_areas.is_empty():
 		#return AIR_FRICTION
 	
-	var max_friction : float = AIR_FRICTION
+	var max_friction : float = air_friction
 	for n in current_areas:
 		if area.platform_material:
 			var f = area.platform_material.value

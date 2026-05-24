@@ -33,6 +33,9 @@ var just_changed_level: bool = false
 
 #region _ready, _process e setup
 func _ready() -> void:
+	if Global.player_stats == null:
+		await Global.data_ready
+	
 	link_components()
 	check_power_ups()
 	set_deferred("monitoring", true)
@@ -46,6 +49,8 @@ func check_power_ups() -> void:
 
 
 func link_components() -> void:
+	stats = Global.player_stats
+	
 	gravity.setup(stats, self)
 	input.setup(movement, self)
 	movement.setup(stats, gravity, self)

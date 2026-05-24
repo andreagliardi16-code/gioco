@@ -1,12 +1,19 @@
 extends Node
 
+signal data_ready()
+
+
 enum Direction {NORTH, EAST, SOUTH, WEST, NULL}
 enum Outcome {OK, FAIL}
 
-var debug_mode: bool = true
+
 var game_manager: GameManager = null
+var player_stats: PlayerStats = null
+var physics_stats: PhysicsStats = null
 
 var spawn_level_id: StringName = &""
+var debug_mode: bool = true
+
 
 func translate_direction_x(dir: Direction) -> int:
 	match dir:
@@ -22,11 +29,16 @@ func set_spawn_level(id: StringName) -> void:
 	spawn_level_id = id
 
 
-func set_game_manager(gm: GameManager) -> Global.Outcome:
-	if gm == null:
+func set_game_manager(gm: GameManager, pl_st: PlayerStats, phy_st: PhysicsStats) -> Global.Outcome:
+	if not gm or not pl_st or not phy_st:
 		return Global.Outcome.FAIL
 	
 	game_manager = gm
+	player_stats = pl_st
+	physics_stats = phy_st
+	
+	data_ready.emit()
+	
 	return Global.Outcome.OK
 
 

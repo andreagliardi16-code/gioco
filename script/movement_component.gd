@@ -17,10 +17,7 @@ class_name MovementComponent
 
 extends Node2D
 
-const JUMP_CUT_TIME: float = 0.15
-const MIN_JUMP_TIME: float = 0.1
-const MAX_JUMP_TIME: float = 0.6
-const MAX_SPEED_CHANGE: int = 1000
+
 const DEF_DASH_DIRECTION: int = 1 #destra
 const VECTOR_X: String = "x"
 const VECTOR_Y: String = "y"
@@ -223,8 +220,8 @@ func jump() -> void:
 	energy_spended.emit("jump")
 	
 	jump_cut_timer = 0
-	min_jump_timer = MIN_JUMP_TIME
-	max_jump_timer = MAX_JUMP_TIME
+	min_jump_timer = parent_stats.min_jump_time
+	max_jump_timer = parent_stats.max_jump_time
 	is_jumping = true
 	
 	_fast_stop([VECTOR_Y])
@@ -233,7 +230,7 @@ func jump() -> void:
 func _cut_jump() -> void:
 	if in_min_jump:
 		wants_end_jump = true
-	jump_cut_timer = JUMP_CUT_TIME
+	jump_cut_timer = parent_stats.jump_cut_time
 	
 
 func _set_gravity_as_fall() -> void:
@@ -392,7 +389,8 @@ func hit_ceiling() -> void:  #controllare bool e edge cases
 #region velocity_mod_requests
 func vel_y_request(new_request: float) -> void: 
 	#serve per unificare i cambiamenti operati sull'asse y della velocità
-	velocity_y_mod = clamp(velocity_y_mod + new_request, -MAX_SPEED_CHANGE, MAX_SPEED_CHANGE)
+	velocity_y_mod = clamp(velocity_y_mod + new_request, 
+	-parent_stats.max_speed_change, parent_stats.max_speed_change)
 
 func vel_x_request(new_request: float) -> void:
 	velocity_x_mod += new_request

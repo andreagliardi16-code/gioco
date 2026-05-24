@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="JSON_data_bridge" format=3 uid="uid://cooyn7iqohwmv"]
+
+[ext_resource type="Resource" uid="uid://cmompcntnt3ch" path="res://data/data_scripts/PlayerStats.tres" id="1_8r2u5"]
+[ext_resource type="Script" uid="uid://d1gsom0mgx4sy" path="res://script/JSON_data_bridge.gd" id="1_wbeqr"]
+[ext_resource type="Resource" uid="uid://dlamykepip4cx" path="res://data/data_scripts/PhysicsStats.tres" id="3_iec6b"]
+
+[resource]
+script = ExtResource("1_wbeqr")
+player_stats = ExtResource("1_8r2u5")
+world_stats = ExtResource("3_iec6b")
+metadata/_custom_type_script = "uid://d1gsom0mgx4sy"

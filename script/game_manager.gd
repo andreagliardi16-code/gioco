@@ -11,6 +11,7 @@ var curr_game_state: GameState = GameState.TRANSITION
 
 @export var main_menu: PackedScene
 @export var level_map: LevelMap = null
+@export var json_datas: JSON_data_bridge = null
 
 @onready var player: Player = $CharacterBody2D
 @onready var level_container: Node = $LevelContainer
@@ -23,8 +24,7 @@ var is_loading_level: bool = false
 
 
 func _ready() -> void:
-	Global.set_game_manager(self)
-	
+	_ready_stats()
 	start_game()
 	level_map.reload_level_db()
 	TimeManager.switch_timer(true)
@@ -223,3 +223,12 @@ func change_spawn_data(spawn_id: StringName, spawn_level: StringName) -> Global.
 	config.save(SPAWN_FILE_PATH)  # si potrebbe aggiungere controllo sulla sovrascrittura
 	return Global.Outcome.OK
 #endregion
+
+
+func _ready_stats() -> void:
+	var err= json_datas.load_from_json()
+	if err != Global.Outcome.OK:
+		push_error("Impossibile caricare i dati JSON")
+		get_tree().quit()
+	
+	Global.set_game_manager(self, json_datas.player_stats, json_datas.world_stats)

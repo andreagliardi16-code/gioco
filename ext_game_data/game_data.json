@@ -1,0 +1,57 @@
+{
+	"player_stats": {
+		"camera": {
+			"distance_n": 0.1,
+			"max_distance": 100,
+			"x_pan_target": 600,
+			"y_pan_target": 350,
+			"zoom": 1.0
+		},
+		"dash": {
+			"dash_cooldown": 0.8,
+			"dash_cut": -1850.0,
+			"dash_speed_amt": 2500,
+			"dash_time": 0.16
+		},
+		"energy": {
+			"max_cooldown": 5.0,
+			"max_energy": 100,
+			"max_regen_time": 3.5,
+			"regen_rate": 30.0
+		},
+		"gravity": {
+			"cut_gravity": 3400.0,
+			"default_gravity": 1666.7,
+			"fall_gravity": 2400.0
+		},
+		"horizontal_movement": {
+			"acceleration": 3111.0,
+			"deceleration": 5600.0,
+			"max_speed": 560,
+			"max_speed_change": 1000
+		},
+		"jump": {
+			"coyote_time": 0.08,
+			"jump_cut_time": 0.15,
+			"jump_force": -1000.0,
+			"max_jump_time": 0.6,
+			"min_jump_time": 0.1
+		},
+		"pogo": {
+			"area_detection_time": 0.15,
+			"fade_duration": 0.3,
+			"impulse_duration": 0.15,
+			"side_force": 1200.0,
+			"vertical_force": -2800.0
+		}
+	},
+	"world_stats": {
+		"friction": {
+			"air_friction": 0.5,
+			"def_material_friction": 1.0
+		},
+		"gates": {
+			"gate_spawn_offset": 50
+		}
+	}
+}
