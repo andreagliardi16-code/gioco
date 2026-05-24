@@ -16,10 +16,8 @@ func _ready() -> void:
 ## Crea un effetto wiggle rapido e asimmetrico per avvisare il giocatore.
 func trigger_wiggle() -> void:
 	if not sprite:
-		print("grods")
 		return
 	
-	print("sgrods")
 	# Parametri locali per fare modifiche al volo senza riempire l'inspector
 	var wiggle_amplitude: float = deg_to_rad(12.0) # Ampiezza dell'oscillazione in gradi
 	var total_duration: float = 0.35 # Durata totale dello wiggle prima della rotazione

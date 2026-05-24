@@ -36,16 +36,12 @@ func change_level(scene_id: StringName, gate_id: StringName = &"") -> void:
 		return
 	
 	is_loading_level = true
-	print("CARICAMENTO LIVELLO\n")
 	
 	var scene_path: String = find_level(scene_id)
 	print("scene path: ", scene_path)
 	
 	if scene_path.is_empty():
-		print("IL PERCORSO è VUOTO")
 		return
-	
-	print("IL PATH NON è EMPTY")
 	
 	call_deferred("load_level", scene_path)
 	
@@ -64,7 +60,6 @@ func change_level(scene_id: StringName, gate_id: StringName = &"") -> void:
 		player.update_spawn(pos)
 	
 	player.spawn()
-	print("SPAWNATO NEL LIVELLO: ", current_level)
 	
 	change_game_state(GameState.GAME)
 	using_gate = false
@@ -78,7 +73,6 @@ func load_level(scene_path: String) -> void:
 	var scene: PackedScene = load(scene_path)
 	current_level = scene.instantiate()
 	level_container.add_child(current_level)
-	print("ISTANZIATO LIVELLO\n")
 
 
 func find_level(id: StringName) -> String:

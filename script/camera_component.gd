@@ -4,7 +4,6 @@ extends Camera2D
 
 
 const DEF_OFFSET: Vector2 = Vector2.ZERO
-const MIN_OFFSET: int = 10
 const DELTA_OFFSET: int = 100
 const TRANSITION_TIME: float = 1.0
 const MAX_SPEED_X: float = 1923.26568097217
@@ -28,6 +27,8 @@ var debug: bool= true  #da spostare in autoload o impostazioni globali
 var transition_timer: float = 0.0
 var pan_direction: Global.Direction = Global.Direction.NULL
 var curve_area  #serve per determinare MAX_SPEED in fase di testing
+var going_up: bool = false
+var last_sign: int = 1
 
 
 func setup(statistics: Stats, player: CharacterBody2D) -> void:
@@ -54,7 +55,7 @@ func _calculate_curve_area(curve: Curve, samples: int) -> float:
 		var t = i * step
 		# Approssimiamo l'area di ogni piccolo rettangolo
 		total_area += curve.sample(t) * step
-		
+	
 	return total_area
 
 
@@ -84,18 +85,35 @@ func _handle_timers(delta: float) -> void:
 func _update_offset(delta: float) -> void:
 	match curr_cam_state:
 		State.DEFAULT:
-			target_offset = _calc_offset()
+			target_offset= _calc_offset()
 			offset.x = move_toward(offset.x, target_offset.x, DELTA_OFFSET*delta)
 			offset.y = move_toward(offset.y, target_offset.y, DELTA_OFFSET*delta)
 		State.PAN_TRANSITION:
 			_handle_pan_transition(delta)
 
 
+#region normal_offset
 func _calc_offset() -> Vector2:
 	var target = Vector2(0, 0) 
-	target.x = sign(parent.velocity.x)*clamp(abs(parent.velocity.x*stats.distance_n), MIN_OFFSET, stats.max_distance)
-	target.y = sign(parent.velocity.y)*clamp(abs(parent.velocity.y*stats.distance_n), MIN_OFFSET, stats.max_distance)
+	target.x = _calc_offset_x()
+	target.y = _calc_offset_y()
 	return target 
+
+
+func _calc_offset_x() -> float:
+	return sign(parent.velocity.x) * clamp(abs(parent.velocity.x*stats.distance_n), 0.0, stats.max_distance)
+
+
+func _calc_offset_y() -> float:
+	if sign(parent.velocity.y) < 0: going_up = true
+	else: going_up = false
+	
+	if not going_up:  #nel caso stia cadendo calcolo normalmente
+		return sign(parent.velocity.y) * clamp(abs(parent.velocity.y*stats.distance_n), 0.0, stats.max_distance)
+	
+	#nel caso si stia muovendo verso l'alto:
+	return clamp(-parent.velocity.y, 0.0, stats.max_distance)
+#endregion
 
 
 #region camera pan
@@ -157,7 +175,7 @@ func _sample_pan_curve() -> Vector2:
 	
 
 func _end_pan_transition()->void:
-	if abs(offset.x) < MIN_OFFSET and abs(offset.y) < MIN_OFFSET:
+	if abs(offset.x) < 0.0 and abs(offset.y) < 0.0:
 		offset = DEF_OFFSET
 		change_state(State.DEFAULT)
 	else: 
