@@ -46,6 +46,8 @@ func check_power_ups() -> void:
 
 
 func link_components() -> void:
+	stats = Global.player_stats
+	
 	gravity.setup(stats, self)
 	input.setup(movement, self)
 	movement.setup(stats, gravity, self)

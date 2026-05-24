@@ -3,10 +3,14 @@ extends Node
 enum Direction {NORTH, EAST, SOUTH, WEST, NULL}
 enum Outcome {OK, FAIL}
 
-var debug_mode: bool = true
+
 var game_manager: GameManager = null
+var player_stats = PlayerStats 
+var physic_stats = PhysicsStats 
 
 var spawn_level_id: StringName = &""
+var debug_mode: bool = true
+
 
 func translate_direction_x(dir: Direction) -> int:
 	match dir:

@@ -4,9 +4,6 @@ extends Area2D
 class_name LevelGate
 
 
-const SPAWN_OFFSET: int = 50
-
-
 signal new_gate_id(new_id: StringName, old_id: StringName, gate: LevelGate)
 signal gate_entered(id_ptr: StringName, level_ptr: StringName)
 
@@ -33,6 +30,7 @@ signal gate_entered(id_ptr: StringName, level_ptr: StringName)
 var spawn_pos: Vector2 = Vector2.ZERO
 var level_map: LevelMap = LevelMap.new()
 var old_own_ptr: StringName
+var spawn_offset: float
 
 
 #region process e ready
@@ -40,6 +38,7 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		pass 
 	else:
+		spawn_offset = Global.physic_stats.gate_spawn_offset
 		_adjust_spawn_pos()
 
 
@@ -63,9 +62,9 @@ func _adjust_spawn_pos()-> void:
 	
 	match facing_direction:
 		Global.Direction.EAST:
-			spawn_pos.x = extents.x + SPAWN_OFFSET
+			spawn_pos.x = extents.x + spawn_offset
 		Global.Direction.WEST:
-			spawn_pos.x = -extents.x - SPAWN_OFFSET
+			spawn_pos.x = -extents.x - spawn_offset
 		_:
 			spawn_pos = Vector2.ZERO
 			push_error("L'entrata di un livello può essere rivolta solo a destra o sinistra")

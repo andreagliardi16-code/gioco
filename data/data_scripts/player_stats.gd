@@ -17,6 +17,9 @@ extends Stats
 @export_group("Jump")
 @export var jump_force: float = -1000.0  #formula = 2H/t
 @export var coyote_time: float = 0.25
+@export var jump_cut_time: float = 0.15
+@export var min_jump_time: float = 0.1
+@export var max_jump_time: float = 0.6
 #endregion
 
 #region horizontal movement
@@ -24,6 +27,7 @@ extends Stats
 @export var max_speed: int = 280 #pixel al secondo
 @export var acceleration: float = 840 #tempo di accelerazione circa 0.33 s
 @export var deceleration: float = 1400.0 #decelerazione in 0.2 secondi
+@export var max_speed_change: int = 1000
 #endregion
 
 #region camera
@@ -48,10 +52,15 @@ extends Stats
 @export_group("Energy")
 @export var max_energy: int = 100
 @export var regen_rate: float = 0.0
+@export var max_cooldown: float = 5.0
+@export var max_regen_time: float = 3.5
 #endregion
 
 #region pogo
 @export_group("Pogo")
 @export var side_force: float = 1500
 @export var vertical_force: float = -1000
+@export var impulse_duration: float = 0.15
+@export var fade_duration: float = 0.3
+@export var area_detection_time: float = 0.15
 #endregion
