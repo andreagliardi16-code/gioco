@@ -38,7 +38,7 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		pass 
 	else:
-		spawn_offset = Global.physic_stats.gate_spawn_offset
+		spawn_offset = Global.physics_stats.gate_spawn_offset
 		_adjust_spawn_pos()
 
 

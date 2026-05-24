@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="PhysicsStats" format=3 uid="uid://dlamykepip4cx"]
+
+[ext_resource type="Script" uid="uid://b2sf06yhvflca" path="res://data/data_scripts/physics_stats.gd" id="1_lxcy0"]
+
+[resource]
+script = ExtResource("1_lxcy0")
+metadata/_custom_type_script = "uid://b2sf06yhvflca"

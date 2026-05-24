@@ -13,7 +13,7 @@ var current_areas: Array = []
 var air_friction: float
 
 func setup(parent_node: Node2D) -> void:
-	air_friction = Global.physic_stats.air_friction
+	air_friction = Global.physics_stats.air_friction
 	
 	parent = parent_node
 	parent.friction = air_friction
