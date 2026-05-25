@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://b58nb63ldbbir"]
+
+[ext_resource type="Script" uid="uid://y7ytsllnsr6b" path="res://script/respawn_area.gd" id="1_1ubke"]
+
+[node name="RespawnArea" type="Area2D" unique_id=881202515]
+script = ExtResource("1_1ubke")
+
+[node name="Marker2D" type="Marker2D" parent="." unique_id=1214948300]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

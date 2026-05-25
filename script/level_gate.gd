@@ -4,6 +4,9 @@ extends Area2D
 class_name LevelGate
 
 
+const ID: StringName = &"LevelGate"
+
+
 signal new_gate_id(new_id: StringName, old_id: StringName, gate: LevelGate)
 signal gate_entered(id_ptr: StringName, level_ptr: StringName)
 

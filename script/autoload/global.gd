@@ -12,7 +12,7 @@ var player_stats: PlayerStats = null
 var physics_stats: PhysicsStats = null
 
 var spawn_level_id: StringName = &""
-var debug_mode: bool = true
+var debug_mode: bool = false
 
 
 func translate_direction_x(dir: Direction) -> int:

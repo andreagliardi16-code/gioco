@@ -2,7 +2,8 @@ extends AnimatableBody2D
 class_name MovablePlatform
 
 
-@onready var sprite: Node2D = $WigglePivot
+const ID: StringName = &"MovablePlatform"
+
 
 var platform_material: PlatformMaterial 
 

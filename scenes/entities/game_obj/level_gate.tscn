@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://1htlli4fmx5d"]
+
+[ext_resource type="Script" uid="uid://dpam277ytaw00" path="res://script/level_gate.gd" id="1_anlsp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_anlsp"]
+size = Vector2(64, 64)
+
+[node name="LevelGate" type="Area2D" unique_id=138255016]
+script = ExtResource("1_anlsp")
+player_height = 75.0
+
+[node name="Marker2D" type="Marker2D" parent="." unique_id=590821271]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1609169460]
+shape = SubResource("RectangleShape2D_anlsp")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1963811783]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+color = Color(0.17777735, 0.51747113, 0.71992415, 1)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
+[connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]

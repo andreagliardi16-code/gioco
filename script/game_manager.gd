@@ -10,7 +10,7 @@ var curr_game_state: GameState = GameState.TRANSITION
 
 
 @export var main_menu: PackedScene
-@export var level_map: LevelMap = null
+@export var level_map: LevelMap 
 @export var json_datas: JSON_data_bridge = null
 
 @onready var player: Player = $CharacterBody2D
@@ -24,9 +24,9 @@ var is_loading_level: bool = false
 
 
 func _ready() -> void:
+	level_map.reload_level_db()
 	_ready_stats()
 	start_game()
-	level_map.reload_level_db()
 	TimeManager.switch_timer(true)
 
 
@@ -76,6 +76,7 @@ func load_level(scene_path: String) -> void:
 
 
 func find_level(id: StringName) -> String:
+	print("level_map=", level_map.levels)
 	var level_data: LevelData = level_map.levels.get(id)
 	
 	if level_data == null:

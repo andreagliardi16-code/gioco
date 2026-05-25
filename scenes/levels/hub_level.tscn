@@ -4,8 +4,8 @@
 [ext_resource type="Script" uid="uid://w0hs350wsxio" path="res://script/level.gd" id="1_wggnu"]
 [ext_resource type="Resource" uid="uid://dhbylf6lt2h47" path="res://resources/materials/default_material.tres" id="2_0a80w"]
 [ext_resource type="Resource" uid="uid://568ix8yb7tyh" path="res://data/levels/hub_level.tres" id="2_rymmw"]
-[ext_resource type="PackedScene" uid="uid://1htlli4fmx5d" path="res://scenes/entities/level_gate.tscn" id="3_lictt"]
-[ext_resource type="PackedScene" uid="uid://b58nb63ldbbir" path="res://scenes/components/respawn_area.tscn" id="6_ny5ni"]
+[ext_resource type="PackedScene" uid="uid://1htlli4fmx5d" path="res://scenes/entities/game_obj/level_gate.tscn" id="3_lictt"]
+[ext_resource type="PackedScene" uid="uid://b58nb63ldbbir" path="res://scenes/entities/game_obj/respawn_area.tscn" id="6_ny5ni"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f6ncv"]
 size = Vector2(256, 320)
@@ -58,5 +58,46 @@ is_game_spawn = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RespawnArea" unique_id=368801742]
 shape = SubResource("RectangleShape2D_f6ncv")
 metadata/_edit_lock_ = true
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=285214653]
+offset_left = -128.0
+offset_right = 2304.0
+offset_bottom = 128.0
+color = Color(0, 0.13333334, 1, 1)
+
+[node name="ColorRect" type="ColorRect" parent="ColorRect" unique_id=264397553]
+layout_mode = 0
+offset_left = 2240.0
+offset_top = -448.0
+offset_right = 2432.0
+color = Color(0, 0.13333334, 1, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="ColorRect" unique_id=1435909531]
+layout_mode = 0
+offset_top = -448.0
+offset_right = 192.0
+offset_bottom = -128.0
+color = Color(0, 0.13333334, 1, 1)
+
+[node name="ColorRect3" type="ColorRect" parent="ColorRect" unique_id=1891005080]
+layout_mode = 0
+offset_top = -512.0
+offset_right = 2432.0
+offset_bottom = -384.0
+color = Color(0, 0.13333334, 1, 1)
+
+[node name="ColorRect4" type="ColorRect" parent="ColorRect" unique_id=438980904]
+layout_mode = 0
+offset_top = -128.0
+offset_right = 64.0
+offset_bottom = 0.12539673
+color = Color(0, 0.13333334, 1, 1)
+
+[node name="ColorRect5" type="ColorRect" parent="ColorRect" unique_id=935456703]
+layout_mode = 0
+offset_left = 1216.0
+offset_top = -256.0
+offset_right = 1344.0
+color = Color(0.8666668, 0, 1, 1)
 
 [editable path="LevelGate"]

@@ -5,6 +5,9 @@ class_name StaticPlatform
 extends StaticBody2D
 
 
+const ID: StringName = &"StaticPlatform"
+
+
 @export var platform_material: PlatformMaterial = null:
 	set(value):
 		platform_material = value

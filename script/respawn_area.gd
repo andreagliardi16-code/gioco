@@ -5,6 +5,10 @@ class_name RespawnArea
 
 extends Area2D
 
+
+const ID: StringName = &"RespawnArea"
+
+
 @export var id: StringName = &""
 @export var player_height: float = 75.0
 @export var auto_update: bool = true

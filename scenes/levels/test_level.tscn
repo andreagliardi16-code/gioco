@@ -5,13 +5,13 @@
 [ext_resource type="Resource" uid="uid://dhbylf6lt2h47" path="res://resources/materials/default_material.tres" id="2_48ne7"]
 [ext_resource type="Resource" uid="uid://hn5n012y5xsy" path="res://data/levels/test_level.tres" id="2_hfwtw"]
 [ext_resource type="Shape2D" uid="uid://c6alr4e42frkj" path="res://resources/shapes/default_rectangle_platform.tres" id="2_v45ci"]
-[ext_resource type="PackedScene" uid="uid://cea5l1k5yok22" path="res://scenes/entities/platform.tscn" id="6_cyt5c"]
-[ext_resource type="PackedScene" uid="uid://b58nb63ldbbir" path="res://scenes/components/respawn_area.tscn" id="7_cyt5c"]
-[ext_resource type="PackedScene" uid="uid://ciiju7767yywy" path="res://scenes/entities/pogoable_area.tscn" id="8_7x1jh"]
+[ext_resource type="PackedScene" uid="uid://cea5l1k5yok22" path="res://scenes/entities/game_obj/platform.tscn" id="6_cyt5c"]
+[ext_resource type="PackedScene" uid="uid://b58nb63ldbbir" path="res://scenes/entities/game_obj/respawn_area.tscn" id="7_cyt5c"]
+[ext_resource type="PackedScene" uid="uid://ciiju7767yywy" path="res://scenes/entities/game_obj/pogoable_area.tscn" id="8_7x1jh"]
 [ext_resource type="PackedScene" uid="uid://kjen34bt1yum" path="res://addons/platforms/MovingPlatform.tscn" id="9_hfwtw"]
-[ext_resource type="PackedScene" uid="uid://cubx64g22g4ec" path="res://scenes/entities/kill_zone.tscn" id="11_jmx14"]
-[ext_resource type="PackedScene" uid="uid://dbureixycv8lr" path="res://scenes/entities/rotating_platform.tscn" id="12_a5rnb"]
-[ext_resource type="PackedScene" uid="uid://1htlli4fmx5d" path="res://scenes/entities/level_gate.tscn" id="12_eaa0b"]
+[ext_resource type="PackedScene" uid="uid://cubx64g22g4ec" path="res://scenes/entities/game_obj/kill_zone.tscn" id="11_jmx14"]
+[ext_resource type="PackedScene" uid="uid://dbureixycv8lr" path="res://scenes/entities/game_obj/rotating_platform.tscn" id="12_a5rnb"]
+[ext_resource type="PackedScene" uid="uid://1htlli4fmx5d" path="res://scenes/entities/game_obj/level_gate.tscn" id="12_eaa0b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cyt5c"]
 size = Vector2(384, 256)
@@ -27,6 +27,8 @@ size = Vector2(32, 112)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hfwtw"]
 radius = 48.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_eaa0b"]
 
 [node name="Level_Test" type="Node2D" unique_id=1339058086]
 script = ExtResource("1_7x1jh")
@@ -109,14 +111,12 @@ platform_material = ExtResource("2_48ne7")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform" unique_id=62335564]
 shape = ExtResource("2_v45ci")
 
-[node name="Platform" parent="Platform" unique_id=344115054 instance=ExtResource("6_cyt5c")]
-position = Vector2(768, 0)
-collision_layer = 3
-platform_material = ExtResource("2_48ne7")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform/Platform" unique_id=1406654279]
-shape = ExtResource("2_v45ci")
-metadata/_edit_lock_ = true
+[node name="ColorRect" type="ColorRect" parent="Platform" unique_id=1061434403]
+offset_left = -64.0
+offset_top = -8.0
+offset_right = 64.0
+offset_bottom = 8.0
+color = Color(0.5333333, 0, 1, 1)
 
 [node name="JumpLength" type="Line2D" parent="." unique_id=2090719795]
 position = Vector2(-1040.1936, 825.4321)
@@ -171,11 +171,32 @@ position = Vector2(88, 0)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform2/KillZone" unique_id=1409184559]
 shape = SubResource("RectangleShape2D_eaa0b")
 
+[node name="ColorRect" type="ColorRect" parent="Platform2/KillZone" unique_id=1530941689]
+offset_top = -56.0
+offset_right = 16.0
+offset_bottom = 56.0
+color = Color(1, 0, 0, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Platform2" unique_id=1838291554]
+offset_left = -96.0
+offset_top = -64.0
+offset_right = 96.0
+offset_bottom = 64.0
+color = Color(0, 0.1333332, 1, 1)
+
 [node name="PogoableArea" parent="." unique_id=2049927324 instance=ExtResource("8_7x1jh")]
 position = Vector2(-576, 448)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PogoableArea" unique_id=257039499]
 shape = SubResource("CircleShape2D_hfwtw")
+
+[node name="ColorRect" type="ColorRect" parent="PogoableArea/CollisionShape2D" unique_id=1231947675]
+offset_left = -24.0
+offset_top = -24.0
+offset_right = 24.0
+offset_bottom = 24.0
+color = Color(1, 0.35000002, 0, 1)
 
 [node name="Line2D" type="Line2D" parent="." unique_id=358182093]
 points = PackedVector2Array(-616, 400, -616, 16)
@@ -224,6 +245,19 @@ position = Vector2(-88, 0)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform3/KillZone2" unique_id=566012258]
 shape = SubResource("RectangleShape2D_eaa0b")
 
+[node name="ColorRect" type="ColorRect" parent="Platform3/KillZone2" unique_id=778956450]
+offset_left = -16.0
+offset_top = -56.0
+offset_bottom = 56.0
+color = Color(1, 0, 0, 1)
+
+[node name="ColorRect" type="ColorRect" parent="Platform3" unique_id=1155484008]
+offset_left = -96.0
+offset_top = -64.0
+offset_right = 96.0
+offset_bottom = 64.0
+color = Color(0, 0.1333332, 1, 1)
+
 [node name="MovingPlatform2" parent="." unique_id=1181608027 instance=ExtResource("9_hfwtw")]
 position = Vector2(1088, 136)
 platform_material = ExtResource("2_48ne7")
@@ -253,6 +287,13 @@ platform_material = ExtResource("2_48ne7")
 shape = ExtResource("2_v45ci")
 metadata/_edit_lock_ = true
 
+[node name="ColorRect" type="ColorRect" parent="Platform4" unique_id=321472236]
+offset_left = -64.0
+offset_top = -8.0
+offset_right = 64.0
+offset_bottom = 8.0
+color = Color(0.5333333, 0, 1, 1)
+
 [node name="Line2D2" type="Line2D" parent="." unique_id=503201249]
 position = Vector2(1130.5455, 73.87778)
 points = PackedVector2Array(-122.54553, 54.122223, 37.454468, 54.122223)
@@ -264,21 +305,21 @@ position = Vector2(640, 872)
 gate_ptr = &"tutorial_west"
 level_ptr = &"tutorial_level"
 own_ptr = &"test_level_center"
-facing_direction = 1
+facing_direction = 3
 
 [node name="Marker2D" parent="LevelGate" index="0" unique_id=590821271]
-position = Vector2(32, -5.5)
+position = Vector2(-32, -5.5)
 
 [node name="CollisionShape2D" parent="LevelGate" index="1" unique_id=1609169460]
 position = Vector2(0, -8)
 metadata/_edit_lock_ = true
 
 [node name="Label" type="Label" parent="." unique_id=301285489]
-offset_left = 480.0
+offset_left = 552.0
 offset_top = 792.0
-offset_right = 808.0
+offset_right = 737.0
 offset_bottom = 815.0
-text = "Teletrasporto a tutorial (da implementare)"
+text = "Teletrasporto a tutorial "
 
 [node name="RotatingPlatform" parent="." unique_id=534313934 instance=ExtResource("12_a5rnb")]
 position = Vector2(1792, 584)
@@ -290,6 +331,49 @@ offset_top = 632.0
 offset_right = 1866.0
 offset_bottom = 655.0
 text = "Rotating platform"
+
+[node name="Platform5" parent="." unique_id=344115054 instance=ExtResource("6_cyt5c")]
+position = Vector2(-576, 776)
+collision_layer = 3
+platform_material = ExtResource("2_48ne7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform5" unique_id=1406654279]
+shape = ExtResource("2_v45ci")
+metadata/_edit_lock_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Platform5" unique_id=1947843853]
+offset_left = -64.0
+offset_top = -8.0
+offset_right = 64.0
+offset_bottom = 8.0
+color = Color(0.5333333, 0, 1, 1)
+
+[node name="KillZone" parent="." unique_id=1353798393 instance=ExtResource("11_jmx14")]
+position = Vector2(-8, 1656)
+collision_layer = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KillZone" unique_id=912495580]
+shape = SubResource("WorldBoundaryShape2D_eaa0b")
+
+[node name="RotatingPlatform2" parent="." unique_id=172054313 instance=ExtResource("12_a5rnb")]
+position = Vector2(2304, 584)
+
+[node name="RotatingPlatform3" parent="." unique_id=15436210 instance=ExtResource("12_a5rnb")]
+position = Vector2(2816, 584)
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=2120860787]
+offset_left = -2176.0
+offset_top = 896.0
+offset_right = 4992.0
+offset_bottom = 1088.0
+color = Color(0, 0.13333334, 1, 1)
+
+[node name="ColorRect5" type="ColorRect" parent="." unique_id=698535513]
+offset_left = -2112.0
+offset_top = 640.0
+offset_right = -1856.0
+offset_bottom = 896.0
+color = Color(0.8666668, 0, 1, 1)
 
 [editable path="MovingPlatform"]
 [editable path="MovingPlatform2"]

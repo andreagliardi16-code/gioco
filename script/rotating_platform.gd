@@ -1,11 +1,13 @@
 extends Node2D
+class_name RotatingPlatform
 
+const ID: StringName = &"RotatingPlatform"
 
 ##Script che assegna un attrito alla piattaforma e permette di essere riconosciuta come tale
 @export var platform_material: PlatformMaterial = null
 
 @onready var platform: AnimatableBody2D = $Platform
-@onready var sprite: Node2D = $Platform/WigglePivot
+@onready var sprite: Node2D = $WigglePivot
 
 
 func _ready() -> void:

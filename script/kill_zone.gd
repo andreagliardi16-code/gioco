@@ -4,6 +4,7 @@ extends Area2D
 class_name KillZone
 
 const SECURITY_TIMER: float = 2.0
+const ID: StringName = &"KillZone"
 
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 

@@ -5,7 +5,9 @@ extends Resource
 class_name JSON_data_bridge
 
 
-const CONFIG_PATH: String = "res://ext_game_data/game_data.json"
+const DATA_CONFIG_PATH: String = "res://ext_game_data/game_data.json"
+const ENTITIES_CONFIG_PATH: String = "res://ext_game_data/game_entities.json"
+const ENTITIES_PATH: String = "res://scenes/entities/game_obj"
 
 
 @export var save_changes: bool:
@@ -16,6 +18,7 @@ const CONFIG_PATH: String = "res://ext_game_data/game_data.json"
 @export var world_stats: PhysicsStats
 
 
+#region game data
 func _save_to_json() -> Global.Outcome:
 	if not player_stats or not world_stats:
 		return Global.Outcome.FAIL
@@ -79,7 +82,7 @@ func _save_to_json() -> Global.Outcome:
 	}
 	
 	var json_string := JSON.stringify(data_dict, "\t")
-	var file := FileAccess.open(CONFIG_PATH, FileAccess.WRITE)
+	var file := FileAccess.open(DATA_CONFIG_PATH, FileAccess.WRITE)
 	if file == null:
 		return Global.Outcome.FAIL
 	
@@ -89,10 +92,10 @@ func _save_to_json() -> Global.Outcome:
 
 
 func load_from_json() -> Global.Outcome:
-	if not FileAccess.file_exists(CONFIG_PATH) or not player_stats or not world_stats:
+	if not FileAccess.file_exists(DATA_CONFIG_PATH) or not player_stats or not world_stats:
 		return Global.Outcome.FAIL
 	
-	var file := FileAccess.open(CONFIG_PATH, FileAccess.READ)
+	var file := FileAccess.open(DATA_CONFIG_PATH, FileAccess.READ)
 	var json_string :String = file.get_as_text()
 	file.close()
 	
@@ -191,4 +194,33 @@ func load_from_json() -> Global.Outcome:
 	notify_property_list_changed()
 	print("JSONDataBridge: Dati caricati e sincronizzati con successo dal JSON.")
 	
+	return Global.Outcome.OK
+#endregion
+
+
+func build_res_db() -> Global.Outcome:
+	var folder = DirAccess.open(ENTITIES_PATH)
+	if not folder:
+		push_error("impossibile aprire cartella con path: ", ENTITIES_PATH)
+		return Global.Outcome.FAIL
+	
+	folder.list_dir_begin()
+	var file_name = folder.get_next()
+	while file_name != "":
+		if not file_name.ends_with(".tres"):
+			return Global.Outcome.FAIL
+		
+		var full_path: String = ENTITIES_PATH + file_name
+		var res = load(full_path)
+		
+		if res.ID:
+			var err= _update_res_db(res.ID)
+			if err != Global.Outcome.OK:
+				push_error("Errore nel caricamento di una risorsa in JSON")
+				return Global.Outcome.FAIL
+	
+	return Global.Outcome.OK
+
+
+func _update_res_db(id: StringName) -> Global.Outcome:
 	return Global.Outcome.OK

@@ -24,17 +24,22 @@ func reload_level_db() -> void:
 	var file_name = dir.get_next()
 	
 	while not file_name == "":
-		if not dir.current_is_dir() and file_name.ends_with(".tres"):
-			var full_path = levels_directory + file_name
-			var data = load(full_path)
-			
-			if data is LevelData:
-				#print(data)
-				levels[data.level_id] = data
+		if not dir.current_is_dir():
+			if file_name.ends_with(".tres") or file_name.ends_with(".tres.remap"):
+				
+				if file_name.ends_with(".remap"):
+					file_name = file_name.trim_suffix(".remap")
+				
+				var full_path = levels_directory + file_name
+				var data = load(full_path)
+				
+				if data is LevelData:
+					#print(data)
+					levels[data.level_id] = data
 		
 		file_name = dir.get_next()
 	
-	#print("level_map: ", levels)
+	print("LevelMap inizializzata con successo. Livelli caricati: ", levels.keys())
 
 
 func has_gate(level: StringName, _level_gate: StringName) -> bool:
