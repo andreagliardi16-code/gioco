@@ -175,7 +175,7 @@ func _sample_pan_curve() -> Vector2:
 	
 
 func _end_pan_transition()->void:
-	if abs(offset.x) < 0.0 and abs(offset.y) < 0.0:
+	if abs(offset.x) <= 0.0 and abs(offset.y) <= 0.0:
 		offset = DEF_OFFSET
 		change_state(State.DEFAULT)
 	else: 
