@@ -134,18 +134,20 @@ namespace LimboArchitect.Core.Object
 
     public class LevelGate: UtilityArea
     {
-        public string OwnPtr;
-        public string GatePtr;
-        public string NextLevelPtr {get; set; } = "";
+        public string? OwnPtr {get; set; }
+        public string? GatePtr {get; set;}
+        public string? NextLevelPtr {get; set; }
         public string OwnLevelPtr {get; set; } = "";
 
-        public LevelGate (string areaShape, string id, string godotClassName, string displayName, string iconPath, string category)
-            : base(areaShape, id, godotClassName, displayName, iconPath)
+        public RectangleShape Shape{get; set; }
+
+        public LevelGate (string id, string godotClassName, string displayName, string iconPath)
+            : base("def_rect", id, godotClassName, displayName, iconPath)
         {
-            
+            Shape = ShapesRegistry.GetOrCreateRectangle("def_rect");
         }
 
-        public string ExportToGDScript(string extraDataJson)
+        public override string ExportToGDScript(string extraDataJson)
         {
             return "";
         }
@@ -153,7 +155,26 @@ namespace LimboArchitect.Core.Object
 
     public class SpawnArea: UtilityArea
     {
+        public RectangleShape Shape{get; set; }
+
+        // COSTRUTTORE 1: da UI
+        public SpawnArea (string id, string iconPath)
+            : base("def_rect", id, "LevelGate", "Level Gate", iconPath) 
+            {
+                Shape = ShapesRegistry.GetOrCreateRectangle("def_rect");
+            }
+        // COSTRUTTORE 2: da JSON
+        public SpawnArea (string shapeId, string id, string iconPath)
+            : base(shapeId, id, "LevelGate", "Level Gate", iconPath)
+            {
+                Shape = ShapesRegistry.GetOrCreateRectangle("def_rect");
+                // aggiustare spawn point se utile
+            }
         
+        public override string ExportToGDScript(string extraDataJson)
+        {
+            return "";
+        }
     }
 
     public class PlaceHolderArea: UtilityArea

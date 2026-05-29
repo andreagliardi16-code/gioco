@@ -2,13 +2,29 @@ using System;
 using System.Data.Common;
 using System.Dynamic;
 using System.Numerics;
+using LimboArchitect.Core.Diagnostics;
 
 
 namespace LimboArchitect.Core.Shapes
 {
     public static class ShapesRegistry
     {
-        private static readonly Dictionary<string, RectangleShape> _shapes = new();
+        private static readonly Dictionary<string, Area> _shapes = new();
+
+        public static void AddShape (Area area)
+        {
+            if (_shapes.ContainsKey(area.Id))
+            {
+                throw new LimboArchitectException(
+                    ErrorCode.DuplicateShapeId,
+                    $"Impossibile aggiungere l'oggetto {area.Id}, esiste già un area con lo stesso identificativo"
+                );
+            }
+
+            _shapes.Add(area.Id, area);
+        }
+
+
     }
     public abstract class Area
     {
@@ -20,17 +36,7 @@ namespace LimboArchitect.Core.Shapes
         }
     }
 
-    public class Shape: Area
-    {
-        public int X {get; set;}
-        public int Y {get; set;}
-
-        public Shape(string id) : base(id)
-        {
-        }
-    }
-
-    public class RectangleShape: Shape
+    public class RectangleShape: Area
     {
         const int DEF_RECT_SIZE = 50;
 
@@ -38,23 +44,11 @@ namespace LimboArchitect.Core.Shapes
         public int Width {get; set; }
         public int Height {get; set; }
 
-        public RectangleShape(string id, int x, int y, int width = DEF_RECT_SIZE, int height  = DEF_RECT_SIZE) : base(id)
+        public RectangleShape(string id, int width = DEF_RECT_SIZE, int height  = DEF_RECT_SIZE) : base(id)
         {
             Width = width;
             Height = height;
-            Place(x, y);
-            SetBorders();
-        }
-
-        private void SetBorders()
-        {
-            var w = Width/2;
-            var h = Height/2;
-
-            top_x = X + w;
-            bot_x = X - w;
-            top_y = Y - h;
-            bot_y = Y + h;
+            ShapesRegistry.AddShape(this);
         }
     }
 }

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
-using LimboArchitect.Core.Object
+using LimboArchitect.Core.Object;
 
 namespace LimboArchitect.Core.Levels
 {
@@ -98,7 +98,7 @@ namespace LimboArchitect.Core.Levels
         {
             string CleanedName = name.Trim();
 
-            if (_levelUsedNames.Contains(name))
+            if (_levelUsedNames.Contains(CleanedName))
             {
                 return false;  //il nome è già usato
             }
