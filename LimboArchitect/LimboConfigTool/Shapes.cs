@@ -59,7 +59,39 @@ namespace LimboArchitect.Core.Shapes
 
             return newCircle;
         }
-}
+
+        public static PolygonShape GetOrCreatePolygon(string id, List<Vector2> points)
+        {
+            if (points.Count == 0)
+            {
+                throw new LimboArchitectException(
+                    ErrorCode.InvalidPolygonPoints,
+                    $"Il poligono '{id}' deve avere almeno tre punti."
+                );
+            }
+
+            if (_shapes.TryGetValue(id, out var existingShape) && existingShape is PolygonShape poly)
+            {
+                return poly;
+            }
+
+            // Se l'id esiste già ma è una forma diversa:
+            if (_shapes.ContainsKey(id))
+            {
+                throw new LimboArchitectException(
+                    ErrorCode.DuplicateShapeId,
+                    $"L'identificativo '{id}' è già usato da un tipo di forma diverso."
+                );
+            }
+
+            // Se non esiste, creiamo un nuovo poligono con i punti passati come argomento
+            var newPolygon = new PolygonShape(id, points);
+            _shapes.Add(id, newPolygon);
+
+            return newPolygon;
+        }
+    }
+
     public abstract class Area
     {
         public string Id {get; set; } = "";
@@ -94,6 +126,20 @@ namespace LimboArchitect.Core.Shapes
         public CircleShape(string id, int radius = DEF_CIRC_SIZE) : base(id)
         {
             Radius = radius;
+        }
+    }
+
+    public class PolygonShape: Area
+    {
+        public List<Vector2> Points {get; set; }
+
+        public PolygonShape(string id) : base(id)
+        {
+            Points = new List<Vector2>();
+        }
+        public PolygonShape(string id, List<Vector2> initialPoints) : base(id)
+        {
+            Points = initialPoints;
         }
     }
 }

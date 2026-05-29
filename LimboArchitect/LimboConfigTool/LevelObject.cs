@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.Serialization;
+using System.Numerics;
 using LimboArchitect.Core.Levels;
 using LimboArchitect.Core.Physics;
 using LimboArchitect.Core.Shapes;
@@ -41,29 +42,77 @@ namespace LimboArchitect.Core.Object
     public abstract class PhysicObject: LevelObject
     {
         public string MaterialId = "normal_mar";
+        public string AreaId {get; set; }
         
         public Material CurrentMaterial => MaterialDatabase.GetMaterial(MaterialId);
 
-        protected PhysicObject(string godotClassName, string displayName, string iconPath, string category, int x, int y)
+        protected PhysicObject(string areaId, string godotClassName, string displayName, string iconPath, string category)
             : base(godotClassName, displayName, iconPath, category)
         {
+            AreaId = areaId;
         }
 
     }
 
-    public class StaticObject: PhysicObject
+    public abstract class StaticObject: PhysicObject
     {
-        
+        protected StaticObject(string areaId, string godotClassName, string displayName, string iconPath)
+            : base(areaId, godotClassName, displayName, iconPath, "Static Platforms")
+        {
+        }
     }
 
     public class RegularPlatform: StaticObject
     {
-        
+        public Area Shape {get; set; }
+
+        // COSTRUTTORE 1: da UI
+        public RegularPlatform(string iconPath)
+            : base("default_rectangle_platform","StaticPlatform", "Platform", iconPath)
+        {
+            Shape = ShapesRegistry.GetOrCreateRectangle("default_rectangle_platform", 128, 16);
+            Id = IdGenerator.GenerateId<RegularPlatform>();
+        }
+        // COSTRUTTORE 2: da JSON
+        public RegularPlatform(string shapeId, string iconPath, string id)
+            : base(shapeId, "StaticPlatform", "Platform", iconPath)
+        {
+            Shape = ShapesRegistry.GetOrCreateRectangle(shapeId);
+            Id = id;
+        }
+
+        public override string ExportToGDScript(string extraDataJson)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class PolygonPlatform: StaticObject
     {
-        
+        public Area Polygon {get; set; }
+
+        // COSTRUTTORE 1: da UI
+        public PolygonPlatform(string iconPath)
+            : base("default_polygon", "StaticPlatform", "Floor", iconPath)
+        {
+            Polygon = ShapesRegistry.GetOrCreatePolygon(
+                "default_polygon", 
+                new List<Vector2>{new Vector2(0,0), new Vector2(100,0), new Vector2(50, -100)}
+                );
+            Id = IdGenerator.GenerateId<PolygonPlatform>();
+        }
+        // COSTRUTTORE 2: da JSON
+        public PolygonPlatform(string shapeId, List<Vector2> points, string id, string iconPath)
+            : base(shapeId, "StaticPlatform", "Floor", iconPath)
+        {
+            Polygon = ShapesRegistry.GetOrCreatePolygon(shapeId, points);
+            Id = id;
+        }
+
+        public override string ExportToGDScript(string extraDataJson)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public abstract class MovableObject: PhysicObject
@@ -160,7 +209,7 @@ namespace LimboArchitect.Core.Object
 
         public override string ExportToGDScript(string extraDataJson)
         {
-            return "";
+            throw new NotImplementedException();
         }
     }
 
@@ -186,7 +235,7 @@ namespace LimboArchitect.Core.Object
         
         public override string ExportToGDScript(string extraDataJson)
         {
-            return "";
+            throw new NotImplementedException();
         }
     }
 
@@ -212,7 +261,7 @@ namespace LimboArchitect.Core.Object
 
         public override string ExportToGDScript(string extraDataJson)
         {
-            return "";
+            throw new NotImplementedException();
         } 
     }
 
@@ -235,7 +284,7 @@ namespace LimboArchitect.Core.Object
 
         public override string ExportToGDScript(string extraDataJson)
         {
-            return "";
+            throw new NotImplementedException();
         } 
     }
 
@@ -272,7 +321,7 @@ namespace LimboArchitect.Core.Object
 
         public override string ExportToGDScript(string extraDataJson)
         {
-            return "";
+            throw new NotImplementedException();
         }
     }
 
@@ -297,7 +346,7 @@ namespace LimboArchitect.Core.Object
 
         public override string ExportToGDScript(string extraDataJson)
         {
-            return "";
+            throw new NotImplementedException();
         }
     }
 }
