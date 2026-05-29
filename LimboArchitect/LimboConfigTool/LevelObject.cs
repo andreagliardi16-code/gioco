@@ -1,4 +1,6 @@
 using System;
+using System.Runtime.Serialization;
+using LimboArchitect.Core.Levels;
 using LimboArchitect.Core.Physics;
 using LimboArchitect.Core.Shapes;
 using LimboArchitect.Core.Utils;
@@ -9,7 +11,6 @@ namespace LimboArchitect.Core.Object
     public abstract class LevelObject
     {
         //utili a compilatore e conversione in Godot
-        public string TypeID {get; set;}   //il set potrebbe dover essere tolto
         public string GodotClassName {get; set;}
 
         //posizione sulla griglia
@@ -18,21 +19,19 @@ namespace LimboArchitect.Core.Object
 
         //riferimento al livello
         public GameLevel? ParentLevel {get; set; }
-        public string Id {get; init; }
+        public string Id {get; init; }  //viene assegnato nei costruttori dei figli
 
         //per la UI
         public string DisplayName { get; set; }  // Es: "Piattaforma Mobile"
         public string IconPath { get; set; }     // Icona da mostrare nella palette di Avalonia
         public string Category { get; set; }     // Per dividere la UI in schede (es: "Terreno", "Trappole")
 
-        protected LevelObject(string typeId, string godotClassName, string displayName, string iconPath, string category)
+        protected LevelObject(string godotClassName, string displayName, string iconPath, string category)
         {
-            TypeID = typeId;
             GodotClassName = godotClassName;
             DisplayName = displayName;
             IconPath = iconPath;
             Category = category;
-            Id = IdGenerator.GenerateId(this);
         }
 
         public abstract string ExportToGDScript(string extraDataJson);
@@ -45,8 +44,8 @@ namespace LimboArchitect.Core.Object
         
         public Material CurrentMaterial => MaterialDatabase.GetMaterial(MaterialId);
 
-        protected PhysicObject(string id, string godotClassName, string displayName, string iconPath, string category, int x, int y)
-            : base(id, godotClassName, displayName, iconPath, category)
+        protected PhysicObject(string godotClassName, string displayName, string iconPath, string category, int x, int y)
+            : base(godotClassName, displayName, iconPath, category)
         {
         }
 
@@ -108,8 +107,8 @@ namespace LimboArchitect.Core.Object
         public string AreaShape = "rectangle";
         private bool PhysicsRelevant {get; init; }
 
-        protected AreaObject(bool physicsRelevant, string areaShape, string id, string godotClassName, string displayName, string iconPath, string category)
-            : base(id, godotClassName, displayName, iconPath, category)
+        protected AreaObject(bool physicsRelevant, string areaShape, string godotClassName, string displayName, string iconPath, string category)
+            : base(godotClassName, displayName, iconPath, category)
         {
             AreaShape = areaShape;
             PhysicsRelevant = physicsRelevant;
@@ -118,16 +117,16 @@ namespace LimboArchitect.Core.Object
 
     public abstract class UtilityArea: AreaObject
     {
-        protected UtilityArea (string areaShape, string id, string godotClassName, string displayName, string iconPath)
-            : base(false, areaShape, id, godotClassName, displayName, iconPath, "Utility")
+        protected UtilityArea (string areaShape, string godotClassName, string displayName, string iconPath)
+            : base(false, areaShape, godotClassName, displayName, iconPath, "Utility")
         {
         }
     }
 
     public abstract class GameArea: AreaObject
     {
-        protected GameArea (string areaShape, string id, string godotClassName, string displayName, string iconPath, string category)
-            : base(true, areaShape, id, godotClassName, displayName, iconPath, category)
+        protected GameArea (string areaShape, string godotClassName, string displayName, string iconPath)
+            : base(true, areaShape, godotClassName, displayName, iconPath, "Game Areas")
         {
         }
     }
@@ -141,10 +140,22 @@ namespace LimboArchitect.Core.Object
 
         public RectangleShape Shape{get; set; }
 
-        public LevelGate (string id, string godotClassName, string displayName, string iconPath)
-            : base("def_rect", id, godotClassName, displayName, iconPath)
+        // COSTRUTTORE 2: da UI
+        public LevelGate (string iconPath)
+            : base("def_rect", "LevelGate", "Level Gate", iconPath)
         {
             Shape = ShapesRegistry.GetOrCreateRectangle("def_rect");
+            Id = IdGenerator.GenerateId<LevelGate>();
+        }
+        // COSTRUTTORE 2: da JSON
+        public LevelGate (string shapeId, string ownPtr, string gatePtr, string nextLevelPtr, string id, string iconPath)
+            : base(shapeId, "LevelGate", "Level Gate", iconPath)
+        {
+            Shape = ShapesRegistry.GetOrCreateRectangle(shapeId);
+            OwnPtr = ownPtr;
+            GatePtr = gatePtr;
+            NextLevelPtr = nextLevelPtr;
+            Id = id;
         }
 
         public override string ExportToGDScript(string extraDataJson)
@@ -158,16 +169,18 @@ namespace LimboArchitect.Core.Object
         public RectangleShape Shape{get; set; }
 
         // COSTRUTTORE 1: da UI
-        public SpawnArea (string id, string iconPath)
-            : base("def_rect", id, "LevelGate", "Level Gate", iconPath) 
+        public SpawnArea (string iconPath)
+            : base("def_rect", "RespawnArea", "Spawn Area", iconPath) 
             {
                 Shape = ShapesRegistry.GetOrCreateRectangle("def_rect");
+                Id = IdGenerator.GenerateId<SpawnArea>();
             }
         // COSTRUTTORE 2: da JSON
-        public SpawnArea (string shapeId, string id, string iconPath)
-            : base(shapeId, id, "LevelGate", "Level Gate", iconPath)
+        public SpawnArea (string shapeId, string iconPath, string id)
+            : base(shapeId, "RespawnArea", "Spawn Area", iconPath)
             {
                 Shape = ShapesRegistry.GetOrCreateRectangle("def_rect");
+                Id = id;
                 // aggiustare spawn point se utile
             }
         
@@ -179,18 +192,112 @@ namespace LimboArchitect.Core.Object
 
     public class PlaceHolderArea: UtilityArea
     {
-        
+        public enum PlaceholderType
+        {
+            Npc,
+            Item,
+            Info
+        }
+        public PlaceholderType CurrentType { get; set; }
+
+        public Area Shape {get; set; }
+
+        public PlaceHolderArea (string iconPath, PlaceholderType type)
+            : base("def_rect", "PlaceHolderArea", "Place Holder", iconPath)
+        {
+            Shape = ShapesRegistry.GetOrCreateRectangle("def_rect");
+            Id = IdGenerator.GenerateId<PlaceHolderArea>();
+            CurrentType = type;
+        }
+
+        public override string ExportToGDScript(string extraDataJson)
+        {
+            return "";
+        } 
     }
 
     public class Killzone: GameArea
     {
-        
+        public Area Shape {get; set; }
+
+        public Killzone (string iconPath)
+            : base("def_rect", "KillZone", "Killzone", iconPath)
+        {
+            Shape = ShapesRegistry.GetOrCreateRectangle("def_rectangle");
+            Id = IdGenerator.GenerateId<Killzone>();
+        }
+        public Killzone (string iconPath, string shapeId, string id)
+            : base("def_rect", "KillZone", "Killzone", iconPath)
+        {
+            Shape = ShapesRegistry.GetOrCreateRectangle(shapeId);
+            Id = id;
+        }
+
+        public override string ExportToGDScript(string extraDataJson)
+        {
+            return "";
+        } 
     }
 
-    public class PogoArea: GameArea
+    public abstract class PogoArea: GameArea
     {
-        
+        public Area Shape {get; set; }
+
+        public PogoArea (string iconPath, string godotClassName)
+            : base("def_circle", godotClassName, "Pogo Area", iconPath)
+        {
+            Shape = ShapesRegistry.GetOrCreateCircle("def_circle");
+        }
+        public PogoArea (string iconPath, string godotClassName, string shapeId) 
+            : base("def_circle", godotClassName, "Pogo Area", iconPath)
+        {
+            Shape = ShapesRegistry.GetOrCreateCircle(shapeId);
+        }
     }
 
-    
+    public class StaticPogoArea: PogoArea
+    {
+        // COSTRUTTORE 1: da UI
+        public StaticPogoArea (string iconPath)
+            : base(iconPath, "PoagoableArea")
+        {
+            Id = IdGenerator.GenerateId<StaticPogoArea>();
+        }
+        //COSTRUTTORE 2: da JSON
+        public StaticPogoArea (string iconPath, string shapeId, string id)
+            : base(iconPath, "PogoableArea", shapeId)
+        {
+            Id = id;
+        }
+
+        public override string ExportToGDScript(string extraDataJson)
+        {
+            return "";
+        }
+    }
+
+    public class TimedPogoArea: PogoArea
+    {
+        public float Timer {get; set; }
+
+        // COSTRUTTORE 1: da UI
+        public TimedPogoArea (string iconPath)
+            : base(iconPath, "PogoableArea")
+        {
+            Id = IdGenerator.GenerateId<StaticPogoArea>();
+            Timer = 0f;
+        }
+        //COSTRUTTORE 2: da JSON
+        public TimedPogoArea (string iconPath, string shapeId, string id, float timer)
+            : base(iconPath, "PogoableArea", shapeId)
+        {
+            Id = id;
+            Timer = timer;
+        }
+
+        public override string ExportToGDScript(string extraDataJson)
+        {
+            return "";
+        }
+    }
 }

@@ -11,21 +11,55 @@ namespace LimboArchitect.Core.Shapes
     {
         private static readonly Dictionary<string, Area> _shapes = new();
 
-        public static void AddShape (Area area)
+        // Invece di un metodo 'void' che aggiunge e basta, creiamo un metodo che "Cerca o Crea"
+        public static RectangleShape GetOrCreateRectangle(string id, int width = 50, int height = 50)
         {
-            if (_shapes.ContainsKey(area.Id))
+            // 1. Se esiste già, lo restituiamo senza lanciare eccezioni (Riuso stile Godot!)
+            if (_shapes.TryGetValue(id, out var existingShape) && existingShape is RectangleShape rect)
+            {
+                return rect;
+            }
+
+            // 2. Se l'ID esiste ma è di un tipo diverso (es. un cerchio), allora sì che è un errore
+            if (_shapes.ContainsKey(id))
             {
                 throw new LimboArchitectException(
                     ErrorCode.DuplicateShapeId,
-                    $"Impossibile aggiungere l'oggetto {area.Id}, esiste già un area con lo stesso identificativo"
+                    $"L'identificativo '{id}' è già usato da un tipo di forma diverso."
                 );
             }
 
-            _shapes.Add(area.Id, area);
+            // 3. Se non esiste, creiamo il rettangolo e lo registriamo
+            var newRect = new RectangleShape(id, width, height);
+            _shapes.Add(id, newRect);
+
+            return newRect;
         }
 
+        public static CircleShape GetOrCreateCircle(string id, int radius = 50)
+        {
+            // 1. Se esiste già, lo restituiamo senza lanciare eccezioni (Riuso stile Godot!)
+            if (_shapes.TryGetValue(id, out var existingShape) && existingShape is CircleShape circ)
+            {
+                return circ;
+            }
 
-    }
+            // 2. Se l'ID esiste ma è una forma diversa, allora sì che è un errore
+            if (_shapes.ContainsKey(id))
+            {
+                throw new LimboArchitectException(
+                    ErrorCode.DuplicateShapeId,
+                    $"L'identificativo '{id}' è già usato da un tipo di forma diverso."
+                );
+            }
+
+            // 3. Se non esiste, creiamo il cerchio e lo registriamo
+            var newCircle = new CircleShape(id, radius);
+            _shapes.Add(id, newCircle);
+
+            return newCircle;
+        }
+}
     public abstract class Area
     {
         public string Id {get; set; } = "";
@@ -48,7 +82,18 @@ namespace LimboArchitect.Core.Shapes
         {
             Width = width;
             Height = height;
-            ShapesRegistry.AddShape(this);
+        }
+    }
+
+    public class CircleShape: Area
+    {
+        const int DEF_CIRC_SIZE = 25;
+
+        public int Radius {get; set; }
+
+        public CircleShape(string id, int radius = DEF_CIRC_SIZE) : base(id)
+        {
+            Radius = radius;
         }
     }
 }
