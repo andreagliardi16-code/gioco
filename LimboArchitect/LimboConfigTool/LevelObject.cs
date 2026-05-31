@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.Serialization;
 using System.Numerics;
 using LimboArchitect.Core.Levels;
 using LimboArchitect.Core.Physics;
@@ -95,17 +94,14 @@ namespace LimboArchitect.Core.Object
         public PolygonPlatform(string iconPath)
             : base("default_polygon", "StaticPlatform", "Floor", iconPath)
         {
-            Polygon = ShapesRegistry.GetOrCreatePolygon(
-                "default_polygon", 
-                new List<Vector2>{new Vector2(0,0), new Vector2(100,0), new Vector2(50, -100)}
-                );
+            Polygon = ShapesRegistry.GetOrCreatePolygon("default_polygon");
             Id = IdGenerator.GenerateId<PolygonPlatform>();
         }
         // COSTRUTTORE 2: da JSON
-        public PolygonPlatform(string shapeId, List<Vector2> points, string id, string iconPath)
+        public PolygonPlatform(string shapeId, string id, string iconPath)
             : base(shapeId, "StaticPlatform", "Floor", iconPath)
         {
-            Polygon = ShapesRegistry.GetOrCreatePolygon(shapeId, points);
+            Polygon = ShapesRegistry.GetOrCreatePolygon(shapeId);
             Id = id;
         }
 
@@ -117,17 +113,68 @@ namespace LimboArchitect.Core.Object
 
     public abstract class MovableObject: PhysicObject
     {
-        
+        private string? AnimId {get; init; }
+
+        public MovableObject(string animId, string godotClassName, string displayName, string iconPath)
+            : base("default_rectangle_platform", godotClassName, displayName, iconPath, "Animated Platforms")
+        {
+            AnimId = animId;
+        }
     }
 
     public class MovingPlatform: MovableObject
     {
-        
+        public Vector2 TargetPos {get; set; }
+        public float StopTime {get; set; }
+        public float MoveTime {get; set; }
+
+        // COSTRUTTORE 1: da UI
+        public MovingPlatform(string iconPath, string animId)
+            : base(animId, "MovingPlatform", "Moving Platform", iconPath)
+        {
+            TargetPos = new Vector2(0, 0);
+            StopTime = 1f;
+            MoveTime = 5f;
+        }
+        // COSTRUTTORE 2: da JSON
+        public MovingPlatform(Vector2 targetPos, float stopTime, float moveTime, string iconPath, string animId)
+            : base(animId, "MovingPlatform", "Moving Platform", iconPath)
+        {
+            TargetPos = targetPos;
+            StopTime = stopTime;
+            MoveTime = moveTime;
+        }
+
+        public override string ExportToGDScript(string extraDataJson)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class RotatingPlatform: MovableObject
     {
-        
+        public float StopTime {get; set; }
+        public float MoveTime {get; set; }
+
+        // COSTRUTTORE 1: da UI
+        public RotatingPlatform(string iconPath, string animId)
+            : base(animId, "RotatingPlatform", "Rotating Platform", iconPath)
+        {
+            StopTime = 1f;
+            MoveTime = 5f;
+        }
+        // COSTRUTTORE 2: da JSON
+        public RotatingPlatform(float stopTime, float moveTime, string iconPath, string animId)
+            : base(animId, "RotatingPlatform", "Rotating Platform", iconPath)
+        {
+            StopTime = stopTime;
+            MoveTime = moveTime;
+        }
+
+        public override string ExportToGDScript(string extraDataJson)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class BreakingPlatform: MovableObject

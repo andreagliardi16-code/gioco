@@ -60,16 +60,8 @@ namespace LimboArchitect.Core.Shapes
             return newCircle;
         }
 
-        public static PolygonShape GetOrCreatePolygon(string id, List<Vector2> points)
+        public static PolygonShape GetOrCreatePolygon(string id)
         {
-            if (points.Count == 0)
-            {
-                throw new LimboArchitectException(
-                    ErrorCode.InvalidPolygonPoints,
-                    $"Il poligono '{id}' deve avere almeno tre punti."
-                );
-            }
-
             if (_shapes.TryGetValue(id, out var existingShape) && existingShape is PolygonShape poly)
             {
                 return poly;
@@ -85,7 +77,7 @@ namespace LimboArchitect.Core.Shapes
             }
 
             // Se non esiste, creiamo un nuovo poligono con i punti passati come argomento
-            var newPolygon = new PolygonShape(id, points);
+            var newPolygon = new PolygonShape(id);
             _shapes.Add(id, newPolygon);
 
             return newPolygon;
@@ -131,15 +123,44 @@ namespace LimboArchitect.Core.Shapes
 
     public class PolygonShape: Area
     {
-        public List<Vector2> Points {get; set; }
+        public List<Vector2> Points {get; set; }   // Points hanno posizioni relative al primo punto inserito.
+        private Vector2 AnchorPoint {get; }
 
         public PolygonShape(string id) : base(id)
         {
             Points = new List<Vector2>();
+            AnchorPoint = new Vector2(0f,0f);
+            Points.Add(AnchorPoint);
         }
-        public PolygonShape(string id, List<Vector2> initialPoints) : base(id)
+
+        public void AddPoint(Vector2 newPoint, int index = -1)    // trovare la posizione relativa di new_point è un problema
         {
-            Points = initialPoints;
+            foreach (Vector2 point in Points)
+            {
+                if (point == newPoint)
+                {
+                    return;
+                }
+            }
+            
+            if (index < 0 || index == 0)  // non posso cambiare anchor point, quindi non posso passare 0
+            {
+                Points.Add(newPoint);
+                return;
+            }
+
+            Points.Insert(index, newPoint);
+        }
+
+        public void SavePolygon()
+        {
+            if (Points.Count < 3)
+            {
+                throw new LimboArchitectException (
+                    ErrorCode.InvalidPolygonPoints,
+                    "Il poligono deve essere salvato con almeno 3 punti"
+                );
+            }
         }
     }
 }
