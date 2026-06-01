@@ -19,7 +19,7 @@ namespace LimboArchitect.Core.Object
 
         //riferimento al livello
         public GameLevel? ParentLevel {get; set; }
-        public string Id {get; init; }  //viene assegnato nei costruttori dei figli
+        public string? Id {get; init; }  //viene assegnato nei costruttori dei figli
 
         //per la UI
         public string DisplayName { get; set; }  // Es: "Piattaforma Mobile"
@@ -179,8 +179,31 @@ namespace LimboArchitect.Core.Object
 
     public class BreakingPlatform: MovableObject
     {
-        
+        public float BreakingTime {get; set; }
+        public float RestTime {get; set; }
+
+        // COSTRUTTORE 1: da UI
+        public BreakingPlatform(string iconPath, string animId)
+            : base(animId, "BreakingPlatform", "Breakable Platform", iconPath)
+        {
+            BreakingTime = 1.5f;
+            RestTime = 2f;
+        }
+        // COSTRUTTORE 2: da JSON
+        public BreakingPlatform(string iconPath, string animId, float breakingTime, float restTime)
+            : base(animId, "BreakingPlatform", "Breakable Platform", iconPath)
+        {
+            BreakingTime = breakingTime;
+            RestTime = restTime;
+        }
+
+        public override string ExportToGDScript(string extraDataJson)
+        {
+            throw new NotImplementedException();
+        }
     }
+
+    /* TODO: aree ancora da implementare ANCHE IN ENGINE
 
     public abstract class InteractiveObject: PhysicObject
     {
@@ -196,6 +219,7 @@ namespace LimboArchitect.Core.Object
     {
         
     }
+    */
 
     //Aree
     public abstract class AreaObject: LevelObject

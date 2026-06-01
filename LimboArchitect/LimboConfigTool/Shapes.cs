@@ -124,7 +124,7 @@ namespace LimboArchitect.Core.Shapes
     public class PolygonShape: Area
     {
         public List<Vector2> Points {get; set; }   // Points hanno posizioni relative al primo punto inserito.
-        private Vector2 AnchorPoint {get; }
+        private Vector2 AnchorPoint {get; set; }
 
         public PolygonShape(string id) : base(id)
         {
@@ -135,12 +135,9 @@ namespace LimboArchitect.Core.Shapes
 
         public void AddPoint(Vector2 newPoint, int index = -1)    // trovare la posizione relativa di new_point è un problema
         {
-            foreach (Vector2 point in Points)
-            {
-                if (point == newPoint)
-                {
-                    return;
-                }
+            if (Points.Contains(newPoint)) 
+            { 
+                return; 
             }
             
             if (index < 0 || index == 0)  // non posso cambiare anchor point, quindi non posso passare 0
@@ -150,6 +147,21 @@ namespace LimboArchitect.Core.Shapes
             }
 
             Points.Insert(index, newPoint);
+        }
+
+        public void RemovePoint(int index)
+        {
+            if (index < 0)
+            {
+                return;
+            }
+
+            if (index == 0)
+            {
+                AnchorPoint = Points[1];
+            }
+
+            Points.RemoveAt(index);
         }
 
         public void SavePolygon()

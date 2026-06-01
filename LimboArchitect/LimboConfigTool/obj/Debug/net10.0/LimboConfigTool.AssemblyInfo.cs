@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LimboConfigTool")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5e75fc4bc33ade350c08320dff8751ff9b49db4f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4fc5a5992a9fc2092d74f14765d15de5f769a252")]
 [assembly: System.Reflection.AssemblyProductAttribute("LimboConfigTool")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LimboConfigTool")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
