@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using System.Data;
 using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
 using LimboArchitect.Core.Object;
+using LimboArchitect.Core.ObjTemplates;
 
 namespace LimboArchitect.Core.Levels
 {
@@ -15,25 +16,27 @@ namespace LimboArchitect.Core.Levels
         public int MaxY { get; private set; }
         public string LevelName{ get; set; } = "Nuovo_Livello";
 
-        public Dictionary<string, LevelObject> Grid { get; set; } 
+        public Dictionary<(int, int), LevelObject> Grid { get; set; } 
 
 
         public GameLevel(string id)
         {
             LevelName = id;
-            Grid = new Dictionary<string,LevelObject>();
+            Grid = new Dictionary<(int, int),LevelObject>();
         }
 
         //Metodo per inserire o sovrascrivere un oggetto
-        public void PlaceObject(int x, int y, string typeID)
+        public void PlaceObject(int x, int y, ObjectTemplate template)
         {
             var coord = (x, y);
-            LevelObject newObj = new LevelObject{};
+            
+            LevelObject newObj = template.Factory();
+            Grid.Add(coord, newObj);
 
-            if (Grid.ContainsKey(coord))  //aggiungere sistema che controlli anche sovrapposizione oggetti
-                Grid[coord] = newObj; // Sovrascrive l'oggetto esistente
-            else
-                Grid.Add(coord, newObj); // Aggiunge un nuovo oggetto
+            if (newObj is LevelGate)
+            {
+                
+            }
         }
 
         public void RemoveObject(int x, int y)

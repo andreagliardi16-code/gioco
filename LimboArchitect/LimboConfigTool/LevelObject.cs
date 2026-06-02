@@ -19,7 +19,7 @@ namespace LimboArchitect.Core.Object
 
         //riferimento al livello
         public GameLevel? ParentLevel {get; set; }
-        public string? Id {get; init; }  //viene assegnato nei costruttori dei figli
+        public string Id {get; init; }  //viene assegnato nei costruttori dei figli
 
         //per la UI
         public string DisplayName { get; set; }  // Es: "Piattaforma Mobile"
@@ -32,6 +32,7 @@ namespace LimboArchitect.Core.Object
             DisplayName = displayName;
             IconPath = iconPath;
             Category = category;
+            Id = default!;
         }
 
         public abstract string ExportToGDScript(string extraDataJson);
@@ -115,8 +116,8 @@ namespace LimboArchitect.Core.Object
     {
         private string? AnimId {get; init; }
 
-        public MovableObject(string animId, string godotClassName, string displayName, string iconPath)
-            : base("default_rectangle_platform", godotClassName, displayName, iconPath, "Animated Platforms")
+        public MovableObject(string animId, string areaId, string godotClassName, string displayName, string iconPath)
+            : base(areaId, godotClassName, displayName, iconPath, "Animated Platforms")
         {
             AnimId = animId;
         }
@@ -127,22 +128,27 @@ namespace LimboArchitect.Core.Object
         public Vector2 TargetPos {get; set; }
         public float StopTime {get; set; }
         public float MoveTime {get; set; }
+        public Area Shape {get; set; }
 
         // COSTRUTTORE 1: da UI
         public MovingPlatform(string iconPath, string animId)
-            : base(animId, "MovingPlatform", "Moving Platform", iconPath)
+            : base("default_rectangle_platform",animId, "MovingPlatform", "Moving Platform", iconPath)
         {
+            Shape = ShapesRegistry.GetOrCreateRectangle("default_rectangle_platform", 128, 16);
+            Id = IdGenerator.GenerateId<MovingPlatform>();
             TargetPos = new Vector2(0, 0);
             StopTime = 1f;
             MoveTime = 5f;
         }
         // COSTRUTTORE 2: da JSON
-        public MovingPlatform(Vector2 targetPos, float stopTime, float moveTime, string iconPath, string animId)
-            : base(animId, "MovingPlatform", "Moving Platform", iconPath)
+        public MovingPlatform(string shapeId, Vector2 targetPos, float stopTime, float moveTime, string iconPath, string animId, string id)
+            : base(shapeId, animId, "MovingPlatform", "Moving Platform", iconPath)
         {
+            Shape = ShapesRegistry.GetOrCreateRectangle(shapeId);
             TargetPos = targetPos;
             StopTime = stopTime;
             MoveTime = moveTime;
+            Id = id;
         }
 
         public override string ExportToGDScript(string extraDataJson)
@@ -155,20 +161,27 @@ namespace LimboArchitect.Core.Object
     {
         public float StopTime {get; set; }
         public float MoveTime {get; set; }
+        public Area Shape {get; set; }
 
         // COSTRUTTORE 1: da UI
         public RotatingPlatform(string iconPath, string animId)
-            : base(animId, "RotatingPlatform", "Rotating Platform", iconPath)
+            : base("default_rectangle_platform", animId, "RotatingPlatform", "Rotating Platform", iconPath)
         {
             StopTime = 1f;
             MoveTime = 5f;
+            Id = IdGenerator.GenerateId<RotatingPlatform>();
+            Shape = ShapesRegistry.GetOrCreateRectangle("default_rectangle_platform", 128, 16);
+
         }
         // COSTRUTTORE 2: da JSON
-        public RotatingPlatform(float stopTime, float moveTime, string iconPath, string animId)
-            : base(animId, "RotatingPlatform", "Rotating Platform", iconPath)
+        public RotatingPlatform(string shapeId, float stopTime, float moveTime, string iconPath, string animId, string id)
+            : base(shapeId, animId, "RotatingPlatform", "Rotating Platform", iconPath)
         {
             StopTime = stopTime;
             MoveTime = moveTime;
+            Id = id;
+            Shape = ShapesRegistry.GetOrCreateRectangle(shapeId);
+
         }
 
         public override string ExportToGDScript(string extraDataJson)
@@ -181,20 +194,25 @@ namespace LimboArchitect.Core.Object
     {
         public float BreakingTime {get; set; }
         public float RestTime {get; set; }
+        public Area Shape {get; set; }
 
         // COSTRUTTORE 1: da UI
         public BreakingPlatform(string iconPath, string animId)
-            : base(animId, "BreakingPlatform", "Breakable Platform", iconPath)
+            : base("default_rectangle_platform",animId, "BreakingPlatform", "Breakable Platform", iconPath)
         {
             BreakingTime = 1.5f;
             RestTime = 2f;
+            Id = IdGenerator.GenerateId<BreakingPlatform>();
+            Shape = ShapesRegistry.GetOrCreateRectangle("default_rectangle_platform", 128, 16);
         }
         // COSTRUTTORE 2: da JSON
-        public BreakingPlatform(string iconPath, string animId, float breakingTime, float restTime)
-            : base(animId, "BreakingPlatform", "Breakable Platform", iconPath)
+        public BreakingPlatform(string shapeId,string iconPath, string animId, float breakingTime, float restTime, string id)
+            : base(shapeId, animId, "BreakingPlatform", "Breakable Platform", iconPath)
         {
             BreakingTime = breakingTime;
             RestTime = restTime;
+            Id = id;
+            Shape = ShapesRegistry.GetOrCreateRectangle(shapeId);
         }
 
         public override string ExportToGDScript(string extraDataJson)
@@ -260,8 +278,8 @@ namespace LimboArchitect.Core.Object
 
         public RectangleShape Shape{get; set; }
 
-        // COSTRUTTORE 2: da UI
-        public LevelGate (string iconPath)
+        // COSTRUTTORE 1: da UI
+        public LevelGate (string iconPath, string levelId)
             : base("def_rect", "LevelGate", "Level Gate", iconPath)
         {
             Shape = ShapesRegistry.GetOrCreateRectangle("def_rect");
