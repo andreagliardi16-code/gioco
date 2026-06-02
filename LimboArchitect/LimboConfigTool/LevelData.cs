@@ -6,6 +6,17 @@ using LimboArchitect.Core.ObjTemplates;
 
 namespace LimboArchitect.Core.Levels
 {
+    public class CreationContext
+{
+    public string LevelName { get; init; }
+    //Aggiungere altri campi necessari
+
+    public CreationContext(string levelName)
+        {
+            LevelName = levelName;
+        }
+}
+
     public class GameLevel
     {
         // 1. PROPRIETÀ IN SOLA LETTURA (Notazione PascalCase per il C#)
@@ -14,15 +25,17 @@ namespace LimboArchitect.Core.Levels
         public int MaxX { get; private set; }
         public int MinY { get; private set; }
         public int MaxY { get; private set; }
+        public CreationContext Context {get; private set; }
         public string LevelName{ get; set; } = "Nuovo_Livello";
 
-        public Dictionary<(int, int), LevelObject> Grid { get; set; } 
+        public Dictionary<(int X, int Y), LevelObject> Grid { get; set; } 
 
 
         public GameLevel(string id)
         {
             LevelName = id;
             Grid = new Dictionary<(int, int),LevelObject>();
+            Context = new CreationContext(LevelName);
         }
 
         //Metodo per inserire o sovrascrivere un oggetto
@@ -30,7 +43,7 @@ namespace LimboArchitect.Core.Levels
         {
             var coord = (x, y);
             
-            LevelObject newObj = template.Factory();
+            LevelObject newObj = template.Factory(Context);
             Grid.Add(coord, newObj);
 
             if (newObj is LevelGate)
