@@ -1,8 +1,9 @@
 using System;
 using System.ComponentModel;
 using System.IO;
-using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
+using LimboArchitect.Core.Levels;
+using LimboArchitect.Core.Object;
 
 string jsonPath = @"C:\Users\Andrea\Desktop\ascatasuna\ext_game_data\game_data.json";
 
@@ -25,12 +26,7 @@ else
 }
 
 // Creazione livello di prova (SOSTITUIRE CON VERA LOGICA)
-GameLevel livelloProva = new GameLevel { LevelName = "livello_Prova_01" };
-
-livelloProva.PlaceObject(0, 4, "platform");
-livelloProva.PlaceObject(1, 2, "platform");
-livelloProva.PlaceObject(3, 5, "spikes");
-livelloProva.PlaceObject(0, 5, "gate");
+GameLevel livelloProva = new("livello_prova");
 
 Console.WriteLine($"\n--- Rendering di {livelloProva.LevelName} ---");
 
@@ -46,14 +42,6 @@ for (int y = livelloProva.MinY; y <= livelloProva.MaxY; y++)
     {
         if (livelloProva.Grid.TryGetValue((x, y), out LevelObject obj))
         {
-            // Sostituiamo il TypeId con un carattere grafico
-            rigaScena += obj.TypeID switch
-            {
-                "platform" => "# ",
-                "spikes" => "X ",
-                "gate" => "O ",
-                _ => "? "
-            };
         }
         else
         {
