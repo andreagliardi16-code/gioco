@@ -4,6 +4,43 @@
 .inport/
 .export/
 .export.cfg
+
+## --- IDES E STRUMENTI DI SVILUPPO ---
+# Visual Studio
+.vs/
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# JetBrains Rider
 .idea/
-*.iml
-*.txt
+*.sln.iml
+
+# Visual Studio Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+## --- COMPILAZIONE E PACCHETTI .NET ---
+# Cartelle di output della build
+[Bb]in/
+[Oo]bj/
+
+# Pacchetti NuGet accidentalmente scaricati nella cartella di progetto
+packages/
+*.nuget.props
+*.nuget.targets
+
+## --- SPECIFICO PER AVALONIA ---
+# Cache del Designer di Avalonia (se utilizzi il vecchio builder o tool specifici)
+.avalonia/
+avalonia.json
+
+## --- OS GENERATED FILES ---
+.DS_Store
+Thumbs.db
