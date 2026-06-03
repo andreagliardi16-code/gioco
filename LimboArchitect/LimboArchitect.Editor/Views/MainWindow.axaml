@@ -9,7 +9,8 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="LimboArchitect"
         WindowState="Maximized"
-        MinWidth="1024" MinHeight="600">
+        MinWidth="1024" MinHeight="600"
+        Background="#1e1e1e">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -17,6 +18,47 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <Grid ColumnDefinitions="250, *, 250">
+        
+        <Border Grid.Column="0" Background="#262626" BorderBrush="#333333" BorderThickness="0,0,1,0">
+            <StackPanel Margin="15">
+                <TextBlock Text="CATALOGO OGGETTI"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Foreground="White" 
+                    Margin="0,0,0,20"/>
+            </StackPanel>
+            
+        </Border>
+
+        <Border Grid.Column="1" Background="#1a1a1a">
+            <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="AREA DI DISEGNO DEL LIVELLO" 
+                               FontSize="18" 
+                               FontWeight="Bold" 
+                               Foreground="#444444" 
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="Qui verrà renderizzata la griglia di gioco" 
+                               Foreground="#444444" 
+                               HorizontalAlignment="Center" 
+                               Margin="0,5,0,0"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border Grid.Column="2" Background="#262626" BorderBrush="#333333" BorderThickness="1,0,0,0">
+            <StackPanel Margin="15">
+                <TextBlock Text="PROPRIETÀ" 
+                           FontSize="16" 
+                           FontWeight="Bold" 
+                           Foreground="White" 
+                           Margin="0,0,0,20"/>
+                
+                <TextBlock Text="Nessun oggetto selezionato" Foreground="#888888"/>
+            </StackPanel>
+        </Border>
+        
+    </Grid>
 
 </Window>
