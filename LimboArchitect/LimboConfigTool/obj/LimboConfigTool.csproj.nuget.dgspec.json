@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\Andrea\\Desktop\\Prototipo Gico\\LimboArchitect\\LimboConfigTool\\LimboConfigTool.csproj": {}
+    "C:\\Users\\Andrea\\Desktop\\Prototipo Gico\\LimboArchitect\\LimboConfigTool\\LimboConfigTool.csproj": {}
   },
   "projects": {
-    "c:\\Users\\Andrea\\Desktop\\Prototipo Gico\\LimboArchitect\\LimboConfigTool\\LimboConfigTool.csproj": {
+    "C:\\Users\\Andrea\\Desktop\\Prototipo Gico\\LimboArchitect\\LimboConfigTool\\LimboConfigTool.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\Andrea\\Desktop\\Prototipo Gico\\LimboArchitect\\LimboConfigTool\\LimboConfigTool.csproj",
+        "projectUniqueName": "C:\\Users\\Andrea\\Desktop\\Prototipo Gico\\LimboArchitect\\LimboConfigTool\\LimboConfigTool.csproj",
         "projectName": "LimboConfigTool",
-        "projectPath": "c:\\Users\\Andrea\\Desktop\\Prototipo Gico\\LimboArchitect\\LimboConfigTool\\LimboConfigTool.csproj",
+        "projectPath": "C:\\Users\\Andrea\\Desktop\\Prototipo Gico\\LimboArchitect\\LimboConfigTool\\LimboConfigTool.csproj",
         "packagesPath": "C:\\Users\\Andrea\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\Andrea\\Desktop\\Prototipo Gico\\LimboArchitect\\LimboConfigTool\\obj\\",
+        "outputPath": "C:\\Users\\Andrea\\Desktop\\Prototipo Gico\\LimboArchitect\\LimboConfigTool\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
