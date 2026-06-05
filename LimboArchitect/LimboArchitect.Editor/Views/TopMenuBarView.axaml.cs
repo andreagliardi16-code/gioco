@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace LimboArchitect.Editor.Views;
 
-public partial class CatalogView : UserControl
+public partial class TopMenuBarView : UserControl
 {
-    public CatalogView()
+    public TopMenuBarView()
     {
         AvaloniaXamlLoader.Load(this);
     }

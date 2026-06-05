@@ -3,14 +3,14 @@
              xmlns:vm="using:LimboArchitect.Editor.ViewModels"
              x:Class="LimboArchitect.Editor.Views.CatalogView">
 
-    <StackPanel Margin="15" Background="Red">
+    <StackPanel Margin="15">
         <TextBlock Text="CATALOGO OGGETTI"
                    FontSize="20"
                    FontWeight="Bold"
                    Foreground="White" 
                    Margin="0,0,0,20"/>
         <TextBlock Text="trascinare gli oggetti nel livello"
-                   FontSize="16"
+                   TextWrapping="Wrap"
                    Foreground="#888888"
                    Margin="0,0,0,15"/>
         
@@ -23,7 +23,7 @@
           </ComboBox>
 
           <ComboBox>
-            <ComboBoxItem/>
+            <ComboBoxItem/>@
             <ComboBoxItem/>
             <ComboBoxItem/>
             <ComboBoxItem/>

@@ -1,0 +1,41 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:LimboArchitect.Editor.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="LimboArchitect.Editor.Views.TopMenuBarView">
+
+            <Menu VerticalAlignment="Top"
+                  Background="#212121">
+              <MenuItem Header="_File"
+                        Foreground="White">
+                <MenuItem Header="_Nuovo File"/>
+                <MenuItem Header="_Carica File"/>
+                <MenuItem Header="_Salva"/>
+              </MenuItem>
+
+              <MenuItem Header="_Progetto"
+                        Foreground="White">
+                <MenuItem Header="_Impostazioni Prgetto"/>
+                <MenuItem Header="_Nuovo Progetto"/>
+                <MenuItem Header="_Cambia Progetto"/>
+              </MenuItem>
+
+              <MenuItem Header="_Livello"
+                        Foreground="White">
+                <MenuItem Header="_Nome Livello"/>
+                <MenuItem Header="_Dipendenze"/>
+              </MenuItem>
+
+              <MenuItem Header="Analisi"
+                        Foreground="White">
+                <MenuItem Header="_Abilità Analisi in Tempo Reale"/>
+                <MenuItem Header="_Cambia Stato Menù Analisi"/>
+                <MenuItem Header="_Disattiva Controllo Cinematico"/>
+                <MenuItem Header="_Disattiva Difficoltà"/>
+                <MenuItem Header="_Disattiva Controllo sulla Camera"/>
+              </MenuItem>
+            </Menu>
+
+</UserControl>

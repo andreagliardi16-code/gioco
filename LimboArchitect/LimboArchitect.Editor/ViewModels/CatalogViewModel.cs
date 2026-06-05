@@ -7,7 +7,6 @@ namespace LimboArchitect.Editor.ViewModels
 {
     public class CatalogViewModel : ViewModelBase
     {
-        [ObservableProperty]
-        private IReadOnlyList<ObjectTemplate> ObgTemplatesList{get; } = EditorCatalog.AvailableObjects
+        private IReadOnlyList<ObjectTemplate> ObgTemplatesList{get; } = EditorCatalog.AvailableObjects;
     }
 }
