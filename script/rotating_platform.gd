@@ -3,8 +3,10 @@ class_name RotatingPlatform
 
 const ID: StringName = &"RotatingPlatform"
 
-##Script che assegna un attrito alla piattaforma e permette di essere riconosciuta come tale
+## Script che assegna un attrito alla piattaforma e permette di essere riconosciuta come tale
 @export var platform_material: PlatformMaterial = null
+## Decide se la piattaforma inizia rivolta verso l'alto.
+@export var facing_up: bool = true
 
 @onready var platform: AnimatableBody2D = $Platform
 @onready var sprite: Node2D = $WigglePivot
@@ -12,6 +14,8 @@ const ID: StringName = &"RotatingPlatform"
 
 func _ready() -> void:
 	platform.platform_material  = platform_material
+	if not facing_up:
+		self.rotation_degrees += 180
 
 
 ## Funzione da chiamare direttamente dal keyframe dell'AnimationPlayer (Method Call Track).

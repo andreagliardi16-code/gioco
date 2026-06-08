@@ -357,6 +357,7 @@ shape = SubResource("WorldBoundaryShape2D_eaa0b")
 
 [node name="RotatingPlatform2" parent="." unique_id=172054313 instance=ExtResource("12_a5rnb")]
 position = Vector2(2304, 584)
+facing_up = false
 
 [node name="RotatingPlatform3" parent="." unique_id=15436210 instance=ExtResource("12_a5rnb")]
 position = Vector2(2816, 584)
