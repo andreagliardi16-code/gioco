@@ -1,48 +1,49 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:core="using:LimboArchitect.Core.ObjTemplates"
              xmlns:vm="using:LimboArchitect.Editor.ViewModels"
-             x:Class="LimboArchitect.Editor.Views.CatalogView">
+             x:Class="LimboArchitect.Editor.Views.CatalogView"
+             x:DataType="vm:CatalogViewModel">
 
-    <StackPanel Margin="15">
-        <TextBlock Text="CATALOGO OGGETTI"
-                   FontSize="20"
-                   FontWeight="Bold"
-                   Foreground="White" 
-                   Margin="0,0,0,20"/>
-        <TextBlock Text="trascinare gli oggetti nel livello"
-                   TextWrapping="Wrap"
-                   Foreground="#888888"
-                   Margin="0,0,0,15"/>
-        
-        <StackPanel>
-          <ComboBox>  
-            <ComboBoxItem/>
-            <ComboBoxItem/>
-            <ComboBoxItem/>
-            <ComboBoxItem/>
-          </ComboBox>
+    <UserControl.DataTemplates>
+        <DataTemplate DataType="core:ObjectTemplate">
+            <StackPanel Orientation="Horizontal" Margin="5,2">
+                <Rectangle Width="16" Height="16" Fill="#555555" Margin="0,0,8,0" RadiusX="2" RadiusY="2"/>
+                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Foreground="White"/>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.DataTemplates>
 
-          <ComboBox>
-            <ComboBoxItem/>@
-            <ComboBoxItem/>
-            <ComboBoxItem/>
-            <ComboBoxItem/>
-          </ComboBox>
+    <Grid RowDefinitions="Auto, *">
 
-          <ComboBox>
-            <ComboBoxItem/>
-            <ComboBoxItem/>
-            <ComboBoxItem/>
-            <ComboBoxItem/>
-          </ComboBox>  
-
-          <ComboBox>
-            <ComboBoxItem/>
-            <ComboBoxItem/>
-            <ComboBoxItem/>
-            <ComboBoxItem/>
-          </ComboBox>
-        
+        <StackPanel Margin="15" Grid.Row="0">
+            <TextBlock Text="CATALOGO OGGETTI"
+                       FontSize="20"
+                       FontWeight="Bold"
+                       Foreground="White" 
+                       Margin="0,0,0,20"/>
+            <TextBlock Text="trascinare gli oggetti nel livello"
+                       TextWrapping="Wrap"
+                       Foreground="#888888"
+                       Margin="0,0,0,15"/>
         </StackPanel>
-    </StackPanel>
+      
+        <TreeView Grid.Row="1" 
+                  ItemsSource="{Binding GroupedCategories}"
+                  Margin="10">
+            
+            <TreeView.ItemTemplate>
+                <TreeDataTemplate ItemsSource="{Binding Elements}">
+                    
+                    <TextBlock Text="{Binding Category}" 
+                               FontWeight="Bold" 
+                               Foreground="#FFFFCC13"
+                               Margin="0,4"/>
+                               
+                </TreeDataTemplate>
+            </TreeView.ItemTemplate>
+            
+        </TreeView>
+        
+    </Grid>
 </UserControl>

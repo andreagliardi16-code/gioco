@@ -27,7 +27,7 @@
 
         <Border Grid.Row="1">
         
-            <Grid ColumnDefinitions="250", *, 250">
+            <Grid ColumnDefinitions="250, *, 250">
 
                 <Border Grid.Column="0" Background="#262626" BorderBrush="#333333" BorderThickness="0,0,1,0">
                     <StackPanel>

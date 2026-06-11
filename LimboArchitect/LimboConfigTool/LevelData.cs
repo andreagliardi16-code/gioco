@@ -1,21 +1,18 @@
-using System.Collections.Generic;
-using System.Data;
-using System.Runtime.CompilerServices;
+using LimboArchitect.Core.Diagnostics;
 using LimboArchitect.Core.Object;
-using LimboArchitect.Core.ObjTemplates;
 
 namespace LimboArchitect.Core.Levels
 {
     public class CreationContext
-{
-    public string LevelName { get; init; }
-    //Aggiungere altri campi necessari
+    {
+        public string LevelName { get; init; }
+        //Aggiungere altri campi necessari
 
-    public CreationContext(string levelName)
-        {
-            LevelName = levelName;
-        }
-}
+        public CreationContext(string levelName)
+            {
+                LevelName = levelName;
+            }
+    }
 
     public class GameLevel
     {
@@ -28,23 +25,31 @@ namespace LimboArchitect.Core.Levels
         public CreationContext Context {get; private set; }
         public string LevelName{ get; set; } = "Nuovo_Livello";
 
-        public Dictionary<(int X, int Y), LevelObject> Grid { get; set; } 
+        public Dictionary<(int X, int Y), List<LevelObject>> Grid { get; set; } 
 
 
         public GameLevel(string id)
         {
             LevelName = id;
-            Grid = new Dictionary<(int, int),LevelObject>();
+            Grid = new Dictionary<(int, int), List<LevelObject>>();
             Context = new CreationContext(LevelName);
         }
 
         //Metodo per inserire o sovrascrivere un oggetto
-        public void PlaceObject(int x, int y, ObjectTemplate template)
+        public void PlaceObject(LevelObject obj)
         {
-            var coord = (x, y);
+            var coord = (obj.GridX, obj.GridY);
             
-            LevelObject newObj = template.Factory(Context);
-            Grid.Add(coord, newObj);
+            LevelObject newObj = obj;
+
+            if (Grid.TryGetValue(coord, out var list))
+            {
+                list.Add(newObj);
+            } 
+            else
+            {
+                Grid.Add(coord, new List<LevelObject>{newObj});
+            }
 
             if (newObj is LevelGate)
             {
@@ -52,11 +57,48 @@ namespace LimboArchitect.Core.Levels
             }
         }
 
-        public void RemoveObject(int x, int y)
+        public void RemoveAllObjects(int x, int y)
         {
             var coord = (x, y);
             if (Grid.ContainsKey(coord))
                 Grid.Remove(coord); // Rimuove l'oggetto se esiste
+        }
+
+        public void RemoveObject(int x, int y, LevelObject obj)
+        {
+            var coord = (x, y);
+            if (Grid.TryGetValue(coord, out var list))
+            {
+                list.Remove(obj);
+                // pulizia dizionario in caso si svuoti la cella
+                if (list.Count == 0)
+                {
+                    Grid.Remove(coord);
+                }
+            }
+            else
+            {
+                throw new LimboArchitectException(
+                    ErrorCode.NonexistantObjKey,
+                    $"Non esiste alcun oggetto alle coordinate {coord}"
+                    );
+            }
+        }
+
+        // METODO UTILE AL VIEWMODEL
+        public List<LevelObject> FindObject(int x, int y)
+        {
+            var coord = (x, y);
+
+            if (!Grid.ContainsKey(coord))
+            {
+                return [];  // lista vuota
+            }
+            else 
+            {
+                return Grid[coord];
+            }
+            
         }
 
         // 2. IL METODO DI AGGIORNAMENTO
