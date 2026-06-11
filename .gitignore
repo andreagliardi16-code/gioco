@@ -31,6 +31,13 @@
 [Bb]in/
 [Oo]bj/
 
+bin/
+obj/
+
+*.dll
+*.pdb
+*.exe
+
 # Pacchetti NuGet accidentalmente scaricati nella cartella di progetto
 packages/
 *.nuget.props
