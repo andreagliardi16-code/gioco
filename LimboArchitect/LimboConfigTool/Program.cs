@@ -49,7 +49,7 @@ namespace LimboArchitect.Core.Setup
 
                 for (int x = livelloProva.MinX; x <= livelloProva.MaxX; x++)
                 {
-                    if (livelloProva.Grid.TryGetValue((x, y), out LevelObject obj))
+                    if (livelloProva.Grid.TryGetValue((x, y), out List<LevelObject> objList))
                     {
                     }
                     else
