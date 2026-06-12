@@ -23,7 +23,7 @@ namespace LimboArchitect.Core.Levels
         public int MinY { get; private set; }
         public int MaxY { get; private set; }
         public CreationContext Context {get; private set; }
-        public string LevelName{ get; set; } = "Nuovo_Livello";
+        public string LevelName{ get; set; } = "nuovo_livello";
 
         public Dictionary<(int X, int Y), List<LevelObject>> Grid { get; set; } 
 

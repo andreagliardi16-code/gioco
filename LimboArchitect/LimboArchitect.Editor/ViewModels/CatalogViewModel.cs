@@ -1,7 +1,4 @@
 using LimboArchitect.Core.ObjTemplates;
-using LimboArchitect.Core.Object;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Diagnostics;

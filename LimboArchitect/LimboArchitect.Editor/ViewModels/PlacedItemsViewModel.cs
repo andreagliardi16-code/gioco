@@ -1,6 +1,7 @@
 using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using LimboArchitect.Core.Object;
+using LimboArchitect.Core;
 
 
 namespace LimboArchitect.Editor.ViewModels
@@ -41,8 +42,8 @@ namespace LimboArchitect.Editor.ViewModels
             }
         }
 
-        public Double PixelX => X*32;
-        public Double PixelY => Y*32;
+        public Double PixelX => X*(int)Constants.CellSize;
+        public Double PixelY => Y*(int)Constants.CellSize;
 
         public PlacedObjectViewModel(LevelObject backendObject, int x, int y)
         {

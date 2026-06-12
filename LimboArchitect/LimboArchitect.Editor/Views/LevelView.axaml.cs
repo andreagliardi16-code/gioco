@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace LimboArchitect.Editor;
 
-public partial class LevelGraph : UserControl
+public partial class LevelMapView : UserControl
 {
-    public LevelGraph()
+    public LevelMapView()
     {
         InitializeComponent();
     }

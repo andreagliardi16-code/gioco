@@ -13,11 +13,36 @@
         MinWidth="1024" MinHeight="600"
         Background="#1e1e1e">
 
+
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
+
+
+    <Window.DataTemplates>
+        
+        <DataTemplate DataType="{x:Type vm:WelcomeViewModel}">
+            <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="NESSUN LIVELLO APERTO" 
+                               FontSize="18" FontWeight="Bold" Foreground="#444444" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Usa 'Nuovo Livello' o 'Apri' nel menù in alto per iniziare" 
+                               Foreground="#444444" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:LevelMap}">
+            <Grid Background="#2d2d2d">
+                <TextBlock Text="[GRIGLIA DELL'EDITOR ATTIVA - CODICE IN ESECUZIONE]" 
+                           HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+            </Grid>
+        </DataTemplate>
+        
+    </Window.DataTemplates>
+
 
     <Grid RowDefinitions="auto, *">
 
@@ -38,19 +63,9 @@
                 </Border>
 
                 <Border Grid.Column="1" Background="#1a1a1a">
-                    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="AREA DI DISEGNO DEL LIVELLO" 
-                                    FontSize="18" 
-                                    FontWeight="Bold" 
-                                    Foreground="#444444" 
-                                    HorizontalAlignment="Center"/>
-                            <TextBlock Text="Qui verrà renderizzata la griglia di gioco" 
-                                    Foreground="#444444" 
-                                    HorizontalAlignment="Center" 
-                                    Margin="0,5,0,0"/>
-                        </StackPanel>
-                    </Grid>
+
+                    <ContentControl Content="{Binding CurrentPage}" />
+
                 </Border>
 
                 <Border Grid.Column="2" Background="#262626" BorderBrush="#333333" BorderThickness="1,0,0,0">
@@ -69,7 +84,6 @@
         </Border>
 
     </Grid>
-
     
 
 </Window>

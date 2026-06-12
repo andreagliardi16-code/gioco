@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using LimboArchitect.Core.System;
 using LimboArchitect.Core.Levels;
 using LimboArchitect.Core.Object;
 using LimboArchitect.Core.ObjTemplates;
@@ -11,7 +12,7 @@ namespace LimboArchitect.Editor.ViewModels
     public class LevelMap
     {
         public ObservableCollection<PlacedObjectViewModel> ItemsMap {get; }
-        private GameLevel? LevelRef {get; set; }
+        private GameLevel LevelRef {get; set; }
 
         public void PlaceObject(int x, int y, ObjectTemplate template)
         {
@@ -47,9 +48,18 @@ namespace LimboArchitect.Editor.ViewModels
             return true;
         }
 
-        public LevelMap()
+        public LevelMap(bool newLevel)
         {
             ItemsMap = new ObservableCollection<PlacedObjectViewModel>();
+
+            if (newLevel)
+            {
+                LevelRef = SystemMethods.CreateGenericLevel();
+            }
+            else
+            {
+                // Carico il JSON del livello da caricare
+            }
         }
     }
 }

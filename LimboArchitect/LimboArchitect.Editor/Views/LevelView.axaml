@@ -2,7 +2,52 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="LimboArchitect.Editor.LevelGraph">
-  Welcome to Avalonia!
+             xmlns:vm="using:LimboArchitect.Editor.ViewModels"
+             xmlns:c="using:LimboArchitect.Core"
+             x:Class="LimboArchitect.Editor.LevelMapView"
+             x:DataType ="vm:LevelMap">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+    
+        <ItemsControl ItemsSource="{Binding ItemsMap}">
+
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <Canvas Background="#151515" 
+                      MinWidth="800" 
+                      MinHeight="600" 
+                      Name="EditorCanvas"/>
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+
+          <ItemsControl.ItemContainerTheme>
+                <ControlTheme TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding PixelX, DataType={x:Type vm:PlacedObjectViewModel}}"/>
+                    <Setter Property="Canvas.Top" Value="{Binding PixelY, DataType={x:Type vm:PlacedObjectViewModel}}"/>
+                </ControlTheme>
+            </ItemsControl.ItemContainerTheme>
+
+          <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type vm:PlacedObjectViewModel}">
+                    <Border Width="{x:Static c:Constants.CellSize}" 
+                            Height="{x:Static c:Constants.CellSize}" 
+                            Background="#4a90e2" 
+                            BorderBrush="#357abd" 
+                            BorderThickness="1" 
+                            CornerRadius="4">
+                        
+                        <TextBlock Text="■" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center" 
+                                   Foreground="White"/>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+
+    
+        </ItemsControl>
+  
+    
+    </ScrollViewer>
+  
 </UserControl>
