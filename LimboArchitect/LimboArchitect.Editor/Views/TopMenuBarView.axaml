@@ -4,15 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:LimboArchitect.Editor.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="LimboArchitect.Editor.Views.TopMenuBarView">
+             x:Class="LimboArchitect.Editor.Views.TopMenuBarView"
+             
+             x:DataType="vm:TopMenuBarViewModel">
 
             <Menu VerticalAlignment="Top"
                   Background="#212121">
               <MenuItem Header="_File"
                         Foreground="White">
-                <MenuItem Header="_Nuovo File"/>
+                <MenuItem Header="_Nuovo File" 
+                          Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).CreateNewLevelAction}"/>
                 <MenuItem Header="_Carica File"/>
                 <MenuItem Header="_Salva"/>
+                <MenuItem Header="_Chiudi"/>
               </MenuItem>
 
               <MenuItem Header="_Progetto"

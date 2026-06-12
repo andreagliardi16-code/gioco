@@ -3,49 +3,57 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:LimboArchitect.Editor.ViewModels"
-             xmlns:c="using:LimboArchitect.Core"
-             x:Class="LimboArchitect.Editor.LevelMapView"
+             xmlns:core="using:LimboArchitect.Core"
+             xmlns:views="using:LimboArchitect.Editor.Views"
+             x:Class="LimboArchitect.Editor.Views.LevelMapView"
              x:DataType ="vm:LevelMap">
 
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
     
-        <ItemsControl ItemsSource="{Binding ItemsMap}">
+        <Grid>
 
-          <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-              <Canvas Background="#151515" 
-                      MinWidth="800" 
-                      MinHeight="600" 
-                      Name="EditorCanvas"/>
-            </ItemsPanelTemplate>
-          </ItemsControl.ItemsPanel>
+            <views:GridBackground />
+            
+            <ItemsControl ItemsSource="{Binding ItemsMap}">
 
-          <ItemsControl.ItemContainerTheme>
-                <ControlTheme TargetType="ContentPresenter">
-                    <Setter Property="Canvas.Left" Value="{Binding PixelX, DataType={x:Type vm:PlacedObjectViewModel}}"/>
-                    <Setter Property="Canvas.Top" Value="{Binding PixelY, DataType={x:Type vm:PlacedObjectViewModel}}"/>
-                </ControlTheme>
-            </ItemsControl.ItemContainerTheme>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas Background="Transparent" 
+                                MinWidth="800" 
+                                MinHeight="600" 
+                                Name="EditorCanvas"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
 
-          <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type vm:PlacedObjectViewModel}">
-                    <Border Width="{x:Static c:Constants.CellSize}" 
-                            Height="{x:Static c:Constants.CellSize}" 
-                            Background="#4a90e2" 
-                            BorderBrush="#357abd" 
-                            BorderThickness="1" 
-                            CornerRadius="4">
-                        
-                        <TextBlock Text="■" 
-                                   HorizontalAlignment="Center" 
-                                   VerticalAlignment="Center" 
-                                   Foreground="White"/>
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemContainerTheme>
+                        <ControlTheme TargetType="ContentPresenter">
+                            <Setter Property="Canvas.Left" Value="{Binding PixelX, DataType={x:Type vm:PlacedObjectViewModel}}"/>
+                            <Setter Property="Canvas.Top" Value="{Binding PixelY, DataType={x:Type vm:PlacedObjectViewModel}}"/>
+                        </ControlTheme>
+                </ItemsControl.ItemContainerTheme>
 
-    
-        </ItemsControl>
+                <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type vm:PlacedObjectViewModel}">
+                            <Border Width="{x:Static core:Constants.CellSize}" 
+                                    Height="{x:Static core:Constants.CellSize}" 
+                                    Background="#4a90e2" 
+                                    BorderBrush="#357abd" 
+                                    BorderThickness="1" 
+                                    CornerRadius="4">
+                                
+                                <TextBlock Text="■" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Foreground="White"/>
+                            </Border>
+                        </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+        
+            </ItemsControl>
+        
+        </Grid>
+        
   
     
     </ScrollViewer>
