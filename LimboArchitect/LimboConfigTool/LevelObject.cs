@@ -1,5 +1,8 @@
 using System;
+using System.Formats.Asn1;
 using System.Numerics;
+using System.Runtime.CompilerServices;
+using System.Text.Json;
 using LimboArchitect.Core.Levels;
 using LimboArchitect.Core.Physics;
 using LimboArchitect.Core.Shapes;
@@ -34,7 +37,8 @@ namespace LimboArchitect.Core.Object
             Category = category;
             Id = default!;
         }
-
+        
+        public abstract (bool, string) TrySave(string extraDataJson);
         public abstract string ExportToGDScript(string extraDataJson);
     }
 
@@ -81,9 +85,31 @@ namespace LimboArchitect.Core.Object
             Id = id;
         }
 
+        public override (bool, string) TrySave(string extraDataJson)
+        {
+            if (Shape == null || Id == null)
+            {
+                return (false, "");
+            }
+            else
+            {
+                var a = ExportToGDScript(extraDataJson);
+                return (true, a);
+            }
+        }
         public override string ExportToGDScript(string extraDataJson)
         {
-            throw new NotImplementedException();
+            var ObjectData = new
+            {
+                id=Id,
+                class_name=GodotClassName,
+                shape_id=AreaId,
+                x=GridX,
+                y=GridY,
+                extra_data = extraDataJson
+            };
+
+            return JsonSerializer.Serialize(ObjectData);
         }
     }
 
@@ -106,15 +132,37 @@ namespace LimboArchitect.Core.Object
             Id = id;
         }
 
+        public override (bool, string) TrySave(string extraDataJson)
+        {
+            if (Polygon == null || Id == null)
+            {
+                return (false, "");
+            }
+            else
+            {
+                var a = ExportToGDScript(extraDataJson);
+                return (true, a);
+            }
+        }
         public override string ExportToGDScript(string extraDataJson)
         {
-            throw new NotImplementedException();
+            var ObjectData = new
+            {
+                id=Id,
+                class_name=GodotClassName,
+                shape_id=AreaId,
+                x=GridX,
+                y=GridY,
+                extra_data=extraDataJson
+            };
+
+            return JsonSerializer.Serialize(ObjectData);
         }
     }
 
     public abstract class MovableObject: PhysicObject
     {
-        private string? AnimId {get; init; }
+        public string? AnimId {get; init; }
 
         public MovableObject(string animId, string areaId, string godotClassName, string displayName, string iconPath)
             : base(areaId, godotClassName, displayName, iconPath, "Animated Platforms")
@@ -151,6 +199,22 @@ namespace LimboArchitect.Core.Object
             Id = id;
         }
 
+        public override (bool, string) TrySave(string extraDataJson)
+        {
+            if (Shape == null || Id == null || AnimId==null)
+            {
+                return (false, "");
+            }
+            else if (MoveTime <= 0 || StopTime < 0) 
+            {
+                return (false, "");
+            }
+            else
+            {
+                var a = ExportToGDScript(extraDataJson);
+                return (true, a);
+            }
+        }
         public override string ExportToGDScript(string extraDataJson)
         {
             throw new NotImplementedException();
@@ -184,6 +248,22 @@ namespace LimboArchitect.Core.Object
 
         }
 
+        public override (bool, string) TrySave(string extraDataJson)
+        {
+            if (Shape == null || Id == null || AnimId== null)
+            {
+                return (false, "");
+            }
+            else if (MoveTime <= 0 || StopTime < 0) 
+            {
+                return (false, "");
+            }
+            else
+            {
+                var a = ExportToGDScript(extraDataJson);
+                return (true, a);
+            }
+        }
         public override string ExportToGDScript(string extraDataJson)
         {
             throw new NotImplementedException();
@@ -215,6 +295,18 @@ namespace LimboArchitect.Core.Object
             Shape = ShapesRegistry.GetOrCreateRectangle(shapeId);
         }
 
+        public override (bool, string) TrySave(string extraDataJson)
+        {
+            if (Shape == null || Id == null || AnimId==null)
+            {
+                return (false, "");
+            }
+            else
+            {
+                var a = ExportToGDScript(extraDataJson);
+                return (true, a);
+            }
+        }
         public override string ExportToGDScript(string extraDataJson)
         {
             throw new NotImplementedException();
@@ -242,29 +334,29 @@ namespace LimboArchitect.Core.Object
     //Aree
     public abstract class AreaObject: LevelObject
     {
-        public string AreaShape = "rectangle";
+        public string AreaId = "rectangle";
         private bool PhysicsRelevant {get; init; }
 
-        protected AreaObject(bool physicsRelevant, string areaShape, string godotClassName, string displayName, string iconPath, string category)
+        protected AreaObject(bool physicsRelevant, string areaId, string godotClassName, string displayName, string iconPath, string category)
             : base(godotClassName, displayName, iconPath, category)
         {
-            AreaShape = areaShape;
+            AreaId = areaId;
             PhysicsRelevant = physicsRelevant;
         }
     }
 
     public abstract class UtilityArea: AreaObject
     {
-        protected UtilityArea (string areaShape, string godotClassName, string displayName, string iconPath)
-            : base(false, areaShape, godotClassName, displayName, iconPath, "Utility")
+        protected UtilityArea (string areaId, string godotClassName, string displayName, string iconPath)
+            : base(false, areaId, godotClassName, displayName, iconPath, "Utility")
         {
         }
     }
 
     public abstract class GameArea: AreaObject
     {
-        protected GameArea (string areaShape, string godotClassName, string displayName, string iconPath)
-            : base(true, areaShape, godotClassName, displayName, iconPath, "Game Areas")
+        protected GameArea (string areaId, string godotClassName, string displayName, string iconPath)
+            : base(true, areaId, godotClassName, displayName, iconPath, "Game Areas")
         {
         }
     }
@@ -296,9 +388,38 @@ namespace LimboArchitect.Core.Object
             Id = id;
         }
 
+        public override (bool, string) TrySave(string extraDataJson)
+        {
+            if (OwnPtr == null||GatePtr==null||NextLevelPtr==null||OwnLevelPtr==null)
+            {
+                return (false, "");
+            }
+            else if (Id == null)
+            {
+                return (false, "");
+            }
+            else
+            {
+                var a = ExportToGDScript(extraDataJson);
+                return (true, a);
+            }
+        }
         public override string ExportToGDScript(string extraDataJson)
         {
-            throw new NotImplementedException();
+            var ObjectData = new
+            {
+                id=Id,
+                class_name=GodotClassName,
+                x=GridX,
+                y=GridY,
+                shape_id = AreaId,
+                own_ptr=OwnPtr,
+                gate_ptr=GatePtr,
+                own_level_ptr=OwnLevelPtr,
+                next_level_ptr=NextLevelPtr,
+                extra_data= extraDataJson
+            };
+            return JsonSerializer.Serialize(ObjectData);
         }
     }
 
@@ -321,10 +442,31 @@ namespace LimboArchitect.Core.Object
                 Id = id;
                 // aggiustare spawn point se utile
             }
-        
+
+        public override (bool, string) TrySave(string extraDataJson)
+        {
+            if (Shape==null||Id==null)
+            {
+                return (false, "");
+            }
+            else
+            {
+                var a = ExportToGDScript(extraDataJson);
+                return (true, a);
+            }
+        }
         public override string ExportToGDScript(string extraDataJson)
         {
-            throw new NotImplementedException();
+            var ObjectData = new
+            {
+                id=Id,
+                class_name = GodotClassName,
+                shape_id = AreaId,
+                x=GridX,
+                y=GridY,
+                extra_data = extraDataJson
+            };
+            return JsonSerializer.Serialize(ObjectData);
         }
     }
 
