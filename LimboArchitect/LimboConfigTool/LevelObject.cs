@@ -483,17 +483,39 @@ namespace LimboArchitect.Core.Object
         public Area Shape {get; set; }
 
         public PlaceHolderArea (string iconPath, PlaceholderType type)
-            : base("def_rect", "PlaceHolderArea", "Place Holder", iconPath)
+            : base("def_rect", "PlaceholderArea", "Place Holder", iconPath)
         {
             Shape = ShapesRegistry.GetOrCreateRectangle("def_rect");
             Id = IdGenerator.GenerateId<PlaceHolderArea>();
             CurrentType = type;
         }
 
+        public override (bool, string) TrySave(string extraDataJson)
+        {
+            if (Shape==null||Id==null)
+            {
+                return (false, "");
+            }
+            else
+            {
+                var a = ExportToGDScript(extraDataJson);
+                return (true, a);
+            }
+        }
         public override string ExportToGDScript(string extraDataJson)
         {
-            throw new NotImplementedException();
-        } 
+            var ObjectData = new
+            {
+                id=Id,
+                class_name = GodotClassName,
+                type = CurrentType,
+                shape_id = AreaId,
+                x=GridX,
+                y=GridY,
+                extra_data = extraDataJson
+            };
+            return JsonSerializer.Serialize(ObjectData);
+        }
     }
 
     public class Killzone: GameArea
@@ -513,10 +535,31 @@ namespace LimboArchitect.Core.Object
             Id = id;
         }
 
+        public override (bool, string) TrySave(string extraDataJson)
+        {
+            if (Shape==null||Id==null)
+            {
+                return (false, "");
+            }
+            else
+            {
+                var a = ExportToGDScript(extraDataJson);
+                return (true, a);
+            }
+        }
         public override string ExportToGDScript(string extraDataJson)
         {
-            throw new NotImplementedException();
-        } 
+            var ObjectData = new
+            {
+                id=Id,
+                class_name = GodotClassName,
+                shape_id = AreaId,
+                x=GridX,
+                y=GridY,
+                extra_data = extraDataJson
+            };
+            return JsonSerializer.Serialize(ObjectData);
+        }
     }
 
     public abstract class PogoArea: GameArea
@@ -550,9 +593,30 @@ namespace LimboArchitect.Core.Object
             Id = id;
         }
 
+        public override (bool, string) TrySave(string extraDataJson)
+        {
+            if (Shape==null||Id==null)
+            {
+                return (false, "");
+            }
+            else
+            {
+                var a = ExportToGDScript(extraDataJson);
+                return (true, a);
+            }
+        }
         public override string ExportToGDScript(string extraDataJson)
         {
-            throw new NotImplementedException();
+            var ObjectData = new
+            {
+                id=Id,
+                class_name = GodotClassName,
+                shape_id = AreaId,
+                x=GridX,
+                y=GridY,
+                extra_data = extraDataJson
+            };
+            return JsonSerializer.Serialize(ObjectData);
         }
     }
 
@@ -575,9 +639,31 @@ namespace LimboArchitect.Core.Object
             Timer = timer;
         }
 
+        public override (bool, string) TrySave(string extraDataJson)
+        {
+            if (Shape==null||Id==null)
+            {
+                return (false, "");
+            }
+            else
+            {
+                var a = ExportToGDScript(extraDataJson);
+                return (true, a);
+            }
+        }
         public override string ExportToGDScript(string extraDataJson)
         {
-            throw new NotImplementedException();
+            var ObjectData = new
+            {
+                id=Id,
+                class_name = GodotClassName,
+                shape_id = AreaId,
+                x=GridX,
+                y=GridY,
+                timer=Timer,
+                extra_data = extraDataJson
+            };
+            return JsonSerializer.Serialize(ObjectData);
         }
     }
 }
