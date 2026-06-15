@@ -70,6 +70,7 @@ layout_mode = 0
 offset_left = 2240.0
 offset_top = -448.0
 offset_right = 2432.0
+offset_bottom = -128.0
 color = Color(0, 0.13333334, 1, 1)
 
 [node name="ColorRect2" type="ColorRect" parent="ColorRect" unique_id=1435909531]
@@ -99,5 +100,12 @@ offset_left = 1216.0
 offset_top = -256.0
 offset_right = 1344.0
 color = Color(0.8666668, 0, 1, 1)
+
+[node name="ColorRect6" type="ColorRect" parent="ColorRect" unique_id=266420677]
+layout_mode = 0
+offset_left = 2368.0
+offset_top = -128.0
+offset_right = 2432.0
+color = Color(0, 0.13333334, 1, 1)
 
 [editable path="LevelGate"]

@@ -1,6 +1,5 @@
-using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
+using System.Security.AccessControl;
 using System.Text.Json;
 using LimboArchitect.Core.Diagnostics;
 using LimboArchitect.Core.Levels;
@@ -10,11 +9,13 @@ namespace LimboArchitect.Core.System
 {
     public static class SystemMethods
     {
+        const string jsonPath = @"res://ext_game_data\game_data.json";
+            const string jsonLevelsPath = @"res://ext_levels/";
+
+
         private static void SetupJson()
         {
-            string jsonPath = @"C:\Users\Andrea\Desktop\ascatasuna\ext_game_data\game_data.json";
-
-            GameConfig config = null;
+            GameConfig? config = null;
 
             if (File.Exists(jsonPath))
             {
@@ -55,6 +56,42 @@ namespace LimboArchitect.Core.System
             else
             { 
                 return true; 
+            }
+        }
+
+        public static bool CreateLevelJson(string levelName, List<string> levelObjects, out string ErrorMessage)
+        {
+            levelName = levelName.Trim();
+            levelName = Utils.StringExtensions.ToSnakeCase(levelName);
+
+            var levelText = new
+            {
+                name=levelName,
+                script_name="level.gd",
+                items=levelObjects
+            };
+
+            string CompleteJson = JsonSerializer.Serialize(levelText);
+            ErrorMessage = string.Empty;
+
+            try
+            {
+                if(Directory.Exists(jsonLevelsPath))
+                {
+                    Debug.WriteLine("Il percorso della cartella non è stato trovato. Ne è stata creata una.");
+                    Directory.CreateDirectory(jsonLevelsPath);
+                }
+
+                string FileName = levelName + ".json";
+                string completePath = Path.Combine(jsonLevelsPath, FileName);
+
+                File.WriteAllText(completePath, CompleteJson);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+                return false;
             }
         }
     }

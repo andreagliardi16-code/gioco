@@ -1,5 +1,6 @@
 using LimboArchitect.Core.Diagnostics;
 using LimboArchitect.Core.Object;
+using LimboArchitect.Core.System;
 
 namespace LimboArchitect.Core.Levels
 {
@@ -144,6 +145,39 @@ namespace LimboArchitect.Core.Levels
             MaxY = tempMaxY;
 
             Console.WriteLine($"Stato Livello Aggiornato -> X: da {MinX} a {MaxX} | Y: da {MinY} a {MaxY}");
+        }
+
+        public (bool, string) TrySave()
+        {
+            List<string> ObjectsStrings = [];
+
+            foreach (LevelObject obj in Grid.Values.SelectMany(list => list ))
+            {
+                (bool success, string json) = obj.TrySave();
+
+                if(!success)
+                {
+                    // Il salvataggio ha dato qualche errore
+                    return (false, $"Impossibile salvare l'oggetto {obj}");
+                }
+                else
+                {
+                    // Il salvataggio può continuare
+                    ObjectsStrings.Add(json);
+                }
+            }
+
+            string err = "";
+            bool Success = SystemMethods.CreateLevelJson(LevelName, ObjectsStrings, out err);
+
+            if (Success)
+            {
+                return (true, "");
+            }
+            else
+            {
+                return (false, err);
+            }
         }
     }
 

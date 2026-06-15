@@ -33,8 +33,12 @@ version_control/autoload_on_startup=true
 [file_customization]
 
 folder_colors={
+"res://LimboArchitect/": "purple",
 "res://assets/": "pink",
 "res://data/": "green",
+"res://eseguibili/": "teal",
+"res://ext_game_data/": "blue",
+"res://ext_levels/": "gray",
 "res://resources/": "red",
 "res://scenes/": "orange",
 "res://script/": "yellow"

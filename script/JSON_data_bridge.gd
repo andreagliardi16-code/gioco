@@ -198,6 +198,11 @@ func load_from_json() -> Global.Outcome:
 #endregion
 
 
+#region levels
+
+#endregion
+
+
 func build_res_db() -> Global.Outcome:
 	var folder = DirAccess.open(ENTITIES_PATH)
 	if not folder:

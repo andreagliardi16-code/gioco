@@ -12,6 +12,7 @@ namespace LimboArchitect.Core.Diagnostics
         InvalidGateConnection = 201, // Il portale punta a se stesso o a un livello nullo
         JsonLoadError = 301,         // Il file del livello è corrotto o invalido
         FileNotFound = 302,          // Icona o scena di Godot non trovata
+        UnableToSave = 303,          // Errore nel salvataggio
         InvalidPolygonPoints = 401   // Poligono inizializzato senza punti
     }
 

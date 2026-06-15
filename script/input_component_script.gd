@@ -85,6 +85,7 @@ func _get_direction() -> Global.Direction:    #return null se non è premuta dir
 
 #region look around
 func _look_around() -> void:
+	return    # funzione da rivedere, troppi bug generati
 	var vec: Vector2 = _get_look_vector()
 	
 	if vec.length() < 0.2 and _last_pan_input.length() < 0.2:
