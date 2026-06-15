@@ -25,7 +25,7 @@ func _create_level(level_name: String, children_nodes: Array[Node]) -> PackedSce
 		new_level.add_child(child)
 		child.owner = new_level
 	
-	set_new_level(level_name, new_level)
+	set_new_level(level_name, new_level as Level)
 	
 	var packed_level: PackedScene = PackedScene.new()
 	var result = packed_level.pack(new_level)
