@@ -210,14 +210,14 @@ func load_from_json() -> Global.Outcome:
 
 #region levels
 func check_level_register() -> void:
-	var registry = FileAccess.get_file_as_string(LEVEL_REGISTER_PATH)
-	if registry == "":
+	var registry_text = FileAccess.get_file_as_string(LEVEL_REGISTER_PATH)
+	if registry_text == "":
 		push_warning("Registro dei livelli vuoto. Operazione di import bloccata")
 		return
 	
 	## Controllo che i livelli registrati corrispondano a quelli esportati
 	# 1) rendo il json nel file una lista semplice
-	var level_id_reg: Array = json_to_array(registry)
+	var level_id_reg: Array = json_to_array(registry_text)
 	
 	# 2) apro la cartella con i livelli importati da LA e creo una lista con gli ID
 	var dir = DirAccess.open(IMPORTED_LEVELS_PATH)
@@ -272,7 +272,7 @@ func check_level_register() -> void:
 	level_id_reg.append_array(levels_to_import)
 	level_id_reg.sort()
 	var json_registry = JSON.stringify(level_id_reg, "\t")
-	registry = FileAccess.open(LEVEL_REGISTER_PATH, FileAccess.WRITE)
+	var registry = FileAccess.open(LEVEL_REGISTER_PATH, FileAccess.WRITE)
 	registry.store_string(json_registry)
 
 
