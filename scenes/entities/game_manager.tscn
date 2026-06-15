@@ -6,13 +6,11 @@
 [ext_resource type="PackedScene" uid="uid://bucj32nxuwlvw" path="res://scenes/entities/player.tscn" id="2_r5xev"]
 [ext_resource type="Script" uid="uid://dw6f0urhvucan" path="res://script/level_container.gd" id="3_nn85l"]
 [ext_resource type="Script" uid="uid://lwc76was6mlp" path="res://script/ui.gd" id="3_r5xev"]
-[ext_resource type="Resource" uid="uid://cooyn7iqohwmv" path="res://resources/other/JSON_data_bridge.tres" id="4_s6un8"]
 
 [node name="GameManager" type="Node" unique_id=15603347]
 script = ExtResource("1_ghpro")
 main_menu = ExtResource("2_82py0")
 level_map = ExtResource("2_ghpro")
-json_datas = ExtResource("4_s6un8")
 
 [node name="LevelContainer" type="Node" parent="." unique_id=1370507140]
 process_mode = 3

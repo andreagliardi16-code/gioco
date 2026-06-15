@@ -1,6 +1,6 @@
 @tool
 
-extends Resource
+extends EditorPlugin
 
 class_name JSON_data_bridge
 
@@ -8,14 +8,24 @@ class_name JSON_data_bridge
 const DATA_CONFIG_PATH: String = "res://ext_game_data/game_data.json"
 const ENTITIES_CONFIG_PATH: String = "res://ext_game_data/game_entities.json"
 const ENTITIES_PATH: String = "res://scenes/entities/game_obj"
+const LEVEL_REGISTER_PATH: String = "res://ext_levels/lvl_register"
+const IMPORTED_LEVELS_PATH: String = "res://ext_levels/imported_levels/"
+const EXPORTED_LEVELS_PATH: String = "res://ext_levels/exported_levels/"
 
 
-@export var save_changes: bool:
-	set(value):
-		if value:
-			_save_to_json()
 @export var player_stats: PlayerStats
 @export var world_stats: PhysicsStats
+## percorso della cartella in cui sono contenuti i file .tscn dei livelli di gioco
+@export var levels_folder_path: String = ""
+## percorso della cartella con i level_data
+@export var level_data_path: String = ""
+
+
+func _enter_tree() -> void:
+	
+	
+	if get_parent() is GameManager:
+		load_from_json()
 
 
 #region game data
@@ -199,7 +209,79 @@ func load_from_json() -> Global.Outcome:
 
 
 #region levels
+func check_level_register() -> void:
+	var registry = FileAccess.get_file_as_string(LEVEL_REGISTER_PATH)
+	if registry == "":
+		push_warning("Registro dei livelli vuoto. Operazione di import bloccata")
+		return
+	
+	## Controllo che i livelli registrati corrispondano a quelli esportati
+	# 1) rendo il json nel file una lista semplice
+	var level_id_reg: Array = json_to_array(registry)
+	
+	# 2) apro la cartella con i livelli importati da LA e creo una lista con gli ID
+	var dir = DirAccess.open(IMPORTED_LEVELS_PATH)
+	if not dir:
+		print("Errore nella ricerca della cartella : ", IMPORTED_LEVELS_PATH)
+		return
+	
+	var imp_levels_list: Array = []
+	
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	var full_path: String
+	while file_name != "":
+		# Ignoriamo le cartelle e i file nascosti di sistema (es. .DS_Store su Mac o nodi speciali)
+		if not dir.current_is_dir() and not file_name.begins_with("."):
+			full_path = IMPORTED_LEVELS_PATH.path_join(file_name) 
+			var curr_file_text = FileAccess.get_file_as_string(full_path)
+			
+			if curr_file_text != "":
+				var level_info = JSON.parse_string(curr_file_text)
+				
+				# Controllo di sicurezza: verifichiamo che il JSON sia valido e abbia la chiave "name"
+				if level_info != null and level_info.has("name"):
+					# Evitiamo duplicati nella lista temporanea dei file fisici
+					if not imp_levels_list.has(level_info["name"]):
+						imp_levels_list.append(level_info["name"])
+				else:
+					print("File salvato male o corrotto in imported_levels: ", file_name)
+		
+		file_name = dir.get_next()
+	
+	# 3) Controllo se le due liste sono uguali. Se un id manca, devo importare un nuovo livello.
+	var levels_to_import: Array = []
+	
+	for level_name in imp_levels_list:
+		if level_name not in level_id_reg:
+			levels_to_import.append(level_name)
+	
+	# Se non ci sono nuovi livelli da importare, interrompiamo qui senza fare nulla
+	if levels_to_import.is_empty():
+		print("Registro già aggiornato. Nessun nuovo livello da importare.")
+		return
+	
+	# 4) Passo gli id dei livelli da importare a una funzione specializzata
+	var err: Global.Outcome = import_levels(levels_to_import)
+	
+	if not err == Global.Outcome.OK:
+		push_error("Impossibile importare i livelli da LA")
+		return
+	
+	# 5) Aggiungo i livelli importati al registro
+	level_id_reg.append_array(levels_to_import)
+	level_id_reg.sort()
+	var json_registry = JSON.stringify(level_id_reg, "\t")
+	registry = FileAccess.open(LEVEL_REGISTER_PATH, FileAccess.WRITE)
+	registry.store_string(json_registry)
 
+
+func import_levels(levels_to_import: Array[String]) -> Global.Outcome:
+	# deve controllare che un livelo non esista effettivamente, controllando
+	# possibili cambi di nome e se un livello non esiste creare la scena dal
+	# JSON in imported_levels
+	push_error("Impotrtazione livelli non ancora implementata")
+	return Global.Outcome.OK
 #endregion
 
 
@@ -229,3 +311,13 @@ func build_res_db() -> Global.Outcome:
 
 func _update_res_db(id: StringName) -> Global.Outcome:
 	return Global.Outcome.OK
+
+
+func json_to_array(file_string: String) -> Array:
+	var t = JSON.parse_string(file_string)
+	
+	if not t is Array:
+		print("Il file non è stato salvato correttamente")
+		return [Global.Outcome.FAIL]
+	
+	return t
