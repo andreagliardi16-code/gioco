@@ -21,7 +21,14 @@ const EXPORTED_LEVELS_PATH: String = "res://ext_levels/exported_levels/"
 @export var level_data_path: String = ""
 
 
+var shapes_registry
+var level_builder: LimboDataMapper
+
+
 func _enter_tree() -> void:
+	shapes_registry = null
+	level_builder = LimboDataMapper.new(levels_folder_path, level_data_path, shapes_registry)
+	self.check_level_register()
 	
 	
 	if get_parent() is GameManager:
@@ -209,6 +216,8 @@ func load_from_json() -> Global.Outcome:
 
 
 #region levels
+## Paragono il registro dei livelli già importati con quelli effettivamente fatti in LA
+## per vedere se devo importarne di nuovi
 func check_level_register() -> void:
 	var registry_text = FileAccess.get_file_as_string(LEVEL_REGISTER_PATH)
 	if registry_text == "":
@@ -220,34 +229,7 @@ func check_level_register() -> void:
 	var level_id_reg: Array = json_to_array(registry_text)
 	
 	# 2) apro la cartella con i livelli importati da LA e creo una lista con gli ID
-	var dir = DirAccess.open(IMPORTED_LEVELS_PATH)
-	if not dir:
-		print("Errore nella ricerca della cartella : ", IMPORTED_LEVELS_PATH)
-		return
-	
-	var imp_levels_list: Array = []
-	
-	dir.list_dir_begin()
-	var file_name = dir.get_next()
-	var full_path: String
-	while file_name != "":
-		# Ignoriamo le cartelle e i file nascosti di sistema (es. .DS_Store su Mac o nodi speciali)
-		if not dir.current_is_dir() and not file_name.begins_with("."):
-			full_path = IMPORTED_LEVELS_PATH.path_join(file_name) 
-			var curr_file_text = FileAccess.get_file_as_string(full_path)
-			
-			if curr_file_text != "":
-				var level_info = JSON.parse_string(curr_file_text)
-				
-				# Controllo di sicurezza: verifichiamo che il JSON sia valido e abbia la chiave "name"
-				if level_info != null and level_info.has("name"):
-					# Evitiamo duplicati nella lista temporanea dei file fisici
-					if not imp_levels_list.has(level_info["name"]):
-						imp_levels_list.append(level_info["name"])
-				else:
-					print("File salvato male o corrotto in imported_levels: ", file_name)
-		
-		file_name = dir.get_next()
+	var imp_levels_list: Array = _get_imported_levels()
 	
 	# 3) Controllo se le due liste sono uguali. Se un id manca, devo importare un nuovo livello.
 	var levels_to_import: Array = []
@@ -275,49 +257,113 @@ func check_level_register() -> void:
 	var registry = FileAccess.open(LEVEL_REGISTER_PATH, FileAccess.WRITE)
 	registry.store_string(json_registry)
 
-
+## Importo i livelli da un array di file usando il traduttore
+## Importo i livelli da un array di nomi caricando direttamente i relativi file JSON
 func import_levels(levels_to_import: Array[String]) -> Global.Outcome:
-	# deve controllare che un livelo non esista effettivamente, controllando
-	# possibili cambi di nome e se un livello non esiste creare la scena dal
-	# JSON in imported_levels
-	push_error("Impotrtazione livelli non ancora implementata")
+	for level_name in levels_to_import:
+		var file_path = IMPORTED_LEVELS_PATH.path_join(level_name + ".json")
+		
+		if FileAccess.file_exists(file_path):
+			var file_text = FileAccess.get_file_as_string(file_path)
+			if file_text != "":
+				var level_info = JSON.parse_string(file_text)
+				
+				if level_info != null and level_info.has("name"):
+					var build_outcome = _build_level(level_info)
+					if build_outcome == Global.Outcome.FAIL:
+						return Global.Outcome.FAIL
+				else:
+					print("File JSON corrotto o malformato: ", file_path)
+		else:
+			print("Livello richiesto non trovato nella cartella degli import: ", level_name)
+			
 	return Global.Outcome.OK
+
+
+func _get_imported_levels() -> Array:
+	var dir = DirAccess.open(IMPORTED_LEVELS_PATH)
+	if not dir:
+		print("Errore nella ricerca della cartella : ", IMPORTED_LEVELS_PATH)
+		return []
+	
+	var imp_levels_list: Array = []
+	
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	var full_path: String
+	while file_name != "":
+		# Ignoriamo le cartelle e i file nascosti di sistema (es. .DS_Store su Mac o nodi speciali)
+		if not dir.current_is_dir() and not file_name.begins_with("."):
+			full_path = IMPORTED_LEVELS_PATH.path_join(file_name) 
+			var curr_file_text = FileAccess.get_file_as_string(full_path)
+			
+			if curr_file_text != "":
+				var level_info = JSON.parse_string(curr_file_text)
+				
+				# Controllo di sicurezza: verifichiamo che il JSON sia valido e abbia la chiave "name"
+				if level_info != null and level_info.has("name"):
+					# Evitiamo duplicati nella lista temporanea dei file fisici
+					if not imp_levels_list.has(level_info["name"]):
+						imp_levels_list.append(level_info["name"])
+				else:
+					print("File salvato male o corrotto in imported_levels: ", file_name)
+		
+		file_name = dir.get_next()
+	
+	return imp_levels_list
+
+
+func _build_level(level: Dictionary) -> Global.Outcome:
+	# 1) Estraggo informazioni principali
+	var level_name = level["name"]
+	var level_items_list: Array[Dictionary] = level["items"]
+	
+	# 2) Prima creo l'array di nodi figli
+	var real_items: Array = []
+	
+	for item in level_items_list:
+		# Sostituisci il ciclo "for key in item" con questo:
+		var item_name: String = item.get("name", "")
+		var item_args: Array = []
+
+		# 1. Inseriamo i 4 parametri base nell'ordine esatto richiesto dalle factory
+		item_args.append(item_name)
+		item_args.append(item.get("shape_id", ""))
+		item_args.append(int(item.get("x", 0)))
+		item_args.append(int(item.get("y", 0)))
+
+		# 2. Aggiungiamo i parametri extra solo se l'oggetto lo richiede
+		match item_name:
+			"LevelGate":
+				item_args.append(item.get("own_ptr", ""))
+				item_args.append(item.get("gate_ptr", ""))
+				item_args.append(item.get("own_level_ptr", ""))
+				item_args.append(item.get("next_level_ptr", ""))
+			"TimedPogoableArea":
+				item_args.append(float(item.get("timer", 1.0)))
+		
+		var obj = level_builder.create_object(item_name, item_args)
+		if not obj == null:
+			real_items.append(obj)
+	
+	# 3) Poi creo il livello vero e proprio
+	var packed_level: PackedScene = level_builder.create_level_wrap(level_name, real_items)
+	
+	# 3) Infine uso il metodo che lo salva su disco
+	var err = level_builder.save_level(packed_level, level_name)
+	if err != Global.Outcome.OK:
+		push_error("Impossibile salvare il livello: ", level_name)
+		return Global.Outcome.FAIL
+	else:
+		return Global.Outcome.OK
 #endregion
 
 
-func build_res_db() -> Global.Outcome:
-	var folder = DirAccess.open(ENTITIES_PATH)
-	if not folder:
-		push_error("impossibile aprire cartella con path: ", ENTITIES_PATH)
-		return Global.Outcome.FAIL
-	
-	folder.list_dir_begin()
-	var file_name = folder.get_next()
-	while file_name != "":
-		if not file_name.ends_with(".tres"):
-			return Global.Outcome.FAIL
-		
-		var full_path: String = ENTITIES_PATH + file_name
-		var res = load(full_path)
-		
-		if res.ID:
-			var err= _update_res_db(res.ID)
-			if err != Global.Outcome.OK:
-				push_error("Errore nel caricamento di una risorsa in JSON")
-				return Global.Outcome.FAIL
-	
-	return Global.Outcome.OK
-
-
-func _update_res_db(id: StringName) -> Global.Outcome:
-	return Global.Outcome.OK
-
-
 func json_to_array(file_string: String) -> Array:
-	var t = JSON.parse_string(file_string)
+	var ttt = JSON.parse_string(file_string)
 	
-	if not t is Array:
+	if not ttt is Array:
 		print("Il file non è stato salvato correttamente")
 		return [Global.Outcome.FAIL]
 	
-	return t
+	return ttt

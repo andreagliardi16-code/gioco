@@ -2,10 +2,7 @@
 
 extends Area2D
 
-class_name PoagoableArea
-
-
-const ID: StringName = &"PoagoableArea"
+class_name PogoableArea
 
 
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D

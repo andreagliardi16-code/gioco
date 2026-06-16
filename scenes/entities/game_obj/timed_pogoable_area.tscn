@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bax52uv2l8bbd"]
+
+[ext_resource type="Script" uid="uid://hcbxckylrqww" path="res://script/timed_pogoable_area.gd" id="1_l6m7j"]
+
+[node name="TimedPogoableArea" type="Area2D" unique_id=1806718458]
+script = ExtResource("1_l6m7j")

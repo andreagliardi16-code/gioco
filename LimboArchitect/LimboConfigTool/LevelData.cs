@@ -1,3 +1,4 @@
+using System.Text.Json.Nodes;
 using LimboArchitect.Core.Diagnostics;
 using LimboArchitect.Core.Object;
 using LimboArchitect.Core.System;
@@ -149,7 +150,7 @@ namespace LimboArchitect.Core.Levels
 
         public (bool, string) TrySave()
         {
-            List<string> ObjectsStrings = [];
+            List<JsonNode> ObjectsNodes = [];
 
             foreach (LevelObject obj in Grid.Values.SelectMany(list => list ))
             {
@@ -163,12 +164,12 @@ namespace LimboArchitect.Core.Levels
                 else
                 {
                     // Il salvataggio può continuare
-                    ObjectsStrings.Add(json);
+                    ObjectsNodes.Add(JsonNode.Parse(json));
                 }
             }
 
             string err = "";
-            bool Success = SystemMethods.CreateLevelJson(LevelName, ObjectsStrings, out err);
+            bool Success = SystemMethods.CreateLevelJson(LevelName, ObjectsNodes, out err);
 
             if (Success)
             {

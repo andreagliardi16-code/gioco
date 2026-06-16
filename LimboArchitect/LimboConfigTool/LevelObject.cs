@@ -405,9 +405,9 @@ namespace LimboArchitect.Core.Object
             var ObjectData = new
             {
                 class_name=GodotClassName,
+                shape_id = AreaId,
                 x=GridX,
                 y=GridY,
-                shape_id = AreaId,
                 own_ptr=OwnPtr,
                 gate_ptr=GatePtr,
                 own_level_ptr=OwnLevelPtr,
@@ -499,10 +499,10 @@ namespace LimboArchitect.Core.Object
             var ObjectData = new
             {
                 class_name = GodotClassName,
-                type = CurrentType,
                 shape_id = AreaId,
                 x=GridX,
-                y=GridY
+                y=GridY,
+                type = CurrentType
             };
             return JsonSerializer.Serialize(ObjectData);
         }

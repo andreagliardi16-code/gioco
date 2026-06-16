@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Security.AccessControl;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using LimboArchitect.Core.Diagnostics;
 using LimboArchitect.Core.Levels;
 
@@ -59,7 +60,7 @@ namespace LimboArchitect.Core.System
             }
         }
 
-        public static bool CreateLevelJson(string levelName, List<string> levelObjects, out string ErrorMessage)
+        public static bool CreateLevelJson(string levelName, List<JsonNode> levelObjects, out string ErrorMessage)
         {
             levelName = levelName.Trim();
             levelName = Utils.StringExtensions.ToSnakeCase(levelName);
@@ -76,7 +77,7 @@ namespace LimboArchitect.Core.System
 
             try
             {
-                if(Directory.Exists(jsonLevelsPath))
+                if(!Directory.Exists(jsonLevelsPath))
                 {
                     Debug.WriteLine("Il percorso della cartella non è stato trovato. Ne è stata creata una.");
                     Directory.CreateDirectory(jsonLevelsPath);

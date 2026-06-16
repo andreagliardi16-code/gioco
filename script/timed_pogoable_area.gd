@@ -1,6 +1,6 @@
 @tool
 
-extends PoagoableArea
+extends PogoableArea
 class_name TimedPogoableArea
 
 const TIMEOUT: int = 3
