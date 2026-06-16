@@ -1,0 +1,91 @@
+extends RefCounted
+class_name ShapesRegistry
+
+
+#region Classi di forme
+@abstract class LAShape:
+	enum Type {RECTANGLE, CIRCLE, POLYGON}
+	
+	var shape_type: Type
+	
+	func _init() -> void:
+		pass
+
+
+class Rectangle:
+	extends LAShape
+	
+	var size: Vector2
+	
+	func _init(size_x: float, size_y: float, s: String) -> void:
+		size = Vector2(size_x, size_y)
+		shape_type = LAShape.Type.RECTANGLE
+	func get_size() -> Vector2:
+		return size
+
+
+class Circle: 
+	extends LAShape
+	
+	var radius: float
+	
+	func _init(r: float, s: String) -> void:
+		radius = r
+		shape_type = LAShape.Type.CIRCLE
+	func get_radius() -> float:
+		return radius
+
+
+class Polygon:
+	extends LAShape
+	
+	var points: PackedVector2Array = []
+	
+	func _init(p: Array, s: String)-> void:
+		points = p
+		shape_type = LAShape.Type.POLYGON
+	func get_points() -> PackedVector2Array:
+		return points
+#endregion
+
+
+var shapes_folder: String = ""
+var db: Dictionary[String, LAShape] = {}
+
+
+func _init(shapes_dir: String) -> void:
+	shapes_folder = shapes_dir
+
+
+func get_points(shape_id: String) -> PackedVector2Array:
+	if not db.has(shape_id):
+		push_error(shape_id, " non esiste.")
+		return []
+	elif not db[shape_id] is Polygon:
+		push_error(shape_id, " non è un poligono")
+		return []
+	else:
+		return db[shape_id].get_points()
+
+
+func get_shape(shape_id: String) -> Shape2D:
+	if not db.has(shape_id):
+		return null
+	
+	var shape = db[shape_id]
+	return _create_gd_shape(shape)
+
+
+func _create_gd_shape(sh: LAShape) -> Shape2D:
+	match sh.shape_type:
+		LAShape.Type.RECTANGLE:
+			var rect = RectangleShape2D.new()
+			rect.size = sh.size
+			return rect
+		LAShape.Type.CIRCLE:
+			var circ = CircleShape2D.new()
+			circ.radius = sh.radius
+			return circ
+		_: 
+			push_error("Chiamata funzione sbagliata per creare poligono")
+			return null

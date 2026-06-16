@@ -21,12 +21,12 @@ const EXPORTED_LEVELS_PATH: String = "res://ext_levels/exported_levels/"
 @export var level_data_path: String = ""
 
 
-var shapes_registry
+var shapes_registry: ShapesRegistry
 var level_builder: LimboDataMapper
 
 
 func _enter_tree() -> void:
-	shapes_registry = null
+	shapes_registry = ShapesRegistry.new("res://ext_game_data/external_shapes/")
 	level_builder = LimboDataMapper.new(levels_folder_path, level_data_path, shapes_registry)
 	self.check_level_register()
 	
