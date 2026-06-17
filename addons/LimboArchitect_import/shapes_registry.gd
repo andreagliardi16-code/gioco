@@ -7,6 +7,7 @@ class_name ShapesRegistry
 	enum Type {RECTANGLE, CIRCLE, POLYGON}
 	
 	var shape_type: Type
+	var id: String
 	
 	func _init() -> void:
 		pass
@@ -20,6 +21,7 @@ class Rectangle:
 	func _init(size_x: float, size_y: float, s: String) -> void:
 		size = Vector2(size_x, size_y)
 		shape_type = LAShape.Type.RECTANGLE
+		id = s
 	func get_size() -> Vector2:
 		return size
 
@@ -32,6 +34,7 @@ class Circle:
 	func _init(r: float, s: String) -> void:
 		radius = r
 		shape_type = LAShape.Type.CIRCLE
+		id = s
 	func get_radius() -> float:
 		return radius
 
@@ -44,6 +47,7 @@ class Polygon:
 	func _init(p: Array, s: String)-> void:
 		points = p
 		shape_type = LAShape.Type.POLYGON
+		id = s
 	func get_points() -> PackedVector2Array:
 		return points
 #endregion
@@ -51,6 +55,11 @@ class Polygon:
 
 var shapes_folder: String = ""
 var db: Dictionary[String, LAShape] = {}
+var import_shapes_dict: Dictionary[String, Callable] = {
+	"Rectangle": Rectangle.new,
+	"Circle": Circle.new,
+	"Polygon": Polygon.new
+}
 
 
 func _init(shapes_dir: String) -> void:

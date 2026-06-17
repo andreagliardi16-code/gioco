@@ -1,15 +1,55 @@
-using System;
-using System.Data.Common;
-using System.Dynamic;
+using System.Diagnostics;
 using System.Numerics;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using LimboArchitect.Core.Diagnostics;
+using LimboArchitect.Core.System;
 
 
 namespace LimboArchitect.Core.Shapes
 {
     public static class ShapesRegistry
     {
+        private const string ShapesRegistryPath = "";
+
         private static readonly Dictionary<string, Area> _shapes = new();
+
+        public static void ExportShapesRegistry()
+        {
+            List<JsonNode> AllShapes = [];
+
+            foreach (Area shape in _shapes.Values )
+            {
+                (bool success, string json) = shape.ExportToGodot();
+
+                if(!success)
+                {
+                    // Il salvataggio ha dato qualche errore
+                    Debug.WriteLine($"Impossibile salvare l'oggetto {shape}");
+                }
+                else
+                {
+                    // Il salvataggio può continuare
+                    AllShapes.Add(JsonNode.Parse(json));
+                }
+            }
+
+            var completeData = new
+            {
+                name = "shapes_reg",
+                shapes = AllShapes
+            };
+
+            string CompleteJson = JsonSerializer.Serialize(completeData);
+            string ErrorMessage = "";
+
+            bool err = SystemMethods.SaveJsonOnDisc("shapes_reg", ShapesRegistryPath, CompleteJson, out ErrorMessage);
+
+            if (!err)
+            {
+                Debug.WriteLine(ErrorMessage);
+            }
+        }
 
         // Invece di un metodo 'void' che aggiunge e basta, creiamo un metodo che "Cerca o Crea"
         public static RectangleShape GetOrCreateRectangle(string id, int width = 50, int height = 50)
@@ -92,6 +132,8 @@ namespace LimboArchitect.Core.Shapes
         {
             Id = id;
         }
+
+        public abstract (bool, string) ExportToGodot();
     }
 
     public class RectangleShape: Area
@@ -107,6 +149,19 @@ namespace LimboArchitect.Core.Shapes
             Width = width;
             Height = height;
         }
+
+        public override (bool, string) ExportToGodot()
+        {
+            List<object> ArrayArgs = new List<object>
+            {
+                Width,
+                Height,
+                Id
+            };
+
+            string JsonString = JsonSerializer.Serialize(ArrayArgs);
+            return (true, JsonString);
+        }
     }
 
     public class CircleShape: Area
@@ -118,6 +173,18 @@ namespace LimboArchitect.Core.Shapes
         public CircleShape(string id, int radius = DEF_CIRC_SIZE) : base(id)
         {
             Radius = radius;
+        }
+
+        public override (bool, string) ExportToGodot()
+        {
+            List<object> ArrayArgs = new List<object>
+            {
+                Radius,
+                Id
+            };
+
+            string JsonString = JsonSerializer.Serialize(ArrayArgs);
+            return (true, JsonString);
         }
     }
 
@@ -131,6 +198,20 @@ namespace LimboArchitect.Core.Shapes
             Points = new List<Vector2>();
             AnchorPoint = new Vector2(0f,0f);
             Points.Add(AnchorPoint);
+        }
+
+        public override (bool, string) ExportToGodot()
+        {
+            float[] flatVertices = Points.SelectMany(v => new[] { v.X, v.Y }).ToArray();
+
+            List<object> ArrayArgs = new List<object>
+            {
+                flatVertices,
+                Id
+            };
+
+            string JsonString = JsonSerializer.Serialize(ArrayArgs);
+            return (true, JsonString);
         }
 
         public void AddPoint(Vector2 newPoint, int index = -1)    // trovare la posizione relativa di new_point è un problema
