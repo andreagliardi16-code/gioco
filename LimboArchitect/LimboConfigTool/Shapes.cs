@@ -10,7 +10,7 @@ namespace LimboArchitect.Core.Shapes
 {
     public static class ShapesRegistry
     {
-        private const string ShapesRegistryPath = "";
+        private const string ShapesRegistryPath = "res://ext_game_data/external_shapes/";
 
         private static readonly Dictionary<string, Area> _shapes = new();
 

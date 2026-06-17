@@ -11,6 +11,7 @@ const ENTITIES_PATH: String = "res://scenes/entities/game_obj"
 const LEVEL_REGISTER_PATH: String = "res://ext_levels/lvl_register"
 const IMPORTED_LEVELS_PATH: String = "res://ext_levels/imported_levels/"
 const EXPORTED_LEVELS_PATH: String = "res://ext_levels/exported_levels/"
+const SHAPES_FOLDER: String = "res://ext_game_data/external_shapes/"
 
 
 @export var player_stats: PlayerStats
@@ -26,7 +27,7 @@ var level_builder: LimboDataMapper
 
 
 func _enter_tree() -> void:
-	shapes_registry = ShapesRegistry.new("res://ext_game_data/external_shapes/")
+	shapes_registry = ShapesRegistry.new(SHAPES_FOLDER)
 	level_builder = LimboDataMapper.new(levels_folder_path, level_data_path, shapes_registry)
 	self.check_level_register()
 	
@@ -257,7 +258,7 @@ func check_level_register() -> void:
 	var registry = FileAccess.open(LEVEL_REGISTER_PATH, FileAccess.WRITE)
 	registry.store_string(json_registry)
 
-## Importo i livelli da un array di file usando il traduttore
+
 ## Importo i livelli da un array di nomi caricando direttamente i relativi file JSON
 func import_levels(levels_to_import: Array[String]) -> Global.Outcome:
 	for level_name in levels_to_import:

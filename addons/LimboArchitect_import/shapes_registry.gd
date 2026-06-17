@@ -53,6 +53,7 @@ class Polygon:
 #endregion
 
 
+var shape_reg_name: String = "shapes_reg"
 var shapes_folder: String = ""
 var db: Dictionary[String, LAShape] = {}
 var import_shapes_dict: Dictionary[String, Callable] = {
@@ -64,6 +65,22 @@ var import_shapes_dict: Dictionary[String, Callable] = {
 
 func _init(shapes_dir: String) -> void:
 	shapes_folder = shapes_dir
+
+
+func _import_all_shapes() -> void:
+	var dir: String = shapes_folder.path_join(shape_reg_name)
+	var shapes_json: String = FileAccess.get_file_as_string(dir)
+	
+	# 1) svuoto tutto il folder delle risorse/forme
+	# 2) importo l'array di tutte le forme salvate da shapes_json
+	
+	# 3) creo tutte le forme come .tres usando callv sull dizionario
+	# 4) salvo tutto
+
+
+func _create_LAshape(name: String, args: Array) -> Node2D:
+	var callable: Callable = import_shapes_dict[name]
+	return callable.callv(args)
 
 
 func get_points(shape_id: String) -> PackedVector2Array:
