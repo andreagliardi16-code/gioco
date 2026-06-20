@@ -27,7 +27,7 @@ var level_builder: LimboDataMapper
 
 
 func _enter_tree() -> void:
-	shapes_registry = ShapesRegistry.new(SHAPES_FOLDER)
+	shapes_registry = ShapesRegistry.new(SHAPES_FOLDER, json_to_array)
 	level_builder = LimboDataMapper.new(levels_folder_path, level_data_path, shapes_registry)
 	self.check_level_register()
 	

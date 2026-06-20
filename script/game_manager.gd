@@ -11,7 +11,7 @@ var curr_game_state: GameState = GameState.TRANSITION
 
 @export var main_menu: PackedScene
 @export var level_map: LevelMap 
-@export var json_datas: JSON_data_bridge = null
+@export var json_datas: Resource = null
 
 @onready var player: Player = $CharacterBody2D
 @onready var level_container: Node = $LevelContainer
