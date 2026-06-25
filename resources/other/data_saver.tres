@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="DataSaver" format=3 uid="uid://c3436oyvr354b"]
+
+[ext_resource type="Script" uid="uid://bind1mqepwipf" path="res://script/save_and_load_data.gd" id="1_aje64"]
+[ext_resource type="Resource" uid="uid://cmompcntnt3ch" path="res://data/data_scripts/PlayerStats.tres" id="1_seqit"]
+[ext_resource type="Resource" uid="uid://dlamykepip4cx" path="res://data/data_scripts/PhysicsStats.tres" id="3_14rw5"]
+
+[resource]
+script = ExtResource("1_aje64")
+player_stats = ExtResource("1_seqit")
+world_stats = ExtResource("3_14rw5")
+metadata/_custom_type_script = "uid://bind1mqepwipf"

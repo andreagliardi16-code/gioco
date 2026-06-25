@@ -11,7 +11,7 @@ var curr_game_state: GameState = GameState.TRANSITION
 
 @export var main_menu: PackedScene
 @export var level_map: LevelMap 
-@export var json_datas: Resource = null
+@export var data_saver: DataSaver = null
 
 @onready var player: Player = $CharacterBody2D
 @onready var level_container: Node = $LevelContainer
@@ -227,9 +227,9 @@ func change_spawn_data(spawn_id: StringName, spawn_level: StringName) -> Global.
 
 
 func _ready_stats() -> void:
-	var err= json_datas.load_from_json()
+	var err= data_saver.load_from_json()
 	if err != Global.Outcome.OK:
 		push_error("Impossibile caricare i dati JSON")
 		get_tree().quit()
 	
-	Global.set_game_manager(self, json_datas.player_stats, json_datas.world_stats)
+	Global.set_game_manager(self, data_saver.player_stats, data_saver.world_stats)
