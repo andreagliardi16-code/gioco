@@ -15,14 +15,16 @@ public class GraphArc
 {
     public (int x, int y) Start {get; init;}
     public (int x, int y) End {get; init;}
+    public (int Start, int End) AssociatedIds {get; init; }
     public int Id {get; init;}
     public float Weight {get; private set; } = 0f;   // Deve venir determinato
     public readonly float Length = 0;
 
-    public GraphArc((int, int)start, (int, int)end)
+    public GraphArc((int, int)start, (int, int)end, int startNodeId, int targetNodeId)
     {
         Start = start;
         End = end;
+        AssociatedIds = (startNodeId, targetNodeId);
         Id = IdGenerator.GenerateGraphId(is_node: false);
 
         float deltaX = End.x - Start.x;
