@@ -38,8 +38,9 @@ public class GraphNode
     public int X {get; init;}
     public int Y {get; init;}
     public int Id {get; init;}
-    public GraphNodeType ObjType {get; init; }   // Implementare con enum per sicurezza e performance, indica il tipo di oggetto che rappresenta
+    public GraphNodeType ObjType {get; init; }
     public float Weight {get; private set; } = 0f;   // Deve venir determinato
+    public List<int> AssociatedArcs {get; } = [];
 
     public GraphNode(int x, int y, GraphNodeType type)
     {
@@ -47,6 +48,11 @@ public class GraphNode
         Y = y;
         ObjType = type;
         Id = IdGenerator.GenerateGraphId(is_node: true);
+    }
+
+    public void AddArc(int id)
+    {
+        AssociatedArcs.Append(id);
     }
 
     public void SetWeight(float weight) => Weight = weight;

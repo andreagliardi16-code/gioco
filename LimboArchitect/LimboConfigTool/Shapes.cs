@@ -256,4 +256,38 @@ namespace LimboArchitect.Core.Shapes
             }
         }
     }
+
+    // Si crea senza essere salvato nel registro.
+    public readonly struct RectBoundary
+    {
+        public (int X, int Y) Position { get; }
+        public int HalfWidth { get; }
+        public int HalfHeight {get; }
+
+        public RectBoundary(int x, int y, int width, int height)
+        {
+            Position = (x, y);
+            HalfWidth = width/2;
+            HalfHeight = height/2;
+        }
+
+        public bool Contains(int pointX, int pointY)
+        {
+            return pointX >= Position.X - HalfWidth &&
+                pointX <= Position.X + HalfWidth &&
+                pointY >= Position.Y - HalfHeight &&
+                pointY <= Position.Y + HalfHeight;
+        }
+
+        public bool Intersects((int x, int y)other, int radius)
+        {
+            int closestX = Math.Clamp(other.x, Position.X - HalfWidth, Position.X + HalfWidth);
+            int closestY = Math.Clamp(other.x, Position.Y - HalfHeight, Position.Y + HalfHeight);
+
+            int dx = other.x - closestX;
+            int dy = other.y - closestY;
+
+            return (dx * dx) + (dy * dy) <= (radius*radius);
+        }
+    }
 }
