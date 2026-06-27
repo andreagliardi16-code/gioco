@@ -8,6 +8,7 @@ namespace LimboArchitect.Core.Analyzer.GraphBuilder;
 
 public class Graph
 {
+    private GameConfig config {get; } = new GameConfig();
     private const int ArcMaxSearch = 500;
     public Dictionary<int, GraphNode> Nodes { get; } = new();
     public Dictionary<int, GraphArc> Arcs { get; } = new();
@@ -68,6 +69,14 @@ public class Graph
 
     private bool ValidateConnection(GraphNode start, GraphNode target)
     {
-        throw new NotImplementedException(); // controllo geometrico e ridondanza
+        // 1) controllo che non ci siano collegamenti ridondanti con vettori lineari semplici e il loro prodotto scalare
+
+        // 2) calcolo le parabole con i dati fisici del gioco per dare una prima ipotesi di peso
+
+        // 3) dove serve, faccio anche controllo temporale dei segmenti per aggiornare i pesi
+
+        // 4) termino la "pesatura" degli archi facendo controlli su visibilità
+
+        throw new NotImplementedException();
     }
 }
