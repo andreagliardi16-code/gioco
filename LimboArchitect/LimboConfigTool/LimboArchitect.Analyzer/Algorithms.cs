@@ -1,5 +1,4 @@
 using System.Numerics;
-using LimboArchitect.Core.Analyzer.Graph;
 
 
 namespace LimboArchitect.Core.Analyzer.Algorithms;
@@ -9,29 +8,80 @@ public enum ConnectionType
     Fall = 0,
     Jump = 1,
     MaxJump = 2,
+    ShortDash = 9,
     Dash = 3,
     JumpAndDash = 4,
     Pogo = 5,
     PogoAndDash = 6,
-    MaybeOther = 7,   // Quando ci saranno molti power-up sarà impossibile calcolare tutte le combinazioni di movimento
+    MaybeOther = 7,
     Impossible = 8
 }
 
-public class ArcsEvaluator
+public static class ArcsEvaluator
 {
-    // calcolo il salto come parabola semplice, necessito di diversi calcoli per diversi tipi di movimento.
-    private List<Vector2> ArcSteps = [];
+    // il numero di controlli da fare
+    private const int checks_num = 7;
 
-    public (float, ConnectionType) AnalyzeArc()
+    public static (float, ConnectionType) AnalyzeArc()
     {
-        
-        
-
         throw new NotImplementedException();
     }
 
-    public bool CalcJumpParable((int X, int Y)start, (int X, int Y)target, PlayerStatsSection stats)
+    private static (List<Vector2>, bool) CalcFall((int X, int Y)start, (int X, int Y)target, PlayerStatsSection stats)
     {
+        List<Vector2> arcSteps = [];
+
+        float deltaX = target.X - start.X;
+        float directionX = Math.Sign(deltaX);
+        float totalTime = Math.Abs(deltaX) / stats.HorizontalMovement.MaxSpeed;
+
+        const int steps = 7;
+        float timeStep = totalTime/steps;
+
+        Vector2 previousPoint = new Vector2(start.X, start.Y);
+        arcSteps.Add(previousPoint);
+
+        for (int i = 1; i <= steps; i++)
+        {
+            float t = i * timeStep;
+
+            float currentX = start.X + (stats.HorizontalMovement.MaxSpeed * directionX * t);
+            float currentY = start.Y + (0.5f * stats.Gravity.FallGravity * t * t);
+            
+            Vector2 currentPoint = new Vector2(currentX, currentY);
+            arcSteps.Add(currentPoint);
+
+            previousPoint = currentPoint;
+        }
+
+        bool isValid = arcSteps[^1].Y <= target.Y + 5.0f; 
+
+        return isValid ? (arcSteps, true) : ([], false);
+    }
+
+    private static (List<Vector2>, bool) CalcJumpParable((int X, int Y)start, (int X, int Y)target, PlayerStatsSection stats)
+    {
+        List<Vector2> arcSteps = CalcJumpPoints(start, target, stats);
+
+        bool isValid = arcSteps[^1].Y <= target.Y + 5.0f; 
+
+        return isValid ? (arcSteps, true) : ([], false);
+    }
+
+    private static (List<Vector2>, bool) CalcMaxJumpParable((int X, int Y)start, (int X, int Y)target, PlayerStatsSection stats)
+    {
+        List<Vector2> arcSteps = CalcJumpPoints(start, target, stats, maxJump: true);
+
+        bool isValid = arcSteps[^1].Y <= target.Y + 5.0f; 
+
+        return isValid ? (arcSteps, true) : ([], false);
+    }
+
+    private static List<Vector2> CalcJumpPoints((int X, int Y)start, (int X, int Y)target, PlayerStatsSection stats, bool maxJump = false)
+    {
+        List<Vector2> Steps = [];
+
+        float maxSpeed = (maxJump)? stats.HorizontalMovement.MaxSpeed : stats.HorizontalMovement.MaxSpeed/2;
         float deltaX = target.X - start.X;
         float directionX = Math.Sign(deltaX);
         float totalTime = Math.Abs(deltaX) / stats.HorizontalMovement.MaxSpeed;
@@ -40,36 +90,29 @@ public class ArcsEvaluator
         float timeStep = totalTime/steps;
 
         Vector2 previousPoint = new Vector2(start.X, start.Y);
-        ArcSteps.Add(previousPoint);   
+        Steps.Add(previousPoint);
 
         for (int i = 1; i <= steps; i++)
         {
             float t = i * timeStep;
 
-            float currentX = start.X + (stats.HorizontalMovement.MaxSpeed * directionX * t);
+            float currentX = start.X + (maxSpeed * directionX * t);
             float currentY = start.Y + (stats.Jump.JumpForce * t) + (0.5f * GetRightGravity(stats.Gravity, t, totalTime) * t * t);
             
             Vector2 currentPoint = new Vector2(currentX, currentY);
-            ArcSteps.Add(currentPoint);
+            Steps.Add(currentPoint);
 
             previousPoint = currentPoint;
         }
 
-        if (Math.Abs(ArcSteps[^1].X) < Math.Abs(target.X))
-        {
-            // Il salto è troppo corto
-            ArcSteps.Clear();
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        return Steps;
     }
 
+// TODO: controllare giuste variabili gravità
     private static float GetRightGravity(GravitySection gravSection, float t, float totalTime)
     {
-        if (t > totalTime/2) return gravSection.DefaultGravity;
+        // TempoApice = ValoreAssoluto(JumpForce) / DefaultGravity
+        if (t < totalTime/2) return gravSection.DefaultGravity;
         else return gravSection.FallGravity;
     }
 }
