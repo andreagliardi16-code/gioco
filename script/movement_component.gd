@@ -42,9 +42,8 @@ var last_direction: int = 0  #determina l'ultima direzione in cui si è girato i
 var dash_direction: int = DEF_DASH_DIRECTION
 var pogo_direction: Global.Direction = Global.Direction.SOUTH
 
+
 #region timer var
-var jump_cut_timer: float = 0.0
-var min_jump_timer: float = 0.0
 var coyote_timer: float = 0.0
 var max_jump_timer: float = 0.0
 var dash_timer: float = 0.0
@@ -54,8 +53,7 @@ var pogo_impulse_timer: float = 0.0
 
 #region bool var
 var is_jumping: bool = false  #forse rindondante con stati
-var in_min_jump: bool = false
-var wants_end_jump: bool = false
+var is_cutting_jump: bool = false
 var is_jump_held: bool = false
 var in_coyote_time: bool = false
 var in_dash_cooldown: bool = false
@@ -68,7 +66,7 @@ var time_frozen: bool = false   #serve per freeze del movimento senza rompere gl
 #region setup e _process
 func setup(stats: Stats, gravity_comp: GravityComponent, owner_node: Node2D):
 	if stats == null or owner_node == null:
-		print("errore in setup gravity")
+		push_warning("errore in setup gravity")
 	parent_stats = stats
 	parent = owner_node
 	gravity = gravity_comp
@@ -79,26 +77,15 @@ func _physics_process(delta: float) -> void:
 	_handle_timers(delta)
 	if is_fading_pogo:
 		_handle_pogo_fade(delta)
-	if parent.curr_player_state == Player.PlayerStates.JUMP and not is_jump_held:
+	if is_jumping and not is_jump_held:
 		_cut_jump()
 #endregion
 
 #region timer
 func _handle_timers(delta: float) -> void:
-	if jump_cut_timer > 0:
-		jump_cut_timer -= delta
-		if jump_cut_timer <= 0:
-			jump_cut_timer = 0.0
-			_end_jump()
-	if min_jump_timer > 0:
-		min_jump_timer -= delta
-		if min_jump_timer <= 0:
-			in_min_jump = false
-			min_jump_timer = 0.0
-			if wants_end_jump: _cut_jump()
 	if max_jump_timer > 0:
 		max_jump_timer -= delta
-		if max_jump_timer <= 0:
+		if max_jump_timer <= 0 and is_jumping:
 			_end_jump()
 	if coyote_timer > 0:
 		coyote_timer -= delta
@@ -152,6 +139,8 @@ func apply_gravity(delta: float) -> void:
 		velocity.y = 0.0
 		return
 	
+	if is_cutting_jump:
+		_check_cut_time()
 	var g = gravity.get_gravity()
 	vel_y_request(g * delta)
 #endregion
@@ -219,8 +208,6 @@ func jump() -> void:
 	#parent.change_player_state(Player.PlayerStates.JUMP)
 	energy_spended.emit("jump")
 	
-	jump_cut_timer = 0
-	min_jump_timer = parent_stats.min_jump_time
 	max_jump_timer = parent_stats.max_jump_time
 	is_jumping = true
 	
@@ -228,21 +215,18 @@ func jump() -> void:
 	vel_y_request(parent_stats.jump_force)
 
 func _cut_jump() -> void:
-	if in_min_jump:
-		wants_end_jump = true
-	jump_cut_timer = parent_stats.jump_cut_time
-	
+	is_cutting_jump = true
 
-func _set_gravity_as_fall() -> void:
-	pass
-	#parent.change_player_state(Player.PlayerStates.FALL)
+
+func _check_cut_time() -> void:
+	if velocity.y >= 0 && is_jumping:
+		_end_jump()
+
 
 func _end_jump() -> void:
 	is_jumping = false
-	wants_end_jump = false
+	is_cutting_jump = false
 	max_jump_timer = 0.0
-	jump_cut_timer = 0.0
-	_set_gravity_as_fall()
 
 func _on_input_component_jump_input_changed(state: bool) -> void:
 	if state == true:
@@ -383,7 +367,6 @@ func _fast_stop(axis: Array[String]) -> void:
 func hit_ceiling() -> void:  #controllare bool e edge cases
 	velocity.y = 0
 	is_jumping = false
-	wants_end_jump = false
 #endregion
 
 #region velocity_mod_requests

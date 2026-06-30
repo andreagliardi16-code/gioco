@@ -52,7 +52,7 @@ func update_gravity() -> void:
 			change_gravity_state(GravityModes.GROUNDED)
 			return
 	elif parent.curr_physic_state == Player.PhysicsState.AIR:
-		if parent.movement.jump_cut_timer > 0.0:
+		if parent.movement.is_cutting_jump:
 			if curr_grav_mode != GravityModes.JUMP_CUT:
 				change_gravity_state(GravityModes.JUMP_CUT)
 			return

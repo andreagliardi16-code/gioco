@@ -17,7 +17,6 @@ extends Stats
 @export_group("Jump")
 @export var jump_force: float = -1000.0  #formula = 2H/t
 @export var coyote_time: float = 0.25
-@export var jump_cut_time: float = 0.15
 @export var min_jump_time: float = 0.1
 @export var max_jump_time: float = 0.6
 #endregion

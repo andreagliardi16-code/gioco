@@ -8,13 +8,14 @@ public enum ConnectionType
     Fall = 0,
     Jump = 1,
     MaxJump = 2,
-    ShortDash = 9,
     Dash = 3,
     JumpAndDash = 4,
-    Pogo = 5,
-    PogoAndDash = 6,
-    MaybeOther = 7,
-    Impossible = 8
+    DashAndFall =5,
+    VertPogo = 6,
+    LatPogo = 7,
+    PogoAndDash = 8,
+    MaybeOther = 9,
+    Impossible = 10
 }
 
 public static class ArcsEvaluator
@@ -77,6 +78,56 @@ public static class ArcsEvaluator
         return isValid ? (arcSteps, true) : ([], false);
     }
 
+    private static (List<Vector2>, bool) CalcDash((int X, int Y)start, (int X, int Y)target, PlayerStatsSection stats)
+    {
+        float deltaX = target.X - start.X;
+        float directionX = Math.Sign(deltaX);
+
+        float baseDashLength = directionX*stats.Dash.DashSpeedAmt*stats.Dash.DashTime;
+
+        var startPoint = new Vector2(start.X, start.Y);
+        var endPoint = new Vector2(baseDashLength + start.X, start.Y);
+
+        var Segment = new List<Vector2> {startPoint, endPoint};
+
+        bool isValid = (baseDashLength + start.X) <= target.X + 5.0f; 
+
+        return isValid ? (Segment, true) : ([], false);
+    }
+
+    private static (List<Vector2>, bool) CalcVertPogo((int X, int Y)start, (int X, int Y)target, PlayerStatsSection stats, bool shortPogo = false)
+    {
+        float deltaX = target.X - start.X;
+        float directionX = Math.Sign(deltaX);
+
+        List<Vector2> Steps = [];
+
+        float maxSpeed = (shortPogo)? stats.HorizontalMovement.MaxSpeed : stats.HorizontalMovement.MaxSpeed;
+        float totalTime = Math.Abs(deltaX) / maxSpeed;
+
+        const int steps = 9;
+        float timeStep = totalTime/steps;
+
+        Vector2 previousPoint = new Vector2(start.X, start.Y);
+        Steps.Add(previousPoint);
+
+        for (int i = 1; i <= steps; i++)
+        {
+            float t = i * timeStep;
+
+            float currentX = start.X + (maxSpeed * directionX * t);
+            float currentY = start.Y + (stats.Jump.JumpForce * t) + (0.5f * GetRightGravity(stats.Gravity, t, totalTime) * t * t);
+            
+            Vector2 currentPoint = new Vector2(currentX, currentY);
+            Steps.Add(currentPoint);
+
+            previousPoint = currentPoint;
+        }
+
+        bool isValid = Steps[^1].Y <= target.Y + 5.0f;
+        return isValid ? (Steps, true) : ([], false);
+    }
+
     private static List<Vector2> CalcJumpPoints((int X, int Y)start, (int X, int Y)target, PlayerStatsSection stats, bool maxJump = false)
     {
         List<Vector2> Steps = [];
@@ -84,7 +135,7 @@ public static class ArcsEvaluator
         float maxSpeed = (maxJump)? stats.HorizontalMovement.MaxSpeed : stats.HorizontalMovement.MaxSpeed/2;
         float deltaX = target.X - start.X;
         float directionX = Math.Sign(deltaX);
-        float totalTime = Math.Abs(deltaX) / stats.HorizontalMovement.MaxSpeed;
+        float totalTime = Math.Abs(deltaX) / maxSpeed;
 
         const int steps = 9;
         float timeStep = totalTime/steps;
@@ -109,10 +160,10 @@ public static class ArcsEvaluator
     }
 
 // TODO: controllare giuste variabili gravità
-    private static float GetRightGravity(GravitySection gravSection, float t, float totalTime)
+    private static float GetRightGravity(GravitySection gravSection, float jumpForce, float t)
     {
-        // TempoApice = ValoreAssoluto(JumpForce) / DefaultGravity
-        if (t < totalTime/2) return gravSection.DefaultGravity;
+        float apexTime = Math.Abs(jumpForce) / gravSection.DefaultGravity;
+        if (t < apexTime/2) return gravSection.DefaultGravity;
         else return gravSection.FallGravity;
     }
 }

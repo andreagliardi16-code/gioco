@@ -15,6 +15,7 @@
 [ext_resource type="Curve" uid="uid://yjexd7u64g3f" path="res://resources/curves/energy_regen_curve.tres" id="11_n5sgd"]
 [ext_resource type="Curve" uid="uid://dc7nn3pk3p3sf" path="res://resources/curves/camera_pan_curve.tres" id="11_ogpgs"]
 [ext_resource type="PackedScene" uid="uid://bclh6crnvr5iu" path="res://scenes/components/respawn_component.tscn" id="13_5ki56"]
+[ext_resource type="Script" uid="uid://cgyc7yxdcpxrj" path="res://script/JumpTest.gd" id="16_spk56"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ss7kx"]
 size = Vector2(38, 75)
@@ -68,6 +69,10 @@ offset_top = -38.0
 offset_right = 24.0
 offset_bottom = 37.0
 color = Color(1, 1, 0, 1)
+
+[node name="JumpTest" type="Node" parent="." unique_id=1201978975 node_paths=PackedStringArray("player")]
+script = ExtResource("16_spk56")
+player = NodePath("..")
 
 [connection signal="components_linked" from="." to="HUD" method="_on_character_body_2d_components_linked"]
 [connection signal="body_entered" from="BaseArea" to="BaseArea" method="_on_body_entered"]

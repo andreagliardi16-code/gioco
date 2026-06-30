@@ -21,6 +21,7 @@ var last_direction: Global.Direction = Global.Direction.NULL
 var look_direction: Global.Direction = Global.Direction.NULL
 var _last_pan_input: Vector2 = Vector2.ZERO
 
+
 #region ready, process e setup
 func _ready() -> void:
 	self.set_meta("ID", &"InputComponent")
@@ -28,7 +29,7 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	_check_inputs()
 	_look_around()
-	
+
 
 func setup(mov_node: MovementComponent, owner_node: Node) -> void:
 	parent = owner_node

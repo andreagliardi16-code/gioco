@@ -115,7 +115,6 @@ func load_from_json() -> Global.Outcome:
 			var j: Dictionary = p_data["jump"]
 			player_stats.jump_force = j.get("jump_force", player_stats.jump_force)
 			player_stats.coyote_time = j.get("coyote_time", player_stats.coyote_time)
-			player_stats.jump_cut_time = j.get("jump_cut_time", player_stats.jump_cut_time)
 			player_stats.min_jump_time = j.get("min_jump_time", player_stats.min_jump_time)
 			player_stats.max_jump_time = j.get("max_jump_time", player_stats.max_jump_time)
 			

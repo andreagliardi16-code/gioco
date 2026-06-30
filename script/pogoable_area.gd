@@ -12,7 +12,7 @@ func _ready() -> void:
 	self.add_to_group(&"pogoable_areas")
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Engine.is_editor_hint():
 		update_configuration_warnings()
 
