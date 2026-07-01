@@ -1,3 +1,5 @@
+@tool
+
 extends Resource
 class_name DataSaver
 
@@ -6,6 +8,10 @@ const DATA_CONFIG_PATH: String = "res://ext_game_data/game_data.json"
 
 @export var player_stats: PlayerStats
 @export var world_stats: PhysicsStats
+@export var save_changes: bool:
+	set(value):
+		if value:
+			_save_to_json()
 
 
 #region game data
@@ -23,9 +29,7 @@ func _save_to_json() -> Global.Outcome:
 			"jump" : {
 				"jump_force": player_stats.jump_force,
 				"coyote_time": player_stats.coyote_time,
-				"jump_cut_time": player_stats.jump_cut_time,
 				"min_jump_time": player_stats.min_jump_time,
-				"max_jump_time": player_stats.max_jump_time
 			},
 			"horizontal_movement" : {
 				"max_speed": player_stats.max_speed,
@@ -116,7 +120,7 @@ func load_from_json() -> Global.Outcome:
 			player_stats.jump_force = j.get("jump_force", player_stats.jump_force)
 			player_stats.coyote_time = j.get("coyote_time", player_stats.coyote_time)
 			player_stats.min_jump_time = j.get("min_jump_time", player_stats.min_jump_time)
-			player_stats.max_jump_time = j.get("max_jump_time", player_stats.max_jump_time)
+			#player_stats.max_jump_time = j.get("max_jump_time", player_stats.max_jump_time)
 			
 		# --- Horizontal Movement ---
 		if p_data.has("horizontal_movement"):

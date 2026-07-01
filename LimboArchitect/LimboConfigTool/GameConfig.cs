@@ -13,8 +13,6 @@ public class GameConfig
 
     [JsonPropertyName("world_stats")]
     public WorldStatsSection WorldStats { get; set; } = new();
-    // Aggiungere flag per non serializzare sezione
-    public MagicNumbersSection MagicNumbers {get; set; } = new();
 }
 
 public class PlayerStatsSection
@@ -42,6 +40,7 @@ public class JumpSection
     [JsonPropertyName("jump_force")] public float JumpForce { get; set; }
     [JsonPropertyName("max_jump_time")] public float MaxJumpTime { get; set; }
     [JsonPropertyName("min_jump_time")] public float MinJumpTime { get; set; }
+    public float FakeJumpForce {get; set; } = 840.6035f;
 }
 public class HorizontalMovementSection
 {
@@ -102,10 +101,10 @@ public class GatesSection
     [JsonPropertyName("gate_spawn_offset")] public float GateSpawnOffset { get; set; }
 }
 
-public class MagicNumbersSection
+public static class MagicNumbers
 {
-    public float ShortJumpCoeff {get; } = 0.7f; // coefficente che riassume la velocità media di un salto che parte da fermo
-    public float NormVertPogoCoeff {get; } = 0.9f; // coefficente che riassume la velocità media di un pogo verso il basso e poi accel. lateralmente (il dover spostare l'analogico in basso rallenta il movimento orizzontale)
-    public int NodeSearchRadius {get; } = 300;  // raggio del cerchio intorno a un nodo in cui si ricercano altri nodi a cui collegarsi
+    public const float ShortJumpHCoeff = 0.7f; // coefficente che riassume la velocità media di un salto che parte da fermo
+    public const float VertPogoCoeff = 0.9f;  // coefficente che riassume la velocità media di un pogo verso il basso e poi accel. lateralmente (il dover spostare l'analogico in basso rallenta il movimento orizzontale)
+    public const int  NodeSearchRadius = 300;  // raggio del cerchio intorno a un nodo in cui si ricercano altri nodi a cui collegarsi
 
 }

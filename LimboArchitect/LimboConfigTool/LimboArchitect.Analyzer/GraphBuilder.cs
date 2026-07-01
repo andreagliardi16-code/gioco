@@ -8,8 +8,8 @@ namespace LimboArchitect.Core.Analyzer.GraphBuilder;
 
 public class Graph
 {
-    private GameConfig config {get; } = new GameConfig();
-    private const int ArcMaxSearch = 500;
+    private GameConfig Config {get; } = new GameConfig();
+    private int ArcMaxSearch;
     public Dictionary<int, GraphNode> Nodes { get; } = new();
     public Dictionary<int, GraphArc> Arcs { get; } = new();
 
@@ -20,6 +20,7 @@ public class Graph
     {
         RectBoundary boundary = new(levelData.X, levelData.Y, levelData.width, levelData.height);
         _quadtree = new Quadtree(boundary);
+        ArcMaxSearch = MagicNumbers.NodeSearchRadius;
 
         foreach(GraphNode node in nodes)
         {

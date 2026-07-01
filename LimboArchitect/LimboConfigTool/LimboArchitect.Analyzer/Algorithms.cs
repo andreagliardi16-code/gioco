@@ -20,9 +20,6 @@ public enum ConnectionType
 
 public static class ArcsEvaluator
 {
-    // il numero di controlli da fare
-    private const int checks_num = 7;
-
     public static (float, ConnectionType) AnalyzeArc()
     {
         throw new NotImplementedException();
@@ -62,7 +59,8 @@ public static class ArcsEvaluator
 
     private static (List<Vector2>, bool) CalcJumpParable((int X, int Y)start, (int X, int Y)target, PlayerStatsSection stats)
     {
-        List<Vector2> arcSteps = CalcJumpPoints(start, target, stats);
+        float maxSpeed = stats.HorizontalMovement.MaxSpeed*MagicNumbers.ShortJumpHCoeff;
+        List<Vector2> arcSteps = CalcJumpPoints(start, target, maxSpeed, stats.Jump.FakeJumpForce, stats.Gravity);
 
         bool isValid = arcSteps[^1].Y <= target.Y + 5.0f; 
 
@@ -71,7 +69,7 @@ public static class ArcsEvaluator
 
     private static (List<Vector2>, bool) CalcMaxJumpParable((int X, int Y)start, (int X, int Y)target, PlayerStatsSection stats)
     {
-        List<Vector2> arcSteps = CalcJumpPoints(start, target, stats, maxJump: true);
+        List<Vector2> arcSteps = CalcJumpPoints(start, target, stats.HorizontalMovement.MaxSpeed, stats.Jump.JumpForce, stats.Gravity);
 
         bool isValid = arcSteps[^1].Y <= target.Y + 5.0f; 
 
@@ -95,44 +93,29 @@ public static class ArcsEvaluator
         return isValid ? (Segment, true) : ([], false);
     }
 
-    private static (List<Vector2>, bool) CalcVertPogo((int X, int Y)start, (int X, int Y)target, PlayerStatsSection stats, bool shortPogo = false)
+    private static (List<Vector2>, bool) CalcVertPogo((int X, int Y)start, (int X, int Y)target, PlayerStatsSection stats)
     {
-        float deltaX = target.X - start.X;
-        float directionX = Math.Sign(deltaX);
+        float maxSpeed = stats.HorizontalMovement.MaxSpeed * MagicNumbers.VertPogoCoeff;
 
-        List<Vector2> Steps = [];
+        
+        List<Vector2> arcSteps = CalcJumpPoints(start, target, maxSpeed, stats.Pogo.VerticalForce, stats.Gravity);
 
-        float maxSpeed = (shortPogo)? stats.HorizontalMovement.MaxSpeed : stats.HorizontalMovement.MaxSpeed;
-        float totalTime = Math.Abs(deltaX) / maxSpeed;
 
-        const int steps = 9;
-        float timeStep = totalTime/steps;
-
-        Vector2 previousPoint = new Vector2(start.X, start.Y);
-        Steps.Add(previousPoint);
-
-        for (int i = 1; i <= steps; i++)
-        {
-            float t = i * timeStep;
-
-            float currentX = start.X + (maxSpeed * directionX * t);
-            float currentY = start.Y + (stats.Jump.JumpForce * t) + (0.5f * GetRightGravity(stats.Gravity, t, totalTime) * t * t);
-            
-            Vector2 currentPoint = new Vector2(currentX, currentY);
-            Steps.Add(currentPoint);
-
-            previousPoint = currentPoint;
-        }
-
-        bool isValid = Steps[^1].Y <= target.Y + 5.0f;
-        return isValid ? (Steps, true) : ([], false);
+        bool isValid = arcSteps[^1].Y <= target.Y + 5.0f;
+        return isValid ? (arcSteps, true) : ([], false);
     }
 
-    private static List<Vector2> CalcJumpPoints((int X, int Y)start, (int X, int Y)target, PlayerStatsSection stats, bool maxJump = false)
+    private static (List<Vector2>, bool) CalcLatPogo((int X, int Y)start, (int X, int Y)target, PlayerStatsSection stats)
+    {
+        
+    }
+
+/* La logica che calcola il salto "corto" va rivista. Un salto più breve non ha semplicemente velocità minore, ma anche un apice più basso
+una forma effettivamente diversa. */
+    private static List<Vector2> CalcJumpPoints((int X, int Y)start, (int X, int Y)target, float maxSpeed, float jumpForce, GravitySection gravity)
     {
         List<Vector2> Steps = [];
 
-        float maxSpeed = (maxJump)? stats.HorizontalMovement.MaxSpeed : stats.HorizontalMovement.MaxSpeed/2;
         float deltaX = target.X - start.X;
         float directionX = Math.Sign(deltaX);
         float totalTime = Math.Abs(deltaX) / maxSpeed;
@@ -148,7 +131,7 @@ public static class ArcsEvaluator
             float t = i * timeStep;
 
             float currentX = start.X + (maxSpeed * directionX * t);
-            float currentY = start.Y + (stats.Jump.JumpForce * t) + (0.5f * GetRightGravity(stats.Gravity, t, totalTime) * t * t);
+            float currentY = start.Y + (jumpForce * t) + (0.5f * GetRightGravity(gravity, jumpForce, t) * t * t);
             
             Vector2 currentPoint = new Vector2(currentX, currentY);
             Steps.Add(currentPoint);
@@ -163,7 +146,7 @@ public static class ArcsEvaluator
     private static float GetRightGravity(GravitySection gravSection, float jumpForce, float t)
     {
         float apexTime = Math.Abs(jumpForce) / gravSection.DefaultGravity;
-        if (t < apexTime/2) return gravSection.DefaultGravity;
+        if (t < apexTime) return gravSection.DefaultGravity;
         else return gravSection.FallGravity;
     }
 }

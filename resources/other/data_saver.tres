@@ -8,4 +8,5 @@
 script = ExtResource("1_aje64")
 player_stats = ExtResource("1_seqit")
 world_stats = ExtResource("3_14rw5")
+save_changes = true
 metadata/_custom_type_script = "uid://bind1mqepwipf"

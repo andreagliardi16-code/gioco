@@ -45,7 +45,6 @@ var pogo_direction: Global.Direction = Global.Direction.SOUTH
 
 #region timer var
 var coyote_timer: float = 0.0
-var max_jump_timer: float = 0.0
 var dash_timer: float = 0.0
 var dash_cooldown_timer: float = 0.0
 var pogo_impulse_timer: float = 0.0
@@ -77,16 +76,15 @@ func _physics_process(delta: float) -> void:
 	_handle_timers(delta)
 	if is_fading_pogo:
 		_handle_pogo_fade(delta)
-	if is_jumping and not is_jump_held:
-		_cut_jump()
+	if is_jumping:
+		if not is_jump_held:
+			_cut_jump()
+		if velocity.y > 0:
+			_end_jump()
 #endregion
 
 #region timer
 func _handle_timers(delta: float) -> void:
-	if max_jump_timer > 0:
-		max_jump_timer -= delta
-		if max_jump_timer <= 0 and is_jumping:
-			_end_jump()
 	if coyote_timer > 0:
 		coyote_timer -= delta
 		if coyote_timer <= 0:
@@ -208,7 +206,6 @@ func jump() -> void:
 	#parent.change_player_state(Player.PlayerStates.JUMP)
 	energy_spended.emit("jump")
 	
-	max_jump_timer = parent_stats.max_jump_time
 	is_jumping = true
 	
 	_fast_stop([VECTOR_Y])
@@ -226,7 +223,6 @@ func _check_cut_time() -> void:
 func _end_jump() -> void:
 	is_jumping = false
 	is_cutting_jump = false
-	max_jump_timer = 0.0
 
 func _on_input_component_jump_input_changed(state: bool) -> void:
 	if state == true:

@@ -32,9 +32,7 @@
 		},
 		"jump": {
 			"coyote_time": 0.08,
-			"jump_cut_time": 0.15,
 			"jump_force": -1000.0,
-			"max_jump_time": 0.6,
 			"min_jump_time": 0.1
 		},
 		"pogo": {
